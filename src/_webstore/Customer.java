@@ -8,7 +8,7 @@ public class Customer implements Serializable {
 	
 	private int customer_id;
 	private String username;
-	private String password;
+	private String user_password;
 	private String email;
 	private String first_name;
 	private String last_name;
@@ -33,12 +33,12 @@ public class Customer implements Serializable {
 		this.username = username;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getUser_password() {
+		return user_password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUser_password(String password) {
+		this.user_password = password;
 	}
 
 	public String getEmail() {

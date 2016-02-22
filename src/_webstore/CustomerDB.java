@@ -26,7 +26,7 @@ public class CustomerDB {
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, customer.getCustomer_id());
 			stmt.setString(2, customer.getUsername());
-			stmt.setString(3, customer.getPassword());
+			stmt.setString(3, customer.getUser_password());
 			stmt.setString(4, customer.getEmail());
 			stmt.setString(5, customer.getFirst_name());
 			stmt.setString(6, customer.getLast_name());
@@ -112,6 +112,74 @@ public class CustomerDB {
 			closeAll(stmt,conn,rs);
 		}
 		return c;
+	}
+
+	public static int modifyCustomer(Customer c){
+		int flag = 0;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try{
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+			String query = "update customer set user_password = ?, username= ?, email=? where customer_id = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, c.getUser_password());
+			stmt.setString(2, c.getUsername());
+			stmt.setString(3, c.getEmail());
+			stmt.setInt(4, c.getCustomer_id());
+
+			flag = stmt.executeUpdate();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			closeAll(stmt, conn, rs);
+		}
+		return flag;
+	}
+	
+	public static int deleteCustomer(int id){
+		int flag = 0;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try{
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+			stmt = conn.prepareStatement("delete from user where customer_id = ?");
+			stmt.setInt(1, id);
+			flag = stmt.executeUpdate();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			closeAll(stmt, conn, rs);
+		}
+		return flag;
+	}
+	
+	public static int checkUserAvail(String username, String email, int id){
+		int flag = 0;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try{
+			
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+			stmt = conn.prepareStatement("select * from user where username = ? or email = ? or customer_id = ?");
+			stmt.setString(1, username);
+			stmt.setString(2, email);
+			stmt.setInt(3, id);
+			rs = stmt.executeQuery();
+			if(rs.next()){
+				flag = 1;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			closeAll(stmt, conn, rs);
+		}
+		return flag;
 	}
 	
 	private static void closeAll(Statement stmt, Connection conn, ResultSet rs){
