@@ -15,22 +15,17 @@ public class CustomerDB {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try{
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context)initCtx.lookup("java:comp/env");
-			DataSource ds = (DataSource)envCtx.lookup("jdbc/css490");
-			conn = ds.getConnection();
-			
-			String query = "insert into customer(customer_id, username, user_password, email, first_name, last_name, date_joined)"+ 
-					"values(?,?,?,?,?,?, current_timestamp)";
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+			String query = "insert into customers (username, user_password, email, first_name, last_name, date_joined, customer_id) "+ 
+					"values(?,?,?,?,?,current_timestamp,0)";
 			
 			stmt = conn.prepareStatement(query);
-			stmt.setInt(1, customer.getCustomer_id());
-			stmt.setString(2, customer.getUsername());
-			stmt.setString(3, customer.getUser_password());
-			stmt.setString(4, customer.getEmail());
-			stmt.setString(5, customer.getFirst_name());
-			stmt.setString(6, customer.getLast_name());
-			stmt.setDate(7, customer.getDate_joined());
+			stmt.setString(1, customer.getUsername());
+			stmt.setString(2, customer.getUser_password());
+			stmt.setString(3, customer.getEmail());
+			stmt.setString(4, customer.getFirst_name());
+			stmt.setString(5, customer.getLast_name());
 			
 			int i = stmt.executeUpdate();
 			if(i > 0){
@@ -94,7 +89,7 @@ public class CustomerDB {
 			
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
-			String query = "select first_name, last_name, email, date_joined from user where username = ?";
+			String query = "select first_name, last_name, email, date_joined from customers where username = ?";
 			stmt = conn.prepareStatement(query);
 	
 			stmt.setString(1, username);
@@ -157,20 +152,22 @@ public class CustomerDB {
 		return flag;
 	}
 	
-	public static int checkUserAvail(String username, String email, int id){
+	public static int checkUserAvail(String username, String email){
 		int flag = 0;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		try{
-			
+		System.out.println(username);
+		System.out.println(email);
+		try {
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
-			stmt = conn.prepareStatement("select * from user where username = ? or email = ? or customer_id = ?");
+			stmt = conn.prepareStatement("select * from customers where username = ? or email = ?");
 			stmt.setString(1, username);
 			stmt.setString(2, email);
-			stmt.setInt(3, id);
+			System.out.println(stmt);
 			rs = stmt.executeQuery();
+			System.out.println(rs);
 			if(rs.next()){
 				flag = 1;
 			}
