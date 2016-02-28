@@ -67,7 +67,7 @@
 		<th>Product Id</th>
 	</tr>
 <%
-	ArrayList<Movie> movies = MovieDB.showMovies();
+	ArrayList<Movie> movies = MovieDB.viewMovies();
 	for(Movie m : movies){
 %>
 <tr>
@@ -86,6 +86,9 @@
 	}
 %>
 </table>
+</form>
+<form action="../movies/show_next" method="get">
+	<button type="submit">Next</button>
 </form>
 </body>
 </html>
