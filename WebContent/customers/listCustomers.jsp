@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=US-ASCII"
     pageEncoding="US-ASCII"%>
-<%@ page import = "java.util.*, _webstore.*" %>
+<%@ page import = "java.util.*, model.Customer, db.CustomerDB" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -52,7 +52,6 @@
 </script>
 </head>
 <body>
-<jsp:include page="/customer/listCustomers.jsp"></jsp:include>
 <form name="modify" method="post">
 <table id="list">
 	<tr> 
