@@ -52,6 +52,7 @@
 </script>
 </head>
 <body>
+<jsp:include page="/customer/listCustomers.jsp"></jsp:include>
 <form name="modify" method="post">
 <table id="list">
 	<tr> 

@@ -17,8 +17,8 @@ public class CustomerDB {
 		try{
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
-			String query = "insert into customers (username, user_password, email, first_name, last_name, date_joined, customer_id) "+ 
-					"values(?,?,?,?,?,current_timestamp,0)";
+			String query = "insert into customers (username, user_password, email, first_name, last_name, date_joined) "+ 
+					"values(?,?,?,?,?,current_timestamp)";
 			
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, customer.getUsername());
@@ -165,9 +165,7 @@ public class CustomerDB {
 			stmt = conn.prepareStatement("select * from customers where username = ? or email = ?");
 			stmt.setString(1, username);
 			stmt.setString(2, email);
-			System.out.println(stmt);
 			rs = stmt.executeQuery();
-			System.out.println(rs);
 			if(rs.next()){
 				flag = 1;
 			}

@@ -3,6 +3,7 @@ package _webstore;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,15 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(
 		name = "CustomerServlet",
 		description = "A servlet for handling customers",
-		urlPatterns = { "/Customer/register" }
+		urlPatterns = { "/customer/*" }
 		)
-public class CustomerController extends HttpServlet {
+//@WebServlet("/customerController")
+public class customerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerController() {
+    public customerController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,10 +44,8 @@ public class CustomerController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String requestURI = request.getRequestURI();
-		System.out.println(requestURI); 
 		String url = "";
 		if(requestURI.endsWith("register")){
-			
 			url = registerCustomer(request);
 		}
 //		}else if(requestURI.endsWith("modify")){
@@ -53,7 +53,6 @@ public class CustomerController extends HttpServlet {
 //		}else if(requestURI.endsWith("delete")){
 //			url = deleteCustomer(request);
 //		}
-		System.out.println("Made it x2!");
 		response.sendRedirect(url);
 	}
 	
@@ -64,12 +63,11 @@ public class CustomerController extends HttpServlet {
 		String email = request.getParameter("email");
 		String first_name = request.getParameter("first_name");
 		String last_name = request.getParameter("last_name");
-		System.out.println(username + email);
 		
 		int flag = 0;
 		flag = CustomerDB.checkUserAvail(username, email);
 		if(flag > 0){
-			url = "/registerError.jsp";
+			url = "../customers/registerError.jsp";
 		}else{
 			Customer Customer = new Customer();
 			
@@ -79,9 +77,10 @@ public class CustomerController extends HttpServlet {
 			Customer.setFirst_name(first_name);
 			Customer.setLast_name(last_name);
 			if(CustomerDB.insertCustomer(Customer)){
-				url = "/listCustomers.jsp";
+				url = "../customers/listCustomers.jsp";
 			}
 		}
+		
 		return url;
 	}
 //	
