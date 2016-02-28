@@ -39,19 +39,10 @@
 		border-bottom: 2px solid #111111;
 	}
 </style>
-<!-- <script>
-	function movieModify(username){
-		document.getElementById("username1").value= username;
-		document.userModify.submit();
-	}
-
-	function userDelete(username){
-		document.getElementById("username2").value= username;
-		document.userDelete.submit();
-	}
-</script> -->
 </head>
 <body>
+<!-- should present movies in different way, maybe like grid -->
+<!-- this will be users' default home page. account settings/cart/past orders will live in top right -->
 <form name="modify" method="post">
 <table id="list">
 	<tr> 
