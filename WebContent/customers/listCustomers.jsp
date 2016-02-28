@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<script type="text/javascript" src="../js/login.js"></script>
 <title>List of Customers</title>
 <style>
 	body {
