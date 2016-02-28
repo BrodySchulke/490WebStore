@@ -58,7 +58,7 @@
 		<th>Product Id</th>
 	</tr>
 <%
-	ArrayList<Movie> movies = MovieDB.viewMovies();
+	ArrayList<Movie> movies = MovieDB.viewMovies(0);
 	for(Movie m : movies){
 %>
 <tr>
@@ -72,14 +72,38 @@
 	<td width="10%"><%=m.getInventory()%></td>
 	<td width="10%"><%=m.getPrice()%></td>
 	<td width="10%"><%=m.getProduct_id()%></td>
+	<td width="10%"><a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a></td>
 </tr>
+<script>
+function viewAMovie(product_id) {
+	document.getElementById("product_id").value=product_id;
+	document.viewMovie.submit();
+}
+</script>
+
 <%
 	}
 %>
 </table>
 </form>
+<form name="viewMovie" method="get" action="showMovie.jsp">
+<input type="hidden" name="movie_product_id" id="product_id">
+</form>
+<% if (movies.size() == 20) { 
+	%>
 <form action="../movies/show_next" method="get">
 	<button type="submit">Next</button>
 </form>
+<% } else { %>
+<h7>You've reached the end of the catalogue.  Thanks for viewing The Three Stooges' Antique Film Boutique.</h7>
+<% } %>
+<%
+int offset = MovieDB.getOffset();
+if (offset > 0) {
+	%>
+	<form action="../movies/show_previous" method="get">
+		<button type="submit">Previous</button>
+	</form>
+<% } %>
 </body>
 </html>
