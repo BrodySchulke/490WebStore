@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<script type="text/javascript" src="../js/login.js"></script>
 <title>List of Movies</title>
 <style>
 	body {
@@ -43,6 +44,7 @@
 <body>
 <!-- should present movies in different way, maybe like grid -->
 <!-- this will be users' default home page. account settings/cart/past orders will live in top right -->
+
 <form name="modify" method="post">
 <table id="list">
 	<tr> 
