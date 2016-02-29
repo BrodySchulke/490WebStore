@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Movies</title>
+    <link rel="stylesheet" href="../css/login.css" />
+    <script type="text/javascript" src="../js/login.js"></script>
+  </head>
+  <body>
+    <div id="page">
+      <h1>Exclusive Three Stooges Antique Film Boutique</h1>
+      <h2>Type Your Username</h2>
+      <form method="post" name="form1" id="form1" action="customer/redirect">
+        <label for="username">Username: </label>
+        <input type="text" id="username" name="username" required/>
+        <div id="feedback1" class="feedback"></div>
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password"  required/>
+        <div id="feedback2" class="feedback"></div>
+        <input type="submit" id="submit" value="Login"/>
+      </form>
+      <a href="../signup/signUpForm.html" id="sign_up_from_login_link">New user? Sign up!</a>
+    </div>
+  </body>
+</html>
