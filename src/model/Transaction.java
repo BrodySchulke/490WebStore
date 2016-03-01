@@ -14,6 +14,11 @@ public class Transaction implements Serializable {
 	public int getUser_id() {
 		return user_id;
 	}
+	@Override
+	public String toString() {
+		return "Transaction [user_id=" + user_id + ", status=" + status + ", total_price=" + total_price
+				+ ", close_date=" + close_date + ", transaction_id=" + transaction_id + "]";
+	}
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}

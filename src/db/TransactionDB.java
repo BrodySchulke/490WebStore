@@ -1,6 +1,8 @@
 package db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,8 +25,41 @@ public class TransactionDB {
 		return connection;
 	}
 	
+	public static void setUpTransactionForNewCustomer(Customer customer) {
+		String insert = "insert into transactions (user_id, status, total_price) values(?,?,?)";
+		try {
+			connection = getConnection();
+			PreparedStatement stmt2 = null;
+			stmt2 = connection.prepareStatement(insert);
+			String query = "select customer_id from customers where username = " + "\'" + customer.getUsername() + "\'";
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				stmt2.setInt(1, rs.getInt("customer_id"));
+				stmt2.setBoolean(2, true);
+				stmt2.setBigDecimal(3, new BigDecimal(0));
+				stmt2.executeUpdate();
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+	}
+	
 	public static Transaction initializeCart(Customer customer) {
-		String query = "select transaction_id from transactions where user_id = " + customer.getCustomer_id() + " and status = true";
+		String query = "select * from transactions where user_id = " + customer.getCustomer_id() + " and status = true";
 		Transaction transaction = null;
 		try {
 			connection = getConnection();
@@ -37,10 +72,6 @@ public class TransactionDB {
 				transaction.setTotal_price(rs.getDouble("total_price"));
 				transaction.setTransaction_id(rs.getInt("transaction_id"));
 				transaction.setUser_id(rs.getInt("user_id"));
-			} else {
-				transaction = new Transaction();
-				transaction.setStatus(true);
-				transaction.setUser_id(customer.getCustomer_id());
 			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -59,7 +90,6 @@ public class TransactionDB {
 			}
 		}
 		return transaction;
-		
 	}
 	
 	public static ArrayList<Order> checkForOpenCart(Customer customer) {

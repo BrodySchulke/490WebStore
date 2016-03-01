@@ -7,6 +7,13 @@ import java.sql.Date;
 public class Customer implements Serializable {
 	
 	private int customer_id;
+	@Override
+	public String toString() {
+		return "Customer [customer_id=" + customer_id + ", username=" + username + ", user_password=" + user_password
+				+ ", email=" + email + ", first_name=" + first_name + ", last_name=" + last_name + ", date_joined="
+				+ date_joined + "]";
+	}
+
 	private String username;
 	private String user_password;
 	private String email;

@@ -3,6 +3,9 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import db.CustomerDB;
+import db.MovieDB;
+import db.OrderDB;
 import db.TransactionDB;
 import model.Customer;
 import model.Movie;
@@ -94,13 +99,14 @@ public class customerController extends HttpServlet {
 		if(flag > 0){
 			url = "../../customers/registerError.jsp";
 		}else{
-			Customer Customer = new Customer();
-			Customer.setUsername(username);
-			Customer.setUser_password(user_password);
-			Customer.setEmail(email);
-			Customer.setFirst_name(first_name);
-			Customer.setLast_name(last_name);
-			if(CustomerDB.insertCustomer(Customer)){
+			Customer customer = new Customer();
+			customer.setUsername(username);
+			customer.setUser_password(user_password);
+			customer.setEmail(email);
+			customer.setFirst_name(first_name);
+			customer.setLast_name(last_name);
+			if(CustomerDB.insertCustomer(customer)){
+				TransactionDB.setUpTransactionForNewCustomer(customer);
 				url = "../../home/loginForm.html";
 			}
 		}
@@ -111,13 +117,22 @@ public class customerController extends HttpServlet {
 	private static void makeCustomerSession(HttpServletRequest request, Customer customer) {
 		HttpSession userSession = request.getSession();
 		Transaction transaction = TransactionDB.initializeCart(customer);
-		
-		ArrayList<Order> cartExistsAndIsOpen = TransactionDB.checkForOpenCart(customer);
+		Map<Movie, Order> cart = new HashMap<>();
+		OrderDB.getOrdersAssociatedWithCustomer(cart, transaction);
+		userSession.setAttribute("customer", customer);
+		userSession.setAttribute("transaction", transaction);
+		userSession.setAttribute("cart", cart);
+		Enumeration e = userSession.getAttributeNames();
+		while (e.hasMoreElements()) {
+			String elem = (String)e.nextElement();
+			System.out.println(elem + ":" + userSession.getAttribute(elem));
+		}
+/*		ArrayList<Order> cartExistsAndIsOpen = TransactionDB.checkForOpenCart(customer);
 		if (cartExistsAndIsOpen != null) {
 			userSession.setAttribute("OrderList", cartExistsAndIsOpen);
 		} else {
 			userSession.setAttribute("OrderList", new ArrayList<Order>());
-		}
+		}*/
 	}
 	
 //	
