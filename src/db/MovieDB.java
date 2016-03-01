@@ -43,6 +43,10 @@ public class MovieDB {
 			connection = getConnection();
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
+//			PreparedStatement percent = connection.prepareStatement("update movies set release_year = 2015 where product_id = 1");
+//			PreparedStatement percent2 = connection.prepareStatement("update movies set release_year = 2016 where product_id = 2");
+//			percent.executeUpdate();
+//			percent2.executeUpdate();
 			while (rs.next()) {
 				movie = new Movie();
 				movie.setActor(rs.getString("actor"));
@@ -57,7 +61,6 @@ public class MovieDB {
 				movie.setTitle(rs.getString("title"));
 				movieList.add(movie);
 			}
-
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		} catch (ClassNotFoundException cnfe) {

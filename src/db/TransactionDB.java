@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import model.Customer;
 import model.Movie;
 import model.Order;
+import model.Transaction;
 
 public class TransactionDB {
 	private static String dbURL = "jdbc:postgresql://localhost:5432/webstore";
@@ -20,6 +21,45 @@ public class TransactionDB {
 	private static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Connection connection = ConnectionFactory.getInstance().getConnection();
 		return connection;
+	}
+	
+	public static Transaction initializeCart(Customer customer) {
+		String query = "select transaction_id from transactions where user_id = " + customer.getCustomer_id() + " and status = true";
+		Transaction transaction = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				transaction = new Transaction();
+				transaction.setClose_date(rs.getDate("close_date"));
+				transaction.setStatus(rs.getBoolean("status"));
+				transaction.setTotal_price(rs.getDouble("total_price"));
+				transaction.setTransaction_id(rs.getInt("transaction_id"));
+				transaction.setUser_id(rs.getInt("user_id"));
+			} else {
+				transaction = new Transaction();
+				transaction.setStatus(true);
+				transaction.setUser_id(customer.getCustomer_id());
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return transaction;
+		
 	}
 	
 	public static ArrayList<Order> checkForOpenCart(Customer customer) {

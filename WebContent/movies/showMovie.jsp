@@ -78,7 +78,8 @@ window.onload = function () {
 	orderButton.onclick = function() {
 		var xhttp = new XMLHttpRequest();
 		xhttp.open("POST", "../orders/cart", true);
-		xhttp.send("txt=" + "bitches");
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
 	}
 }
 </script>

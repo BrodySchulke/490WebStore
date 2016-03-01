@@ -110,6 +110,8 @@ public class customerController extends HttpServlet {
 	
 	private static void makeCustomerSession(HttpServletRequest request, Customer customer) {
 		HttpSession userSession = request.getSession();
+		Transaction transaction = TransactionDB.initializeCart(customer);
+		
 		ArrayList<Order> cartExistsAndIsOpen = TransactionDB.checkForOpenCart(customer);
 		if (cartExistsAndIsOpen != null) {
 			userSession.setAttribute("OrderList", cartExistsAndIsOpen);

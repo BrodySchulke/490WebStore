@@ -6,6 +6,13 @@ import java.sql.Date;
 
 //This is the Customer JavaBean 
 public class Movie implements Serializable {
+	@Override
+	public String toString() {
+		return "release_year=" + release_year + ";length=" + length + ";title=" + title + ";genre=" + genre
+				+ ";actor=" + actor + ";actress=" + actress + ";director=" + director + ";inventory=" + inventory
+				+ ";price=" + price + ";product_id=" + product_id + ";";
+	}
+
 	private int release_year;
 	private int length;
 	private String title;

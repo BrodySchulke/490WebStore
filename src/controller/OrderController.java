@@ -37,7 +37,6 @@ public class OrderController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("ninja we made it");
 		HttpSession userSession = request.getSession();
 		
 	}
@@ -46,12 +45,20 @@ public class OrderController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("ninja we made it");
+		// need to do a lot of work on initializing usersession
 		HttpSession userSession = request.getSession();
-
 		String body = request.getReader().lines()
 			    .reduce("", (accumulator, actual) -> accumulator + actual);
-	    System.out.println(body);
+	    String[] movieMap = body.split(";");
+	    for (String s : movieMap) {
+	    	String[] mapAttribute = s.split("=");
+	    	userSession.setAttribute(mapAttribute[0], mapAttribute[1]);
+	    }
+//	    Enumeration e = userSession.getAttributeNames();
+//	    while (e.hasMoreElements()) {
+//	    	String elem = (String)e.nextElement();
+//	    	System.out.println(elem + ":" + userSession.getAttribute(elem));
+//	    }
 		
 	}
 }
