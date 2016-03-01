@@ -54,11 +54,11 @@ public class OrderController extends HttpServlet {
 	    	String[] mapAttribute = s.split("=");
 	    	userSession.setAttribute(mapAttribute[0], mapAttribute[1]);
 	    }
-//	    Enumeration e = userSession.getAttributeNames();
-//	    while (e.hasMoreElements()) {
-//	    	String elem = (String)e.nextElement();
-//	    	System.out.println(elem + ":" + userSession.getAttribute(elem));
-//	    }
+	    Enumeration e = userSession.getAttributeNames();
+	    while (e.hasMoreElements()) {
+	    	String elem = (String)e.nextElement();
+	    	System.out.println(elem + ":" + userSession.getAttribute(elem));
+	    }
 		
 	}
 }

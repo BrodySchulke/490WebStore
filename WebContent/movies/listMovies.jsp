@@ -8,74 +8,82 @@
 <script type="text/javascript" src="../js/login.js"></script>
 <title>List of Movies</title>
 <style>
+
+	@import url(http://fonts.googleapis.com/css?family=Oswald);
+	
 	body {
-				font-family: Arial, Verdana, sans-serif;
-				color: #111111;}
-	table {
-				width: 800px;
-				margin: auto;
-				border-collapse: collapse;
-				}
-	th, td {
-				padding: 12px 10px;}
-	th{
-		
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		font-size: 90%;
-		border-bottom: 2px solid #111111;
-		border-top: 1px solid #999;
-		text-align: left;
+	font-family: 'Oswald', 'Futura', sans-serif;
+	color: #fff;
+	background-color: #000;
 	}
 	
-	tr:nth-child(even){
-		background-color: #efefef;
+	.box {
+	float:left;
+	text-align: center;
+	width: 25%;
+	height: 25%;
 	}
 	
-	tr:hover {
-		background-color: #c3e6e5;
+	
+	button {
+	margin-right: 5%;
+	margin-left: 5%;
+	margin-top: 5%;
+	margin-bottom: 5%;
+	float: right;
+	width: 40%;
+	display: inline;
 	}
 	
-	tr:last-child{
-		border-bottom: 2px solid #111111;
+	#header {
+	position: fixed;
+	width: 100%;
+	background-color: #000;
 	}
+	
+	h2, button {
+	color: #fff;
+	}
+	
 </style>
 </head>
 <body>
 <!-- should present movies in different way, maybe like grid -->
 <!-- this will be users' default home page. account settings/cart/past orders will live in top right -->
-
+<div id="header"><h2>THE THREE STOOGES</h2>
+<input id="search" type="text" placeholder="search our exclusive boutique..."/>
+</div>
 <form name="modify" method="post">
-<table id="list">
-	<tr> 
-		<th>Release Year</th>
-		<th>Length</th>
-		<th>Title</th>
-		<th>Genre</th>
-		<th>Actor</th>
-		<th>Actress</th>
-		<th>Director</th>
-		<th>Inventory</th>
-		<th>Price</th>
-		<th>Product Id</th>
-	</tr>
 <%
 	ArrayList<Movie> movies = MovieDB.viewMovies(0);
 	for(Movie m : movies){
 %>
-<tr>
-	<td width="10%"><%=m.getRelease_year()%></td>
-	<td width="10%"><%=m.getLength()%></td>
-	<td width="10%"><%=m.getTitle()%></td>
-	<td width="10%"><%=m.getGenre()%></td>
-	<td width="10%"><%=m.getActor()%></td>
-	<td width="10%"><%=m.getActress()%></td>
-	<td width="10%"><%=m.getDirector()%></td>
-	<td width="10%"><%=m.getInventory()%></td>
-	<td width="10%"><%=m.getPrice()%></td>
-	<td width="10%"><%=m.getProduct_id()%></td>
-	<td width="10%"><a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a></td>
-</tr>
+<div class="box">
+	<img src="../images/ThreeStoogesGif.gif"/>
+	<p>
+	<%=m.getRelease_year()%>
+	<br/>
+	<%=m.getLength()%>
+	<br/>
+	<%=m.getTitle()%>
+	<br/>
+	<%=m.getGenre()%>
+	<br/>
+	<%=m.getActor()%>
+	<br/>
+	<%=m.getActress()%>
+	<br/>
+	<%=m.getDirector()%>
+	<br/>
+	<%=m.getInventory()%>
+	<br/>
+	<%=m.getPrice()%>
+	<br/>
+	<%=m.getProduct_id()%>
+	<br>
+	<a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a>
+	</p>
+</div>
 <script>
 function viewAMovie(product_id) {
 	document.getElementById("product_id").value=product_id;
@@ -86,7 +94,6 @@ function viewAMovie(product_id) {
 <%
 	}
 %>
-</table>
 </form>
 <form name="viewMovie" method="get" action="showMovie.jsp">
 <input type="hidden" name="movie_product_id" id="product_id">

@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Movies</title>
-    <link rel="stylesheet" href="../css/login.css" />
-    <script type="text/javascript" src="../js/login.js"></script>
-  </head>
-  <body>
-    <div id="page">
-      <h1>Exclusive Three Stooges Antique Film Boutique</h1>
-      <h2>Type Your Username</h2>
-      <form method="post" name="form1" id="form1" action="customer/redirect">
-        <label for="username">Username: </label>
-        <input type="text" id="username" name="username" required/>
-        <div id="feedback1" class="feedback"></div>
-        <label for="password">Password: </label>
-        <input type="password" id="password" name="password"  required/>
-        <div id="feedback2" class="feedback"></div>
-        <input type="submit" id="submit" value="Login"/>
-      </form>
-      <a href="../signup/signUpForm.html" id="sign_up_from_login_link">New user? Sign up!</a>
-    </div>
-  </body>
+<head>
+<title>Movies</title>
+<link rel="stylesheet" href="../css/login.css" />
+<script type="text/javascript" src="../js/login.js"></script>
+</head>
+<body>
+	<div id="login-page">
+		<div class="logo">
+			<img src="../images/ThreeStoogesGif.gif" />
+		</div>
+		<h2>Three Stooges</h2>
+		<h4>Exclusive Antique Film Boutique</h4>
+		<div id="login-form-wrapper">
+			<form method="post" name="login-form" id="login-form"
+				action="customer/redirect">
+				<label for="username">Username: </label> 
+				<input type="text" id="login-username" name="username" required placeholder="Username" />
+				<label for="password">Password: </label> 
+				<input type="password" id="login-password" name="password" required />
+				<input type="submit" id="login-submit" value="Login"/>
+				<a href="../signup/signUpForm.html" id="sign-up-from-login-link">Create Account</a> 
+			</form>
+		</div>
+	</div>
+</body>
 </html>
