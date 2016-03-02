@@ -35,10 +35,6 @@ button {
 	overflow: hidden;
 }
 
-#search {
-	display: block;
-}
-
 h2, button {
 	color: #fff;
 }
@@ -55,7 +51,7 @@ div {
 #header {
 	z-index: 1;
 	position: fixed;
-	background-color: #fff;
+	background-color: #000;
 	height: 100px;
 	width: 100%;
 	left: 0;
@@ -74,10 +70,48 @@ div {
 	width: 100%;
 }
 
-.float {
-float:left;
-display: inline;
-margin: 5% 5% 5% 5%;
+#header-e1 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+
+#header-e2 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+
+#header-e3 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+
+h7 {
+	color: #fff;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+#search {
+width: 80%;
+display: block;
+padding-right: 10%;
+padding-left: 10%;
+color: #f;
+}
+
+#user-img {
+width: 50%;
+height: 50px;
+float: left;
+}
+
+#cart-img {
+width: 50%;
+height: 50px;
+float: right;
 }
 
 </style>
@@ -86,15 +120,22 @@ margin: 5% 5% 5% 5%;
 	<!-- should present movies in different way, maybe like grid -->
 	<!-- this will be users' default home page. account settings/cart/past orders will live in top right -->
 	<div id="header">
-		<ul class="float" id="account">
-			<li><a href="">Account</a></li>
-		</ul>
-		<ul class="float" id="search">
-			<li><input type="text" size="50" placeholder="search our exclusive boutique..." /></li>
-		</ul>
-		<ul class="float" id="cart">
-			<li><a href="">Cart</a></li>
-		</ul>
+		<div id="header-e1">
+			<form>
+				<input type="image" src="../images/user1.svg" name="user-hdr-btn-submit" id="user-img"/>
+			</form>
+		</div>
+		<div id="header-e2">
+			<h7>THREE STOOGES EXCLUSIVE ANTIQUE FILM BOUTIQUE</h7>
+			<form>
+				<input type="text" id="search" placeholder="search our exclusive boutique..." />
+			</form>
+		</div>
+		<div id="header-e3">
+			<form>
+				<input type="image" src="../images/shopingcart.svg" name="cart-hdr-btn-submit" id="cart-img"/>
+			</form>
+		</div>
 	</div>
 	<div id="content">
 		<form id="movies" name="movies" method="post">
