@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<script type="text/javascript" src="../js/login.js"></script>
+<script type="text/javascript" src="../js/close.js"></script>
 <title>List of Movies</title>
 <style>
 @import url(http://fonts.googleapis.com/css?family=Oswald);

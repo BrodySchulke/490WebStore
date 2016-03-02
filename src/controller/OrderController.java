@@ -54,6 +54,20 @@ public class OrderController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// need to do a lot of work on initializing usersession
+		String requestURI = request.getRequestURI();
+		if (requestURI.endsWith("cart")) {
+			updateSession(request);
+		} else if (requestURI.endsWith("sync")) {
+			System.out.println("SYNCING DB");
+			for (int i = 0; i < 1000000000; i++);
+			System.out.println(request.getSession().getId());
+			//syncDatabase(request);
+		} else {
+			response.sendRedirect("../registerError.jsp");
+		}
+	}
+	
+	private void updateSession(HttpServletRequest request) throws IOException {
 		HttpSession userSession = request.getSession();
 		String body = request.getReader().lines()
 			    .reduce("", (accumulator, actual) -> accumulator + actual);

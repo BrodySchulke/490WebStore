@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="../js/login.js"></script>
+<script type="text/javascript" src="../js/close.js"></script>
 <title>The Three Stooges' Exquisite Exclusive Movie View</title>
 <style>
 	body {
@@ -81,6 +81,12 @@ window.onload = function () {
 		var mystring = "<%=m.toString()%>";
 		xhttp.send(mystring);
 	}
+	window.onbeforeclose = function(event) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../orders/sync", true);
+		xhttp.send();
+	}
+	
 }
 </script>
 </body>
