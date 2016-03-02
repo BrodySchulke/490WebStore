@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +16,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import model.Movie;
+import model.Order;
+import model.Transaction;
 
 /**
  * Servlet implementation class CustomerController
@@ -50,15 +58,40 @@ public class OrderController extends HttpServlet {
 		String body = request.getReader().lines()
 			    .reduce("", (accumulator, actual) -> accumulator + actual);
 	    String[] movieMap = body.split(";");
+	    Map<String, String> mapper = new HashMap<>();
 	    for (String s : movieMap) {
-	    	String[] mapAttribute = s.split("=");
-	    	userSession.setAttribute(mapAttribute[0], mapAttribute[1]);
+	    	String[] mapOne = s.split("=");
+	    	mapper.put(mapOne[0], mapOne[1]);
+	    }
+	    Movie m = new Movie().createMovie(mapper);
+	    Order o = null;
+	    Map<Movie, Order> grabOrder = (Map<Movie, Order>)userSession.getAttribute("cart");
+	    if (orderExistsOnThisMovie(m, userSession)) {
+	    	o = grabOrder.get(m);
+	    	o.setQuantity(o.getQuantity() + 1);
+	    	o.setPrice(o.getPrice() + m.getPrice());
+	    } else {
+	    	o = new Order();
+	    	o.setTransaction_id(((Transaction)userSession.getAttribute("transaction")).getTransaction_id());
+	    	o.setProduct_id(m.getProduct_id());
+	    	o.setQuantity(1);
+	    	o.setPrice(m.getPrice());
+	    	grabOrder.put(m, o);
 	    }
 	    Enumeration e = userSession.getAttributeNames();
 	    while (e.hasMoreElements()) {
 	    	String elem = (String)e.nextElement();
 	    	System.out.println(elem + ":" + userSession.getAttribute(elem));
 	    }
-		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private boolean orderExistsOnThisMovie(Movie m, HttpSession userSession) {
+		if (userSession.getAttribute("cart") != null && userSession.getAttribute("cart") instanceof Map<?, ?>) {
+			if (((Map<Movie, Order>)userSession.getAttribute("cart")).containsKey(m)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

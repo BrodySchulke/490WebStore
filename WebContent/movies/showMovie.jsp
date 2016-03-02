@@ -83,16 +83,5 @@ window.onload = function () {
 	}
 }
 </script>
-<!-- <script>
-function addToCart(product_id) {
-	document.getElementById("product_id").value=product_id;
-	document.viewMovie.submit();
-}
-</script>
-</table>
-</form>
-<form name="viewMovie" method="post" action="../orders/cart">
-<input type="hidden" name="movie_product_id" id="product_id">
-</form> -->
 </body>
 </html>

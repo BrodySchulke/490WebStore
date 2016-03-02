@@ -3,6 +3,8 @@ package model;
 import java.io.Serializable;
 import org.postgresql.util.PGmoney;
 import java.sql.Date;
+import java.util.List;
+import java.util.Map;
 
 //This is the Customer JavaBean 
 public class Movie implements Serializable {
@@ -91,6 +93,21 @@ public class Movie implements Serializable {
 	private int product_id;
 	
 	public Movie(){
+	}
+	
+	public Movie createMovie(Map<String, String> movieMap) {
+		Movie m = new Movie();
+		m.setActor(movieMap.get("actor"));
+		m.setActress(movieMap.get("actress"));
+		m.setDirector(movieMap.get("director"));
+		m.setGenre(movieMap.get("genre"));
+		m.setInventory(Integer.parseInt(movieMap.get("inventory")));
+		m.setLength(Integer.parseInt(movieMap.get("length")));
+		m.setPrice(Double.parseDouble(movieMap.get("price")));
+		m.setProduct_id(Integer.parseInt(movieMap.get("product_id")));
+		m.setRelease_year(Integer.parseInt(movieMap.get("release_year")));
+		m.setTitle(movieMap.get("release_year"));
+		return m;
 	}
 	
 	public int getRelease_year() {
