@@ -122,10 +122,10 @@ color: #f;
 	<div id="content">
 		<%
 				
-				HttpSession sesh = request.getSession();
-				Map<Movie, Order> cart = (Map<Movie, Order>)sesh.getAttribute("cart");
-				System.out.println(cart);
-				for (Map.Entry e : cart.entrySet()) {	
+		HttpSession sesh = request.getSession();
+		Map<Movie, Order> cart = (Map<Movie, Order>)sesh.getAttribute("cart");
+		System.out.println(cart);
+		for (Map.Entry e : cart.entrySet()) {	
 		%>		
 			<p>
 			Your Cart:

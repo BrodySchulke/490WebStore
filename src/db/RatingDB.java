@@ -24,9 +24,7 @@ public class RatingDB {
 	}
 	
 	public static void updateRating(int rating, Movie m, Customer c) {
-		System.out.println(rating + " " + m + " " + c + " we out here");
-		System.out.println(m.getProduct_id());
-		System.out.println(c.getCustomer_id());
+
 		String insert = "insert into ratings (user_id, product_id, rating, time_stamp) values (?,?,?, current_timestamp)";
 		try {
 			connection = getConnection();
