@@ -9,7 +9,7 @@ public class Order implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "Order [product_id=" + product_id + ", quantity=" + quantity + ", order_date=" + order_date + ", price="
+		return "Order [product_id=" + product_id + ", quantity=" + quantity + ", order_date=" + order_date + ", price=$"
 				+ price + ", transaction_id=" + transaction_id + ", order_id=" + order_id + "]";
 	}
 
