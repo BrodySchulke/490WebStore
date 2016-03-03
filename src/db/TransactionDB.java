@@ -7,9 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import model.Customer;
-import model.Movie;
 import model.Order;
 import model.Transaction;
 
@@ -23,6 +23,43 @@ public class TransactionDB {
 	private static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Connection connection = ConnectionFactory.getInstance().getConnection();
 		return connection;
+	}
+	
+	//TODO pass boolean to change trans status
+	public static List<Transaction> getClosedTransactions(Customer customer) {
+		List<Transaction> transactionsClosed = new ArrayList<>();
+		String query = "select * from transactions where user_id = " + customer.getCustomer_id() + " and status = false";
+		Transaction transaction = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				transaction = new Transaction();
+				transaction.setClose_date(rs.getDate("close_date"));
+				transaction.setStatus(rs.getBoolean("status"));
+				transaction.setTotal_price(rs.getDouble("total_price"));
+				transaction.setTransaction_id(rs.getInt("transaction_id"));
+				transaction.setUser_id(rs.getInt("user_id"));
+				transactionsClosed.add(transaction);
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return transactionsClosed;
 	}
 	
 	public static void setUpTransactionForNewCustomer(Customer customer) {
