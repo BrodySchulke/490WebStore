@@ -115,6 +115,36 @@ window.onload = function () {
 	var star3 = document.getElementById("3");
 	var star4 = document.getElementById("4");
 	var star5 = document.getElementById("5");
+	star1.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star1", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
+	star2.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star2", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
+	star3.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star3", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
+	star4.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star4", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
+	star5.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star5", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
 	star1.onmouseover = function() {
 		star1.setAttribute("class", "largestar");
 	}
@@ -174,36 +204,6 @@ window.onload = function () {
 		star3.setAttribute("class", "star");
 		star4.setAttribute("class", "star");
 		star5.setAttribute("class", "star");
-	}
-	star1.onclick = function() {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("POST", "../ratings/star1", true);
-		var mystring = "<%=m.toString()%>";
-		xhttp.send(mystring);
-	}
-	star2.onclick = function() {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("POST", "../ratings/star2", true);
-		var mystring = "<%=m.toString()%>";
-		xhttp.send(mystring);
-	}
-	star3.onclick = function() {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("POST", "../ratings/star3", true);
-		var mystring = "<%=m.toString()%>";
-		xhttp.send(mystring);
-	}
-	star4.onclick = function() {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("POST", "../ratings/star4", true);
-		var mystring = "<%=m.toString()%>";
-		xhttp.send(mystring);
-	}
-	star5.onclick = function() {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("POST", "../ratings/star5", true);
-		var mystring = "<%=m.toString()%>";
-		xhttp.send(mystring);
 	}
 }
 </script>
