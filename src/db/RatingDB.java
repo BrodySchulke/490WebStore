@@ -1,10 +1,13 @@
 package db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import model.Customer;
 import model.Movie;
 
 public class RatingDB {
@@ -18,6 +21,35 @@ public class RatingDB {
 	private static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Connection connection = ConnectionFactory.getInstance().getConnection();
 		return connection;
+	}
+	
+	public static void updateRating(int rating, Movie m, Customer c) {
+		System.out.println(rating + " " + m + " " + c + " we out here");
+		String insert = "insert into ratings (user_id, product_id, rating, time_stamp) values (?,?,?, current_timestamp)";
+		try {
+			connection = getConnection();
+			PreparedStatement stmt2 = null;
+			stmt2 = connection.prepareStatement(insert);
+			stmt2.setInt(1, c.getCustomer_id());
+			stmt2.setInt(2, m.getProduct_id());
+			stmt2.setInt(3, rating);
+			stmt2.executeUpdate();
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
 	}
 	
 	public static int getRating(Movie m) {

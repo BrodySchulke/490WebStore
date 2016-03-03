@@ -175,6 +175,36 @@ window.onload = function () {
 		star4.setAttribute("class", "star");
 		star5.setAttribute("class", "star");
 	}
+	star1.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star1", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
+	star2.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star2", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
+	star3.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star3", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
+	star4.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star4", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
+	star5.onclick = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../ratings/star5", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
 }
 </script>
 </body>
