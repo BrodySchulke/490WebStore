@@ -8,6 +8,7 @@ import javax.sql.*;
 import org.postgresql.util.PGmoney;
 
 import model.Movie;
+import model.Order;
 
 import javax.naming.*;
 import java.util.*;
@@ -28,6 +29,43 @@ public class MovieDB {
 	
 	public static int getOffset() {
 		return offset;
+	}
+	
+	public static Movie getMovie(Order o) {
+		String query = "select * from movies where product_id = " + o.getProduct_id();
+		Movie movie = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				movie = new Movie();
+				movie.setActor(rs.getString("actor"));
+				movie.setActress(rs.getString("actress"));
+				movie.setDirector(rs.getString("director"));
+				movie.setGenre(rs.getString("genre"));
+				movie.setInventory(rs.getInt("inventory"));
+				movie.setLength(rs.getInt("length"));
+				movie.setPrice(rs.getDouble("price"));
+				movie.setProduct_id(rs.getInt("product_id"));
+				movie.setRelease_year(rs.getInt("release_year"));
+				movie.setTitle(rs.getString("title"));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return movie;
 	}
 	
 	//add value to form button for submission. if negative, go back 20, else forward 20

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import db.OrderDB;
 import model.Movie;
 import model.Order;
 import model.Transaction;
@@ -53,20 +54,28 @@ public class OrderController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// need to do a lot of work on initializing usersession
 		String requestURI = request.getRequestURI();
 		if (requestURI.endsWith("cart")) {
 			updateSession(request);
 		} else if (requestURI.endsWith("sync")) {
-			System.out.println("SYNCING DB");
-			for (int i = 0; i < 1000000000; i++);
-			System.out.println(request.getSession().getId());
-			//syncDatabase(request);
+			syncDatabase(request);
 		} else {
 			response.sendRedirect("../registerError.jsp");
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	private void syncDatabase(HttpServletRequest request) {
+		HttpSession userSession = request.getSession();
+		System.out.println("SYNCING DB");
+		System.out.println(request.getSession().getId());
+	    Map<Movie, Order> grabOrdersToWriteBack = (Map<Movie, Order>)userSession.getAttribute("cart");
+	    grabOrdersToWriteBack.entrySet().forEach(entry -> {
+	    	OrderDB.writeBackUserOrders(grabOrdersToWriteBack.get(entry.getKey()));
+	    });
+	}
+	
+	@SuppressWarnings("unchecked")
 	private void updateSession(HttpServletRequest request) throws IOException {
 		HttpSession userSession = request.getSession();
 		String body = request.getReader().lines()
@@ -92,7 +101,7 @@ public class OrderController extends HttpServlet {
 	    	o.setPrice(m.getPrice());
 	    	grabOrder.put(m, o);
 	    }
-	    Enumeration e = userSession.getAttributeNames();
+	    Enumeration<String> e = userSession.getAttributeNames();
 	    while (e.hasMoreElements()) {
 	    	String elem = (String)e.nextElement();
 	    	System.out.println(elem + ":" + userSession.getAttribute(elem));

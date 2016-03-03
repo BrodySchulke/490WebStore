@@ -139,9 +139,6 @@ display: inline;
 	<!-- this will be users' default home page. account settings/cart/past orders will live in top right -->
 	<div id="header">
 		<div id="header-e1">
-		<a href="../account/account.jsp">
-			<img src="../images/user1.svg" id="user-img"/>
-		</a>
 		</div>
 		<div id="header-e2">
 			<h7>THREE STOOGES EXCLUSIVE ANTIQUE FILM BOUTIQUE</h7>
@@ -150,80 +147,10 @@ display: inline;
 			</form>
 		</div>
 		<div id="header-e3">
-		    <a href="../cart/cart.jsp">
-		    	<img src ="../images/shopingcart.svg" id="cart-img"/>
-		    </a>
 		</div>
 	</div>
 	<div id="content">
-		<form id="movies" name="movies" method="post">
-			<%
-				ArrayList<Movie> movies = MovieDB.viewMovies(0);
-				for (Movie m : movies) {
-			%>
-			<div class="box">
-				<!--<img src="../images/ThreeStoogesGif.gif"/>-->
-				<p>
-					<img src="../images/movie-clapperboard.svg"/>
-					<br/>
-					<%=RatingDB.getRating(m)%>
-					<img class="small" src="../images/Outlined-star-45623.svg"/>
-					<br />
-					<a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a>
-					<br/>
-					Year: <%=m.getRelease_year()%>
-					<br />
-					<%=m.getLength()%> minutes
-					<br />
-					Title: <%=m.getTitle()%>
-					<br />
-					Genre: <%=m.getGenre()%>
-					<br />
-					Actor: <%=m.getActor()%>
-					<br />
-					Actress: <%=m.getActress()%>
-					<br />
-					Director: <%=m.getDirector()%>
-					<br />
-					$<%=m.getPrice()%>
-				</p>
-			</div>
-			<script>
-				function viewAMovie(product_id) {
-					document.getElementById("product_id").value = product_id;
-					document.viewMovie.submit();
-				}
-			</script>
-
-			<%
-				}
-			%>
-		</form>
 	</div>
-	<form name="viewMovie" method="get" action="showMovie.jsp">
-		<input type="hidden" name="movie_product_id" id="product_id">
-	</form>
-	<%
-		if (movies.size() == 20) {
-	%>
-	<form action="../movies/show_next" method="get">
-		<button type="submit">Next</button>
-	</form>
-	<%
-		} else {
-	%>
-	<h7>You've reached the end of the catalogue. Thanks for viewing The Three Stooges' Antique Film Boutique.</h7>
-	<%
-		}
-	%>
-	<%
-		int offset = MovieDB.getOffset();
-		if (offset > 0) {
-	%>
-	<form action="../movies/show_previous" method="get">
-		<button type="submit">Previous</button>
-	</form>
-	<% } %>
 <div id="footer"></div>
 </body>
 </html>
