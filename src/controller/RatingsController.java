@@ -74,22 +74,26 @@ public class RatingsController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
 		System.out.println(requestURI);
+		boolean rating = false;
 		if (requestURI.endsWith("star1")) {
-			updateRatings(1, request);
+			rating = updateRatings(1, request);
 		} else if (requestURI.endsWith("star2")) {
-			updateRatings(2, request);
+			rating = updateRatings(2, request);
 		} else if (requestURI.endsWith("star3")) {
-			updateRatings(3, request);
+			rating = updateRatings(3, request);
 		} else if (requestURI.endsWith("star4")) {
-			updateRatings(4, request);
+			rating = updateRatings(4, request);
 		} else if (requestURI.endsWith("star5")) {
-			updateRatings(5, request);
+			rating = updateRatings(5, request);
+		}
+		if (rating) {
+			response.getWriter().append("Thanks for your feedback!");
 		} else {
-			response.sendRedirect("../registerError.jsp");
+			response.getWriter().append("Sorry, but you've already rated this film with this rating.");
 		}
 	}
 	
-	private void updateRatings(int rating, HttpServletRequest request) throws IOException {
+	private boolean updateRatings(int rating, HttpServletRequest request) throws IOException {
 		HttpSession userSession = request.getSession();
 		String body = request.getReader().lines()
 			    .reduce("", (accumulator, actual) -> accumulator + actual);
@@ -101,7 +105,7 @@ public class RatingsController extends HttpServlet {
 	    }
 	    Movie m = new Movie().createMovie(mapper);
 	    Customer c = (Customer)userSession.getAttribute("customer");
-	    RatingDB.updateRating(rating, m, c);
+	    return RatingDB.updateRating(rating, m, c);
 	}
 	
 }

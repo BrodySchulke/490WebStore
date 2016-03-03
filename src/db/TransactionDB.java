@@ -180,5 +180,31 @@ public class TransactionDB {
 		}
 		return orderList;
 	}
+	
+	public static void writeTransactionToDB(Transaction t) {
+		String query = "update transactions set total_price = ? where user_id = ? and status = true";
+		try {
+			connection = getConnection();
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setBigDecimal(1, new BigDecimal(t.getTotal_price()));
+			stmt.setInt(2, t.getUser_id());
+			stmt.executeUpdate();
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+	}
 
 }

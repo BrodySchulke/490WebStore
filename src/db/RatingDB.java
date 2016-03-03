@@ -23,11 +23,19 @@ public class RatingDB {
 		return connection;
 	}
 	
-	public static void updateRating(int rating, Movie m, Customer c) {
-
+	public static boolean updateRating(int rating, Movie m, Customer c) {
+		boolean retVal = false;
+		String select = "select * from ratings where user_id = " + c.getCustomer_id() + " and product_id = " + m.getProduct_id() + " and rating = " + rating;
 		String insert = "insert into ratings (user_id, product_id, rating, time_stamp) values (?,?,?, current_timestamp)";
 		try {
 			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(select);
+			if (rs.next()) {
+				return retVal;
+			} else {
+				retVal = true;
+			}
 			PreparedStatement stmt2 = null;
 			stmt2 = connection.prepareStatement(insert);
 			stmt2.setInt(1, c.getCustomer_id());
@@ -50,6 +58,7 @@ public class RatingDB {
 				sqle.printStackTrace();
 			}
 		}
+		return retVal;
 	}
 	
 	public static int getRating(Movie m) {

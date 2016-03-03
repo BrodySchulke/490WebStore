@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <script type="text/javascript" src="../js/close.js"></script>
-<title>List of Movies</title>
+<title>Your Cart</title>
 <style>
 @import url(http://fonts.googleapis.com/css?family=Oswald);
 
@@ -120,19 +120,43 @@ color: #f;
 		</div>
 	</div>
 	<div id="content">
+	<p>Your cart</p>
 		<%
-				
-		HttpSession sesh = request.getSession();
-		Map<Movie, Order> cart = (Map<Movie, Order>)sesh.getAttribute("cart");
-		System.out.println(cart);
-		for (Map.Entry e : cart.entrySet()) {	
-		%>		
-			<p>
-			Your Cart:
-			<%= e.getKey() %>
-			<%= cart.get(e.getKey()) %>
-			</p>
-			<p>
+
+			HttpSession sesh = request.getSession();
+			Map<Movie, Order> cart = (Map<Movie, Order>)sesh.getAttribute("cart");
+			Transaction t = (Transaction)sesh.getAttribute("transaction");
+			int i = 0;
+			for (Map.Entry e : cart.entrySet()) {	
+			
+				Movie m = (Movie)e.getKey();
+				System.out.println(m);
+				Order o = (Order)cart.get(e.getKey());
+		%>
+			<div>
+				<span name="title<%=i %>"><%= "Title: " + m.getTitle() %> </span>
+				<span name="quantity<%=i %>"><%= "Quantity: " + o.getQuantity() %> </span>
+				<span name="price<%=i %>"><%= "Price: $" + o.getPrice() %> </span>
+				<img id="cart-remove<%=i %>" height="25" width="25" src="../images/egore911-trash-can.svg"/>
+				<script>
+window.onload = function(){
+	var trashCan = document.getElementsByClassName("cart-remove");
+	console.log(trashCan);
+	trashCan.onClick = function () {
+		console.log("hi");
+		this.previousSibling.innerHTML = "dog";
+		var xhttp = new XMLHttpRequest();
+		//add this routing and method
+		xhttp.open("POST", "../orders/remove_cart", true);
+		var mystring = "<%=m.toString()%>";
+		xhttp.send(mystring);
+	}
+}
+</script>
+			</div>
+			
+<%-- 			<%= cart.get(e.getKey()) %> --%>
+			<%-- <p>
 			Past Orders:
 			</p>
 			<p>
@@ -149,11 +173,15 @@ color: #f;
 			</p>
 			<%
 			}
-			%>
+			%> --%>	
 			
 		<%
-			}
+		i++;
+		}
 		%>
+		<div>
+				<span name="total_price"><%= "Subtotal: $" + String.format("%.2f",t.getTotal_price()) %></span>
+		</div>
 	</div>
 <div id="footer"></div>
 </body>

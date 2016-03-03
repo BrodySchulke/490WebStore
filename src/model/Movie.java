@@ -106,7 +106,7 @@ public class Movie implements Serializable {
 		m.setPrice(Double.parseDouble(movieMap.get("price")));
 		m.setProduct_id(Integer.parseInt(movieMap.get("product_id")));
 		m.setRelease_year(Integer.parseInt(movieMap.get("release_year")));
-		m.setTitle(movieMap.get("release_year"));
+		m.setTitle(movieMap.get("title"));
 		return m;
 	}
 	

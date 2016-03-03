@@ -73,7 +73,9 @@
 		<th>Product Id</th>
 	</tr>
 <%
+	System.out.println(request);
 	Movie m = MovieDB.showAMovie(Integer.parseInt(request.getParameter("movie_product_id")));
+	System.out.println(m);
 %>
 <tr>
 	<td width="10%"><%=m.getRelease_year()%></td>
@@ -88,13 +90,11 @@
 	<td width="10%"><%=m.getProduct_id()%></td>
 </tr>
 </table>
-<form>
-<input type="image" src="../images/Outlined-star-45623.svg" id="1" class="star"/>
-<input type="image" src="../images/Outlined-star-45623.svg" id="2" class="star"/>
-<input type="image" src="../images/Outlined-star-45623.svg" id="3" class="star"/>
-<input type="image" src="../images/Outlined-star-45623.svg" id="4" class="star"/>
-<input type="image" src="../images/Outlined-star-45623.svg" id="5" class="star"/>
-</form>
+<img src="../images/Outlined-star-45623.svg" id="1" class="star"/>
+<img src="../images/Outlined-star-45623.svg" id="2" class="star"/>
+<img src="../images/Outlined-star-45623.svg" id="3" class="star"/>
+<img src="../images/Outlined-star-45623.svg" id="4" class="star"/>
+<img src="../images/Outlined-star-45623.svg" id="5" class="star"/>
 <button id="add_to_cart">Add To Cart</button>
 <script>
 window.onload = function () {
@@ -111,40 +111,76 @@ window.onload = function () {
 		xhttp.send();
 	}
 	var star1 = document.getElementById("1");
-	var star2 = document.getElementById("2");
+ 	var star2 = document.getElementById("2");
 	var star3 = document.getElementById("3");
 	var star4 = document.getElementById("4");
 	var star5 = document.getElementById("5");
 	star1.onclick = function() {
 		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				if (this.status == 200) {
+					var response = this.responseText;
+					alert(response);
+				};
+			};
+		};
 		xhttp.open("POST", "../ratings/star1", true);
 		var mystring = "<%=m.toString()%>";
 		xhttp.send(mystring);
 	}
-	star2.onclick = function() {
+ 	star2.onclick = function() {
 		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				if (this.status == 200) {
+					var response = this.responseText;
+					alert(response);
+				};
+			};
+		};
 		xhttp.open("POST", "../ratings/star2", true);
 		var mystring = "<%=m.toString()%>";
 		xhttp.send(mystring);
 	}
 	star3.onclick = function() {
 		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				if (this.status == 200) {
+					var response = this.responseText;
+					alert(response);
+				};
+			};
+		};
 		xhttp.open("POST", "../ratings/star3", true);
 		var mystring = "<%=m.toString()%>";
 		xhttp.send(mystring);
 	}
 	star4.onclick = function() {
 		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				if (this.status == 200) {
+					var response = this.responseText;
+					alert(response);
+				};
+			};
+		};
 		xhttp.open("POST", "../ratings/star4", true);
 		var mystring = "<%=m.toString()%>";
 		xhttp.send(mystring);
 	}
-	
-	
-	
-	
 	star5.onclick = function() {
 		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				if (this.status == 200) {
+					var response = this.responseText;
+					alert(response);
+				};
+			};
+		};
 		xhttp.open("POST", "../ratings/star5", true);
 		var mystring = "<%=m.toString()%>";
 		xhttp.send(mystring);
@@ -152,7 +188,7 @@ window.onload = function () {
 	star1.onmouseover = function() {
 		star1.setAttribute("class", "largestar");
 	}
-	star2.onmouseover = function() {
+ 	star2.onmouseover = function() {
 		star1.setAttribute("class", "largestar");
 		star2.setAttribute("class", "largestar");
 	}

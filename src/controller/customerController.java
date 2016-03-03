@@ -116,18 +116,18 @@ public class customerController extends HttpServlet {
 	
 	private static void makeCustomerSession(HttpServletRequest request, Customer customer) {
 		HttpSession userSession = request.getSession();
-		System.out.println(userSession.getId());
+//		System.out.println(userSession.getId());
 		Transaction transaction = TransactionDB.initializeCart(customer);
 		Map<Movie, Order> cart = new HashMap<>();
 		OrderDB.getOrdersAssociatedWithCustomer(cart, transaction);
 		userSession.setAttribute("customer", customer);
 		userSession.setAttribute("transaction", transaction);
 		userSession.setAttribute("cart", cart);
-		Enumeration e = userSession.getAttributeNames();
-		while (e.hasMoreElements()) {
-			String elem = (String)e.nextElement();
-			System.out.println(elem + ":" + userSession.getAttribute(elem));
-		}
+//		Enumeration e = userSession.getAttributeNames();
+//		while (e.hasMoreElements()) {
+//			String elem = (String)e.nextElement();
+//			System.out.println(elem + ":" + userSession.getAttribute(elem));
+//		}
 /*		ArrayList<Order> cartExistsAndIsOpen = TransactionDB.checkForOpenCart(customer);
 		if (cartExistsAndIsOpen != null) {
 			userSession.setAttribute("OrderList", cartExistsAndIsOpen);

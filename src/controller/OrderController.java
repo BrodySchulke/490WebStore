@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import db.OrderDB;
+import db.TransactionDB;
 import model.Movie;
 import model.Order;
 import model.Transaction;
@@ -67,12 +68,14 @@ public class OrderController extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private void syncDatabase(HttpServletRequest request) {
 		HttpSession userSession = request.getSession();
-		System.out.println("SYNCING DB");
-		System.out.println(request.getSession().getId());
+//		System.out.println("SYNCING DB");
+//		System.out.println(request.getSession().getId());
 	    Map<Movie, Order> grabOrdersToWriteBack = (Map<Movie, Order>)userSession.getAttribute("cart");
 	    grabOrdersToWriteBack.entrySet().forEach(entry -> {
 	    	OrderDB.writeBackUserOrders(grabOrdersToWriteBack.get(entry.getKey()));
 	    });
+	    Transaction t = (Transaction)userSession.getAttribute("transaction");
+	    TransactionDB.writeTransactionToDB(t);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -80,6 +83,7 @@ public class OrderController extends HttpServlet {
 		HttpSession userSession = request.getSession();
 		String body = request.getReader().lines()
 			    .reduce("", (accumulator, actual) -> accumulator + actual);
+		System.out.println("hello" + body);
 	    String[] movieMap = body.split(";");
 	    Map<String, String> mapper = new HashMap<>();
 	    for (String s : movieMap) {
@@ -88,24 +92,27 @@ public class OrderController extends HttpServlet {
 	    }
 	    Movie m = new Movie().createMovie(mapper);
 	    Order o = null;
+	    Transaction t = (Transaction)userSession.getAttribute("transaction");
 	    Map<Movie, Order> grabOrder = (Map<Movie, Order>)userSession.getAttribute("cart");
 	    if (orderExistsOnThisMovie(m, userSession)) {
 	    	o = grabOrder.get(m);
 	    	o.setQuantity(o.getQuantity() + 1);
 	    	o.setPrice(o.getPrice() + m.getPrice());
+	    	t.setTotal_price(t.getTotal_price() + m.getPrice());
 	    } else {
 	    	o = new Order();
 	    	o.setTransaction_id(((Transaction)userSession.getAttribute("transaction")).getTransaction_id());
 	    	o.setProduct_id(m.getProduct_id());
 	    	o.setQuantity(1);
 	    	o.setPrice(m.getPrice());
+	    	t.setTotal_price(t.getTotal_price() + m.getPrice());
 	    	grabOrder.put(m, o);
 	    }
-	    Enumeration<String> e = userSession.getAttributeNames();
-	    while (e.hasMoreElements()) {
-	    	String elem = (String)e.nextElement();
-	    	System.out.println(elem + ":" + userSession.getAttribute(elem));
-	    }
+//	    Enumeration<String> e = userSession.getAttributeNames();
+//	    while (e.hasMoreElements()) {
+//	    	String elem = (String)e.nextElement();
+//	    	System.out.println(elem + ":" + userSession.getAttribute(elem));
+//	    }
 	}
 	
 	@SuppressWarnings("unchecked")
