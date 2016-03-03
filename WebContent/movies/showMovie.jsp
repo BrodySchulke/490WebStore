@@ -139,6 +139,10 @@ window.onload = function () {
 		var mystring = "<%=m.toString()%>";
 		xhttp.send(mystring);
 	}
+	
+	
+	
+	
 	star5.onclick = function() {
 		var xhttp = new XMLHttpRequest();
 		xhttp.open("POST", "../ratings/star5", true);
