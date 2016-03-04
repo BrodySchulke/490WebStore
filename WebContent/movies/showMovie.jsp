@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import = "java.util.*, model.Movie, db.MovieDB" %>
+    <%@ page import = "java.util.*, model.Movie, db.MovieDB, db.RatingDB" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,94 +8,200 @@
 <script type="text/javascript" src="../js/close.js"></script>
 <title>The Three Stooges' Exquisite Exclusive Movie View</title>
 <style>
-	body {
-				font-family: Arial, Verdana, sans-serif;
-				color: #111111;}
-	table {
-				width: 800px;
-				margin: auto;
-				border-collapse: collapse;
-				}
-	th, td {
-				padding: 12px 10px;}
-	th{
-		
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		font-size: 90%;
-		border-bottom: 2px solid #111111;
-		border-top: 1px solid #999;
-		text-align: left;
-	}
-	
-	tr:nth-child(even){
-		background-color: #efefef;
-	}
-	
-	tr:hover {
-		background-color: #c3e6e5;
-	}
-	
-	tr:last-child{
-		border-bottom: 2px solid #111111;
-	}
-	
+
+	@import url(http://fonts.googleapis.com/css?family=Oswald);
+
+body {
+	font-family: 'Oswald', 'Futura', sans-serif;
+	color: #fff;
+	background-color: #000;
+	margin: 0 auto;
+}
+
+.box {
+	text-align: center;
+}
+
+button {
+	margin: 0 auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#search {
+width: 80%;
+display: block;
+padding-right: 10%;
+padding-left: 10%;
+color: #fff;
+}
+
+h2 {
+	color: #fff;
+}
+
+#content {
+	display: block;
+}
+
 	.star {
 	width: 25px;
-	display:inline;
-	float: left;
+	cursor: pointer;
 	}
+	
 	@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 	@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 	@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 	.largestar {
 	width: 25px;
-	display: inline;
-	float: left;
+	cursor: pointer;
 	-webkit-animation:spin 1s linear infinite;
     -moz-animation:spin 1s linear infinite;
     animation:spin 1s linear infinite;
 	}
+	
+	#content {
+	margin-top: 100px;
+	text-align: center;
+}
+
+#footer {
+	background-color: #fff;
+	height: 100px;
+	clear: both;
+	width: 100%;
+}
+
+#header {
+	z-index: 1;
+	position: fixed;
+	background-color: #000;
+	height: 100px;
+	width: 100%;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+
+#header-e1 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+
+#header-e2 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+
+#header-e3 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+
+#user-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-left: 0;
+float: left;
+}
+
+#user-img:hover {
+height: 75px;
+}
+
+
+#cart-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-right: 0;
+float: right;
+}
+
+#cart-img:hover {
+height: 75px;
+}
+
+.small {
+width: 25px;
+height: 25px;
+display: inline;
+}
+
+
+#container > div {
+	width: 25px;
+	display: inline-block;
+	vertical-align: top;
+	*display: inline;
+	}
+#container:after {
+	content: "";
+	width: 100%;
+	display: inline-block;
+    }
 </style>
 </head>
 <body>
-<table>
-	<tr> 
-		<th>Release Year</th>
-		<th>Length</th>
-		<th>Title</th>
-		<th>Genre</th>
-		<th>Actor</th>
-		<th>Actress</th>
-		<th>Director</th>
-		<th>Inventory</th>
-		<th>Price</th>
-		<th>Product Id</th>
-	</tr>
+	<div id="header">
+		<div id="header-e1">
+		<a href="../account/account.jsp">
+			<img src="../images/user1.svg" id="user-img"/>
+		</a>
+		</div>
+		<div id="header-e2">
+			<h7>THREE STOOGES EXCLUSIVE ANTIQUE FILM BOUTIQUE</h7>
+			<form>
+				<input type="text" id="search" placeholder="search our exclusive boutique..." />
+			</form>
+		</div>
+		<div id="header-e3">
+		    <a href="../cart/cart.jsp">
+		    	<img src ="../images/shopingcart.svg" id="cart-img"/>
+		    </a>
+		</div>
+	</div>
+<div id="content">
 <%
-	System.out.println(request);
 	Movie m = MovieDB.showAMovie(Integer.parseInt(request.getParameter("movie_product_id")));
-	System.out.println(m);
 %>
-<tr>
-	<td width="10%"><%=m.getRelease_year()%></td>
-	<td width="10%"><%=m.getLength()%></td>
-	<td width="10%"><%=m.getTitle()%></td>
-	<td width="10%"><%=m.getGenre()%></td>
-	<td width="10%"><%=m.getActor()%></td>
-	<td width="10%"><%=m.getActress()%></td>
-	<td width="10%"><%=m.getDirector()%></td>
-	<td width="10%"><%=m.getInventory()%></td>
-	<td width="10%"><%=m.getPrice()%></td>
-	<td width="10%"><%=m.getProduct_id()%></td>
-</tr>
-</table>
-<img src="../images/Outlined-star-45623.svg" id="1" class="star"/>
-<img src="../images/Outlined-star-45623.svg" id="2" class="star"/>
-<img src="../images/Outlined-star-45623.svg" id="3" class="star"/>
-<img src="../images/Outlined-star-45623.svg" id="4" class="star"/>
-<img src="../images/Outlined-star-45623.svg" id="5" class="star"/>
-<button id="add_to_cart">Add To Cart</button>
+<div class="box">
+					<img src="../images/movie-clapperboard.svg"/>
+					<br/>
+					<%=RatingDB.getRating(m)%>
+					<img class="small" src="../images/Outlined-star-45623.svg"/>
+					<br />
+					<a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a>
+					<br/>
+					Year: <%=m.getRelease_year()%>
+					<br />
+					<%=m.getLength()%> minutes
+					<br />
+					Title: <%=m.getTitle()%>
+					<br />
+					Genre: <%=m.getGenre()%>
+					<br />
+					Actor: <%=m.getActor()%>
+					<br />
+					Actress: <%=m.getActress()%>
+					<br />
+					Director: <%=m.getDirector()%>
+					<br />
+					$<%=m.getPrice()%>
+					<br/>
+					<div id="container">
+					<div><img src="../images/Outlined-star-45623.svg" id="1" class="star"/></div>
+					<div><img src="../images/Outlined-star-45623.svg" id="2" class="star"/></div>
+					<div><img src="../images/Outlined-star-45623.svg" id="3" class="star"/></div>
+					<div><img src="../images/Outlined-star-45623.svg" id="4" class="star"/></div>
+					<div><img src="../images/Outlined-star-45623.svg" id="5" class="star"/></div>
+					</div>
+					<button id="add_to_cart">Add To Cart</button>
+			</div>
 <script>
 window.onload = function () {
 	var orderButton = document.getElementById("add_to_cart");
@@ -247,5 +353,7 @@ window.onload = function () {
 	}
 }
 </script>
+</div>
+<div id="footer"></div>
 </body>
 </html>
