@@ -25,21 +25,14 @@ body {
 }
 
 button {
-	margin-right: 5%;
-	margin-left: 5%;
-	margin-top: 5%;
-	margin-bottom: 5%;
-	float: right;
-	width: 40%;
-	display: inline;
-	overflow: hidden;
+	
 }
 
 .cart-icon:hover {
 width: 35px;
 }
 
-h2, button {
+h2 {
 	color: #fff;
 }
 
@@ -127,22 +120,6 @@ color: #f;
 	<div id="content">
 <script>
 function removeCart(m) {
-/* 	var string = document.getElementById("quantity"+movie_id).innerHTML;
-	var count = string.substr(parseInt(string.indexOf(' ') + 1));
-	count -= 1;
-	if (count > 0) {
-		document.getElementById("quantity"+movie_id).innerHTML = "Quantity: " + count;
-	}
-	else {
-		document.getElementById("quantity"+movie_id).parentNode.remove();
-	} */
-/* 	var subTotal = document.getElementById("subtotal").innerHTML;
-	var total = subTotal.parseDouble(subTotal);
-	total -= movie_price;
-	document.getElementById("subtotal").innerHTML = "Subtotal: $" + total; */
-/* 	console.log("js " + order_id);
-	console.log("js " + m); */
-/* 	var mystring = m.toString(); */
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "../orders/remove", false);
 	xhttp.send(m);
@@ -163,6 +140,24 @@ window.onload = function() {
 		xhttp.open("POST", "../orders/sync", true);
 		xhttp.send();
 	}
+	var purchase = document.getElementById("purchase_button");
+	purchase.onclick = function(){
+		 var xhttp = new XMLHttpRequest();
+	     xhttp.onreadystatechange = function() {
+	         if (this.readyState == 4) {
+	             if (this.status == 200) {
+	                 var response = this.responseText;
+	                 if (response === "") {
+	                	 location.href='../movies/listMovies.jsp';
+	                 } else {
+	                 	alert(response);
+	                 }
+	             };
+	         };
+	     };
+	     xhttp.open("POST", "../transactions/purchase", true);
+	     xhttp.send();
+	}
 }
 </script>	
 	<p>Your cart</p>
@@ -173,7 +168,6 @@ window.onload = function() {
 			System.out.println("cart" + cart);
 			Transaction t = (Transaction)sesh.getAttribute("transaction");
 			for (Map.Entry e : cart.entrySet()) {	
-			
 				Movie m = (Movie)e.getKey();
 				System.out.println("loop " + m);
 				Order o = (Order)cart.get(e.getKey());
@@ -186,13 +180,14 @@ window.onload = function() {
 				<span><a href="javascript:removeCart(&quot;<%=m%>&quot;)"><img src="../images/egore911-trash-can.svg" width="25" class="cart-icon"/></a></span>
 				<span><a href="javascript:addCart(&quot;<%=m%>&quot;)"><img src="../images/tasto-2-architetto-franc-01-black-border.svg" width="25" class="cart-icon"/></a></span>
 			</div>
-
-
 		<%
 		}
 		%>
 		<div>
-				<span id="subtotal"><%= "Subtotal: $" + String.format("%.2f",t.getTotal_price()) %></span>
+			<span id="subtotal"><%= "Subtotal: $" + String.format("%.2f",t.getTotal_price()) %></span>
+		</div>
+		<div>
+			<button id="purchase_button">Purchase</button>
 		</div>
 	</div>
 <div id="footer"></div>
