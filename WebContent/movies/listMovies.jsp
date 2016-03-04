@@ -99,7 +99,7 @@ width: 80%;
 display: block;
 padding-right: 10%;
 padding-left: 10%;
-color: #f;
+color: #fff;
 }
 
 #user-img {
@@ -162,7 +162,6 @@ display: inline;
 				for (Movie m : movies) {
 			%>
 			<div class="box">
-				<!--<img src="../images/ThreeStoogesGif.gif"/>-->
 				<p>
 					<img src="../images/movie-clapperboard.svg"/>
 					<br/>
