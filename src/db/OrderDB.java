@@ -62,14 +62,38 @@ public class OrderDB {
 		return order;
 	}
 	
+	public static void clearUserOrders(Transaction transaction) {
+		String orderRemover = "delete from orders where transaction_id = ?";
+		PreparedStatement stmt = null;
+		try {
+			connection = getConnection();
+//			stmt.execute(orderRemover);
+			stmt = connection.prepareStatement(orderRemover);
+			stmt.setInt(1, transaction.getTransaction_id());
+			stmt.executeUpdate();
+		} catch (SQLException sqle) {
+			
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+	}
+	
 	public static void writeBackUserOrders(Order writeBack) {
-		String orderRemover = "delete from orders where product_id = " + writeBack.getProduct_id();
 		String write = "";
 		PreparedStatement stmt2 = null;
 		try {
 			connection = getConnection();
-			stmt = connection.createStatement();
-			stmt.execute(orderRemover);
 			write = "insert into orders (product_id, quantity, order_date, price, transaction_id) values (?,?,?,?,?)";
 			stmt2 = connection.prepareStatement(write);
 			stmt2.setInt(1, writeBack.getProduct_id());
@@ -77,7 +101,7 @@ public class OrderDB {
 			stmt2.setDate(3, (Date)writeBack.getOrder_date());
 			stmt2.setBigDecimal(4, new BigDecimal(writeBack.getPrice()));
 			stmt2.setInt(5,  writeBack.getTransaction_id());
-		stmt2.executeUpdate();
+			stmt2.executeUpdate();
 		} catch (SQLException sqle) {
 			
 		} catch (ClassNotFoundException cnfe) {
@@ -86,9 +110,6 @@ public class OrderDB {
 			try {
 				if (stmt2 != null) {
 					stmt2.close();
-				}
-				if (stmt != null) {
-					stmt.close();
 				}
 				if (connection != null) {
 					connection.close();

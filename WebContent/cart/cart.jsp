@@ -35,6 +35,10 @@ button {
 	overflow: hidden;
 }
 
+.cart-icon:hover {
+width: 35px;
+}
+
 h2, button {
 	color: #fff;
 }
@@ -68,6 +72,7 @@ div {
 	height: 100px;
 	clear: both;
 	width: 100%;
+	margin-top: 100%;
 }
 
 #header-e1 {
@@ -120,67 +125,74 @@ color: #f;
 		</div>
 	</div>
 	<div id="content">
+<script>
+function removeCart(m) {
+/* 	var string = document.getElementById("quantity"+movie_id).innerHTML;
+	var count = string.substr(parseInt(string.indexOf(' ') + 1));
+	count -= 1;
+	if (count > 0) {
+		document.getElementById("quantity"+movie_id).innerHTML = "Quantity: " + count;
+	}
+	else {
+		document.getElementById("quantity"+movie_id).parentNode.remove();
+	} */
+/* 	var subTotal = document.getElementById("subtotal").innerHTML;
+	var total = subTotal.parseDouble(subTotal);
+	total -= movie_price;
+	document.getElementById("subtotal").innerHTML = "Subtotal: $" + total; */
+/* 	console.log("js " + order_id);
+	console.log("js " + m); */
+/* 	var mystring = m.toString(); */
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("POST", "../orders/remove", false);
+	xhttp.send(m);
+ 	location.reload();
+}
+function addCart(m) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("POST", "../orders/addto", false);
+	xhttp.send(m);
+ 	location.reload();
+}
+</script>	
+<script>
+window.onload = function() {
+	window.onbeforeunload = function(event) {
+		<% System.out.println("trigger"); %>
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "../orders/sync", true);
+		xhttp.send();
+	}
+}
+</script>	
 	<p>Your cart</p>
 		<%
-
+			System.out.println("here again");
 			HttpSession sesh = request.getSession();
 			Map<Movie, Order> cart = (Map<Movie, Order>)sesh.getAttribute("cart");
+			System.out.println("cart" + cart);
 			Transaction t = (Transaction)sesh.getAttribute("transaction");
-			int i = 0;
 			for (Map.Entry e : cart.entrySet()) {	
 			
 				Movie m = (Movie)e.getKey();
-				System.out.println(m);
+				System.out.println("loop " + m);
 				Order o = (Order)cart.get(e.getKey());
+				System.out.println("loop " + o);
 		%>
 			<div>
-				<span name="title<%=i %>"><%= "Title: " + m.getTitle() %> </span>
-				<span name="quantity<%=i %>"><%= "Quantity: " + o.getQuantity() %> </span>
-				<span name="price<%=i %>"><%= "Price: $" + o.getPrice() %> </span>
-				<img id="cart-remove<%=i %>" height="25" width="25" src="../images/egore911-trash-can.svg"/>
-				<script>
-window.onload = function(){
-	var trashCan = document.getElementsByClassName("cart-remove");
-	console.log(trashCan);
-	trashCan.onClick = function () {
-		console.log("hi");
-		this.previousSibling.innerHTML = "dog";
-		var xhttp = new XMLHttpRequest();
-		//add this routing and method
-		xhttp.open("POST", "../orders/remove_cart", true);
-		var mystring = "<%=m.toString()%>";
-		xhttp.send(mystring);
-	}
-}
-</script>
+				<span id="title<%=m.getProduct_id() %>"><%= "Title: " + m.getTitle() %> </span>
+				<span id="quantity<%=m.getProduct_id() %>"><%= "Quantity: " + o.getQuantity() %> </span>
+				<span id="price<%=m.getProduct_id() %>"><%= "Price: $" + String.format("%.2f",o.getPrice()) %> </span>
+				<span><a href="javascript:removeCart(&quot;<%=m%>&quot;)"><img src="../images/egore911-trash-can.svg" width="25" class="cart-icon"/></a></span>
+				<span><a href="javascript:addCart(&quot;<%=m%>&quot;)"><img src="../images/tasto-2-architetto-franc-01-black-border.svg" width="25" class="cart-icon"/></a></span>
 			</div>
-			
-<%-- 			<%= cart.get(e.getKey()) %> --%>
-			<%-- <p>
-			Past Orders:
-			</p>
-			<p>
-			<%
-			for (Transaction t : TransactionDB.getClosedTransactions((Customer)sesh.getAttribute("customer"))) {
-			%>
-			<p>
-				<% 
-				Order o = OrderDB.getOrder(t); 
-				Movie m = MovieDB.getMovie(o);
-				%>
-				<%=m%>
-				<%=o%>
-			</p>
-			<%
-			}
-			%> --%>	
-			
+
+
 		<%
-		i++;
 		}
 		%>
 		<div>
-				<span name="total_price"><%= "Subtotal: $" + String.format("%.2f",t.getTotal_price()) %></span>
+				<span id="subtotal"><%= "Subtotal: $" + String.format("%.2f",t.getTotal_price()) %></span>
 		</div>
 	</div>
 <div id="footer"></div>

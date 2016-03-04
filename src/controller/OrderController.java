@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import db.OrderDB;
 import db.TransactionDB;
+import model.Customer;
 import model.Movie;
 import model.Order;
 import model.Transaction;
@@ -29,7 +30,7 @@ import model.Transaction;
 @WebServlet(
 		name = "OrderServlet",
 		description = "A servlet for handling orders",
-		urlPatterns = { "/orders/sync", "/orders/cart" }
+		urlPatterns = { "/orders/sync", "/orders/cart", "/orders/remove", "/orders/addto" }
 		)
 public class OrderController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -56,11 +57,16 @@ public class OrderController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
-		if (requestURI.endsWith("cart")) {
+		System.out.println(requestURI);
+		if (requestURI.endsWith("cart") || requestURI.endsWith("addto")) {
 			updateSession(request);
 		} else if (requestURI.endsWith("sync")) {
 			syncDatabase(request);
-		} else {
+		} else if (requestURI.endsWith("remove")) {
+			removeFromSession(request);
+//			response.sendRedirect("../cart/cart.jsp");
+		}
+		else {
 			response.sendRedirect("../registerError.jsp");
 		}
 	}
@@ -68,22 +74,33 @@ public class OrderController extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private void syncDatabase(HttpServletRequest request) {
 		HttpSession userSession = request.getSession();
-//		System.out.println("SYNCING DB");
+		System.out.println("SYNCING DB");
 //		System.out.println(request.getSession().getId());
 	    Map<Movie, Order> grabOrdersToWriteBack = (Map<Movie, Order>)userSession.getAttribute("cart");
+	    OrderDB.clearUserOrders((Transaction)userSession.getAttribute("transaction"));
 	    grabOrdersToWriteBack.entrySet().forEach(entry -> {
 	    	OrderDB.writeBackUserOrders(grabOrdersToWriteBack.get(entry.getKey()));
 	    });
 	    Transaction t = (Transaction)userSession.getAttribute("transaction");
 	    TransactionDB.writeTransactionToDB(t);
+	    writeDBBackToSession(userSession, (Customer)userSession.getAttribute("customer"));
 	}
+	
+	private void writeDBBackToSession(HttpSession userSession, Customer customer) {
+		Transaction transaction = TransactionDB.initializeCart(customer);
+		Map<Movie, Order> cart = new HashMap<>();
+		OrderDB.getOrdersAssociatedWithCustomer(cart, transaction);
+		userSession.setAttribute("customer", customer);
+		userSession.setAttribute("transaction", transaction);
+		userSession.setAttribute("cart", cart);	
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	private void updateSession(HttpServletRequest request) throws IOException {
 		HttpSession userSession = request.getSession();
 		String body = request.getReader().lines()
 			    .reduce("", (accumulator, actual) -> accumulator + actual);
-		System.out.println("hello" + body);
 	    String[] movieMap = body.split(";");
 	    Map<String, String> mapper = new HashMap<>();
 	    for (String s : movieMap) {
@@ -114,6 +131,38 @@ public class OrderController extends HttpServlet {
 //	    	System.out.println(elem + ":" + userSession.getAttribute(elem));
 //	    }
 	}
+	
+	private void removeFromSession(HttpServletRequest request) throws IOException {
+		HttpSession userSession = request.getSession();
+		String body = request.getReader().lines()
+			    .reduce("", (accumulator, actual) -> accumulator + actual);
+	    String[] movieMap = body.split(";");
+	    Map<String, String> mapper = new HashMap<>();
+	    for (String s : movieMap) {
+	    	String[] mapOne = s.split("=");
+	    	mapper.put(mapOne[0], mapOne[1]);
+	    }
+	    Movie m = new Movie().createMovie(mapper);
+	    Order o = null;
+	    Transaction t = (Transaction)userSession.getAttribute("transaction");
+	    Map<Movie, Order> grabOrder = (Map<Movie, Order>)userSession.getAttribute("cart");
+//	    System.out.println("old cart " + grabOrder);
+	    //in the case of removal, this method should always return true
+	    if (orderExistsOnThisMovie(m, userSession)) {
+	    	o = grabOrder.get(m);
+	    	if (o.getQuantity() > 1 ) {
+		    	o.setQuantity(o.getQuantity() - 1);
+		    	o.setPrice(o.getPrice() - m.getPrice());
+		    	t.setTotal_price(t.getTotal_price() - m.getPrice());	
+		    } else {
+         		t.setTotal_price(t.getTotal_price() - m.getPrice());
+	    		System.out.println("remove from transaction session");
+	    		grabOrder.remove(m);
+	    	}
+	    }
+//	    System.out.println("new cart " + grabOrder);
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	private boolean orderExistsOnThisMovie(Movie m, HttpSession userSession) {
