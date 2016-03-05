@@ -74,17 +74,15 @@ public class TransactionController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
 		
-		if (requestURI.endsWith("purchase"))
-		{
-			if (updateCartInventoryCounts(request, response)) {
+		if (requestURI.endsWith("purchase")) {
+			updateCartInventoryCounts(request, response);
 				//purchase successful
-			} else {
-				//bad purchase. inform user of failed orders and what values to decrement to.
-			}
+		} else {
+			
 		}
 	}
 	
-	private boolean updateCartInventoryCounts(HttpServletRequest request, HttpServletResponse response) {
+	private void updateCartInventoryCounts(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		purchaseSyncDB(request);
 		HttpSession userSession = request.getSession();
 		Map<Movie, Order> cart = (Map<Movie, Order>)userSession.getAttribute("cart");
@@ -94,13 +92,13 @@ public class TransactionController extends HttpServlet {
 			Order o = (Order)cart.get(e.getKey());
 			if (o.getQuantity() > m.getInventory()) {
 				purchaseStatus = false;
-				//write to response object??
+				response.getWriter().append(m.getTitle() + " only " + m.getInventory() + " in stock");
 			}
 		}
-		System.out.println("valid inventory counts. purchase!!");
-		completePurchase(userSession);
-		
-		return purchaseStatus;
+		if (purchaseStatus) {
+			completePurchase(userSession);
+			response.getWriter().append("purchase successful!");
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
