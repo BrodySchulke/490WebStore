@@ -9,6 +9,7 @@ import org.postgresql.util.PGmoney;
 
 import model.Movie;
 import model.Order;
+import model.Rating;
 
 import javax.naming.*;
 import java.util.*;
@@ -66,6 +67,45 @@ public class MovieDB {
 			}
 		}
 		return movie;
+	}
+	
+	public static List<Movie> getMovies(Rating r) {
+		String query = "select * from movies where product_id = " + r.getProduct_id();
+		Movie movie = null;
+		List<Movie> movies = new ArrayList<>();
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				movie = new Movie();
+				movie.setActor(rs.getString("actor"));
+				movie.setActress(rs.getString("actress"));
+				movie.setDirector(rs.getString("director"));
+				movie.setGenre(rs.getString("genre"));
+				movie.setInventory(rs.getInt("inventory"));
+				movie.setLength(rs.getInt("length"));
+				movie.setPrice(rs.getDouble("price"));
+				movie.setProduct_id(rs.getInt("product_id"));
+				movie.setRelease_year(rs.getInt("release_year"));
+				movie.setTitle(rs.getString("title"));
+				movies.add(movie);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return movies;
 	}
 	
 	//add value to form button for submission. if negative, go back 20, else forward 20
