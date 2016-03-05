@@ -76,6 +76,7 @@ public class RatingDB {
 				rating = new Rating();
 				rating.setProduct_id(rs.getInt("product_id"));
 				rating.setRating(rs.getInt("rating"));
+				rating.setTime_stamp(rs.getDate("time_stamp"));
 				ratings.add(rating);
 			}
 		} catch (SQLException sqle) {
