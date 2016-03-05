@@ -28,6 +28,29 @@ button {
 	
 }
 
+#list-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-left: 0;
+float: left;
+}
+
+#list-img:hover {
+height: 75px;
+}
+
+#user-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-right: 0;
+float: right;
+}
+#user-img:hover {
+height: 75px;
+}
+
 .cart-icon:hover {
 width: 35px;
 }
@@ -92,14 +115,6 @@ h7 {
 	margin-bottom: 20px;
 }
 
-#search {
-width: 80%;
-display: block;
-padding-right: 10%;
-padding-left: 10%;
-color: #f;
-}
-
 </style>
 </head>
 <body>
@@ -107,14 +122,21 @@ color: #f;
 	<!-- this will be users' default home page. account settings/cart/past orders will live in top right -->
 	<div id="header">
 		<div id="header-e1">
+			<a href="../movies/listMovies.jsp"><img src="../images/Shopping-List-Clipboard-Tablet.svg" id="list-img"/></a>
 		</div>
 		<div id="header-e2">
 			<h7>THREE STOOGES EXCLUSIVE ANTIQUE FILM BOUTIQUE</h7>
-			<form>
-				<input type="text" id="search" placeholder="search our exclusive boutique..." />
-			</form>
 		</div>
 		<div id="header-e3">
+		<%if (((Customer)request.getSession().getAttribute("customer")).getUsername().equals("admin")) {%>
+			<a href="../account/admin.jsp">
+				<img src="../images/user1.svg" id="user-img"/>
+			</a>
+			<% } else { %>
+				<a href="../account/account.jsp">
+				<img src="../images/user1.svg" id="user-img"/>
+			</a>
+		<% } %>
 		</div>
 	</div>
 	<div id="content">
