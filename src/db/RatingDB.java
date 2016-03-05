@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import model.Customer;
 import model.Movie;
@@ -91,5 +92,9 @@ public class RatingDB {
 			}
 		}
 		return rating;
+	}
+	
+	public static List<String> getMostFavoriteMoviesBiWeekly() {
+		return null;
 	}
 }
