@@ -206,5 +206,30 @@ public class TransactionDB {
 			}
 		}
 	}
+	
+	public static void closeTransaction(Transaction transaction) {
+		String query = "update transactions set status = false, close_date = current_timestamp where transaction_id = ?";
+		try {
+			connection = getConnection();
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setInt(1, transaction.getTransaction_id());
+			stmt.executeUpdate();
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+	}
 
 }

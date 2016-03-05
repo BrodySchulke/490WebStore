@@ -71,6 +71,8 @@ public class OrderController extends HttpServlet {
 		}
 	}
 	
+	
+	//used to to sync database with session
 	@SuppressWarnings("unchecked")
 	private void syncDatabase(HttpServletRequest request) {
 		HttpSession userSession = request.getSession();
@@ -86,6 +88,7 @@ public class OrderController extends HttpServlet {
 	    writeDBBackToSession(userSession, (Customer)userSession.getAttribute("customer"));
 	}
 	
+	//after syncing with db, re-update session
 	private void writeDBBackToSession(HttpSession userSession, Customer customer) {
 		Transaction transaction = TransactionDB.initializeCart(customer);
 		Map<Movie, Order> cart = new HashMap<>();
@@ -96,6 +99,7 @@ public class OrderController extends HttpServlet {
 	}
 	
 	
+	//used when a user adds to cart
 	@SuppressWarnings("unchecked")
 	private void updateSession(HttpServletRequest request) throws IOException {
 		HttpSession userSession = request.getSession();
@@ -132,6 +136,8 @@ public class OrderController extends HttpServlet {
 //	    }
 	}
 	
+	
+	//used when user removes items from cart
 	private void removeFromSession(HttpServletRequest request) throws IOException {
 		HttpSession userSession = request.getSession();
 		String body = request.getReader().lines()

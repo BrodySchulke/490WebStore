@@ -173,6 +173,50 @@ public class OrderDB {
 		}
 	}
 	
+	
+	public static void purchaseCloseOrders(Map<Movie, Order> cart, Transaction transaction) {
+		String ordersToClose = "select * from orders where transaction_id = ?";
+		PreparedStatement stmt = null;
+		try {
+			connection = getConnection();
+//			stmt.execute(orderRemover);
+			stmt = connection.prepareStatement(ordersToClose);
+			stmt.setInt(1, transaction.getTransaction_id());
+			ResultSet rs = stmt.executeQuery();
+			String updateMovieInventory = "update movies set inventory = inventory - ? where product_id = ?";
+			String closeOrders = "update orders set order_date = current_timestamp";
+			PreparedStatement stmt2, stmt3 = null;
+			stmt2 = connection.prepareStatement(updateMovieInventory);
+			stmt3 = connection.prepareStatement(closeOrders);
+			while (rs.next()) {
+				Order o = new Order();
+//				o.setOrder_id(rs.getInt("order_id"));
+//				o.setProduct_id(rs.getInt("product_id"));
+				stmt2.setInt(1, rs.getInt("quantity"));
+				stmt2.setInt(2, rs.getInt("product_id"));
+				stmt2.executeUpdate();
+				stmt3.executeUpdate();
+			}
+			
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		
+	}
+	
 	public static List<String> getMonthlyAggregateSales() {
 		return null;
 	}

@@ -169,9 +169,7 @@ window.onload = function() {
 			Transaction t = (Transaction)sesh.getAttribute("transaction");
 			for (Map.Entry e : cart.entrySet()) {	
 				Movie m = (Movie)e.getKey();
-				System.out.println("loop " + m);
 				Order o = (Order)cart.get(e.getKey());
-				System.out.println("loop " + o);
 		%>
 			<div>
 				<span id="title<%=m.getProduct_id() %>"><%= "Title: " + m.getTitle() %> </span>
