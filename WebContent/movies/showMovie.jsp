@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import = "java.util.*, model.Movie, db.MovieDB, db.RatingDB" %>
+    <%@ page import = "java.util.*, model.Movie, db.MovieDB, db.RatingDB, model.Customer" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -132,10 +132,16 @@ display: inline;
 <body>
     <div id="header">
         <div id="header-e1">
-        <a href="../account/account.jsp">
-            <img src="../images/user1.svg" id="user-img"/>
-        </a>
-        </div>
+		<%if (((Customer)request.getSession().getAttribute("customer")).getUsername().equals("admin")) {%>
+			<a href="../account/admin.jsp">
+				<img src="../images/user1.svg" id="user-img"/>
+			</a>
+			<% } else { %>
+				<a href="../account/account.jsp">
+				<img src="../images/user1.svg" id="user-img"/>
+			</a>
+		<% } %>
+		</div>
         <div id="header-e2">
             <h7>THREE STOOGES EXCLUSIVE ANTIQUE FILM BOUTIQUE</h7>
             <form>
