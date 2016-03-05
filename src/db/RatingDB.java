@@ -6,10 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Customer;
 import model.Movie;
+import model.Rating;
 
 public class RatingDB {
 	
@@ -60,6 +62,39 @@ public class RatingDB {
 			}
 		}
 		return retVal;
+	}
+	
+	public static List<Rating> getRatings(Customer c) {
+		String query = "select * from ratings where user_id = " + c.getCustomer_id();
+		Rating rating = null;
+		List<Rating> ratings = new ArrayList<>();
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				rating = new Rating();
+				rating.setProduct_id(rs.getInt("product_id"));
+				rating.setRating(rs.getInt("rating"));
+				ratings.add(rating);
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return ratings;
 	}
 	
 	public static int getRating(Movie m) {

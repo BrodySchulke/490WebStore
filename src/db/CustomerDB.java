@@ -4,6 +4,8 @@ import java.sql.*;
 import javax.sql.*;
 
 import model.Customer;
+import model.Movie;
+import model.Order;
 
 import javax.naming.*;
 import java.util.*;
@@ -182,6 +184,11 @@ public class CustomerDB {
 			closeAll(stmt, conn, rs);
 		}
 		return c;
+	}
+	
+	public static List<String> getPastOrders(Customer c) {
+		List<String> userOrders = new ArrayList<String>();
+		return userOrders;
 	}
 	
 	private static Connection getConnection() throws ClassNotFoundException, SQLException {

@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,43 @@ public class OrderDB {
 	private static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Connection connection = ConnectionFactory.getInstance().getConnection();
 		return connection;
+	}
+	
+	public static List<Order> getOrders(Transaction t) {
+		String query = "select * from orders where transaction_id = " + t.getTransaction_id();
+		List<Order> orders = new ArrayList<>();
+		Order order = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				order = new Order();
+				order.setOrder_date(rs.getDate("order_date"));
+				order.setOrder_id(rs.getInt("order_id"));
+				order.setPrice(rs.getDouble("price"));
+				order.setProduct_id(rs.getInt("product_id"));
+				order.setQuantity(rs.getInt("quantity"));
+				order.setTransaction_id(rs.getInt("transaction_id"));	
+				orders.add(order);
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return orders;
 	}
 	
 	public static Order getOrder(Transaction t) {
