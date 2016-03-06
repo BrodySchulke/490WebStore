@@ -182,7 +182,7 @@ public class MovieDB {
 			System.out.println(s);
 			queryBuilder.append(".*").append(s).append(".*");
 		}
-		query = "select * from movies where title ~ " + "'" + queryBuilder.toString() + "'" + "or genre ~ " + "'" + queryBuilder.toString() + "'" + "limit 20";
+		query = "select * from movies where title ~ " + "'" + queryBuilder.toString() + "'" + " or genre ~ " + "'" + queryBuilder.toString() + "'" + " or actor ~ " + "'" + queryBuilder.toString() + "'" + " or actress ~ " + "'" + queryBuilder.toString() + "'" + " or director ~ " + "'" + queryBuilder.toString() + "'" + " limit 20";
 		System.out.println(query);
 		offset += stepValue;
 		if (offset < 0) {
