@@ -1,5 +1,6 @@
 package db;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.sql.Date;
 
@@ -337,6 +338,32 @@ public class MovieDB {
 			try{
 				conn.close();
 			}catch(SQLException sqle){
+			}
+		}
+	}
+	
+	public static void updateMovie(String product_id, String price, String inventory) {
+		String query = "update movies set price = ?, inventory = ? where product_id = ?";
+		Movie movie = null;
+		try {
+			connection = getConnection();
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setBigDecimal(1, new BigDecimal(price));
+			stmt.setInt(2, Integer.parseInt(inventory));
+			stmt.setInt(3, Integer.parseInt(product_id));
+			stmt.executeUpdate();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
 			}
 		}
 	}
