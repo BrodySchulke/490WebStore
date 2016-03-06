@@ -6,8 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import org.postgresql.util.PGmoney;
 
 import model.Customer;
 import model.Order;
@@ -23,6 +28,198 @@ public class TransactionDB {
 	private static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Connection connection = ConnectionFactory.getInstance().getConnection();
 		return connection;
+	}
+	
+	public static String getMonthlyAggregateSales() {
+		String query = "select sum(total_price) from transactions where status = false and close_date > CURRENT_DATE - INTERVAL '1 months';";
+		PGmoney money = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				money = new PGmoney(rs.getString("sum"));
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		Calendar cal = Calendar.getInstance();
+		return "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " Total: " + money.toString();
+	}
+	
+	public static String getWeeklyAggregateSales() {
+		String query = "select sum(total_price) from transactions where status = false and close_date > CURRENT_DATE - INTERVAL '1 weeks';";
+		PGmoney money = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				money = new PGmoney(rs.getString("sum"));
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		Calendar cal = Calendar.getInstance();
+		return "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " Day: " + cal.get(Calendar.DAY_OF_MONTH) + " Total: " + money.toString();
+	}
+	
+	public static String getMonthlyDifferenceAggregate() {
+		String query = "select sum(total_price) from transactions where status = false and close_date > CURRENT_DATE - INTERVAL '1 months';";
+		String query2 = "select sum(total_price) from transactions where status = false and close_date > CURRENT_DATE - INTERVAL '2 months';";
+		PGmoney money = null;
+		PGmoney money2 = null;
+		Double difference = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				String moneyz = rs.getString("sum");
+				if (moneyz != null) {
+					money = new PGmoney(rs.getString("sum"));
+				}
+			}
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs2 = stmt.executeQuery(query2);
+			if (rs2.next()) {
+				String moneyz2 = rs2.getString("sum");
+				if (moneyz2 != null) {
+					money = new PGmoney(rs2.getString("sum"));
+				}
+			}
+			if (money != null && money2 != null) {
+				difference = new Double(money.val - money2.val);
+			} else if (money != null && money2 == null) {
+				difference = new Double(money.val);
+			} else if (money == null && money2 != null) {
+				difference = new Double(money2.val * -1);
+			} else {
+				difference = new Double(0.00);
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		Calendar cal = Calendar.getInstance();
+		return "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " compared to " + "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH - 1] + " Total: $" + String.format("%.2f", difference);
+	}
+	
+	public static String getWeeklyDifferenceAggregate() {
+		String query = "select sum(total_price) from transactions where status = false and close_date > CURRENT_DATE - INTERVAL '1 weeks';";
+		String query2 = "select sum(total_price) from transactions where status = false and close_date > CURRENT_DATE - INTERVAL '2 weeks';";
+		PGmoney money = null;
+		PGmoney money2 = null;
+		Double difference = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				String moneyz = rs.getString("sum");
+				if (moneyz != null) {
+					money = new PGmoney(rs.getString("sum"));
+				}
+			}
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs2 = stmt.executeQuery(query2);
+			if (rs2.next()) {
+				String moneyz2 = rs2.getString("sum");
+				if (moneyz2 != null) {
+					money = new PGmoney(rs2.getString("sum"));
+				}
+			}
+			if (money != null && money2 != null) {
+				difference = new Double(money.val - money2.val);
+			} else if (money != null && money2 == null) {
+				difference = new Double(money.val);
+			} else if (money == null && money2 != null) {
+				difference = new Double(money2.val * -1);
+			} else {
+				difference = new Double(0.00);
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		Calendar cal = Calendar.getInstance();
+		StringBuilder sb = new StringBuilder();
+		sb.append("Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " Day: " + cal.get(Calendar.DAY_OF_MONTH) + " compared to " + "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH - 1]);
+		cal.add(Calendar.DATE, -7);
+		sb.append(" Day: " + cal.get(Calendar.DAY_OF_MONTH) + " Total: $" + String.format("%.2f", difference));
+		return sb.toString();
 	}
 	
 	//TODO pass boolean to change trans status

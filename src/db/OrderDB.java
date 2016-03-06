@@ -7,7 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -217,7 +219,6 @@ public class OrderDB {
 		PreparedStatement stmt = null;
 		try {
 			connection = getConnection();
-//			stmt.execute(orderRemover);
 			stmt = connection.prepareStatement(ordersToClose);
 			stmt.setInt(1, transaction.getTransaction_id());
 			ResultSet rs = stmt.executeQuery();
@@ -228,14 +229,11 @@ public class OrderDB {
 			stmt3 = connection.prepareStatement(closeOrders);
 			while (rs.next()) {
 				Order o = new Order();
-//				o.setOrder_id(rs.getInt("order_id"));
-//				o.setProduct_id(rs.getInt("product_id"));
 				stmt2.setInt(1, rs.getInt("quantity"));
 				stmt2.setInt(2, rs.getInt("product_id"));
 				stmt2.executeUpdate();
 				stmt3.executeUpdate();
 			}
-			
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		} catch (ClassNotFoundException cnfe) {
@@ -255,23 +253,36 @@ public class OrderDB {
 		
 	}
 	
-	public static List<String> getMonthlyAggregateSales() {
-		return null;
-	}
-	
-	public static List<String> getWeeklyAggregateSales() {
-		return null;
-	}
-	
-	public static List<String> getMonthlyDifferenceAggregate() {
-		return null;
-	}
+	/*public static String getMonthlyAggregateSales() {
+		String query = "select orders.price from orders inner join movies on (orders.product_id = movies.product_id) where orders.order_date is not null and orders.order_date >  CURRENT_DATE - INTERVAL '1 months';";
+		double aggregator = 0;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				aggregator += rs.getDouble("price");
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return "Month: " + new SimpleDateFormat("MMM").format(Calendar.getInstance().getTime()) + ", Total: " + String.format("%.2f", aggregator);
+	}*/
 	
 	public static List<String> getWeeklyBestSellersByCategory() {
-		return null;
-	}
-	
-	public static List<String> getWeeklyDifferenceAggregate() {
 		return null;
 	}
 	
