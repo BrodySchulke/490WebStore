@@ -127,6 +127,18 @@ display: inline;
 	width: 75px;
 	height: 75px;
 }
+
+#list-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-left: 0;
+float: left;
+}
+
+#list-img:hover {
+height: 75px;
+}
 </style>
 </head>
 <body>
@@ -144,9 +156,7 @@ display: inline;
 		</div>
         <div id="header-e2">
             <h7>THREE STOOGES EXCLUSIVE ANTIQUE FILM BOUTIQUE</h7>
-            <form>
-                <input type="text" id="search" placeholder="search our exclusive boutique..." />
-            </form>
+            <a href="../movies/listMovies.jsp"><img src="../images/Shopping-List-Clipboard-Tablet.svg" id="list-img"/></a>
         </div>
         <div id="header-e3">
             <a href="../cart/cart.jsp">

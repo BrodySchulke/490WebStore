@@ -18,7 +18,7 @@ import db.MovieDB;
 @WebServlet(
 		name = "MovieServlet",
 		description = "A servlet for handling movies",
-		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify", "/movies/sort"}
+		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify", "/movies/sort", "/movies/search" }
 		)
 public class MovieController extends HttpServlet {
 	private static final long serialVersionUID = 1L;   
@@ -53,6 +53,8 @@ public class MovieController extends HttpServlet {
 			updateSessionSortValue(userSession, sort_value);
 			userSession.setAttribute("sort_value", sort_value);
 			url = "../movies/listMovies.jsp";
+		} else if (requestURI.endsWith("search")) {
+			url ="../movies/listMovies.jsp";
 		}
 		else {
 			url = "../movies/moviesError.jsp";

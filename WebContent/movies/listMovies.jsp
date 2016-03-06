@@ -8,6 +8,7 @@
 <script type="text/javascript" src="../js/close.js"></script>
 <title>List of Movies</title>
 <style>
+@import url(http://fonts.googleapis.com/css?family=Oswald);
 	body {
 				font-family: Arial, Verdana, sans-serif;
 				color: #111111;}
@@ -83,7 +84,8 @@ width: 80%;
 display: block;
 padding-right: 10%;
 padding-left: 10%;
-color: #fff;
+color: #000;
+font-family: 'Oswald', 'Futura', sans-serif;
 }
 #user-img {
 width: 50%;
@@ -110,9 +112,18 @@ width: 25px;
 height: 25px;
 display: inline;
 }
+
 </style>
 </head>
 <body>
+<script language="JavaScript" type="text/javascript">
+function checkform ( form ) {
+	if (form.search.value.length < 1) {
+	    form.search.focus();
+		return false;
+	}
+}
+</script>
 	<!-- should present movies in different way, maybe like grid -->
 	<!-- this will be users' default home page. account settings/cart/past orders will live in top right -->
 	<div id="header">
@@ -129,8 +140,9 @@ display: inline;
 		</div>
 		<div id="header-e2">
 			<h7>THREE STOOGES EXCLUSIVE ANTIQUE FILM BOUTIQUE</h7>
-			<form>
-				<input type="text" id="search" placeholder="search our exclusive boutique..." />
+			<form action="movies/search" method="get" onsubmit="return checkform(this);" id=signup-form>
+				<input type="text" name="search" id="search" placeholder="search our exclusive boutique..." />
+				<input type="submit" value="submit" id="submit"/>
 			</form>
 		</div>
 		<div id="header-e3">
