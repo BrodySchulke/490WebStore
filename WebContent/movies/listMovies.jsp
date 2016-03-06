@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<script type="text/javascript" src="../js/close.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/listmovies.css">
 <title>List of Movies</title>
 <style>
 @import url(http://fonts.googleapis.com/css?family=Oswald);
@@ -123,6 +123,33 @@ function checkform ( form ) {
 	}
 	return true;
 }
+function getVals(){
+	  // Get slider values
+	  var parent = this.parentNode;
+	  var slides = parent.getElementsByTagName("input");
+	    var slide1 = parseFloat( slides[0].value );
+	    var slide2 = parseFloat( slides[1].value );
+	  // Neither slider will clip the other, so make sure we determine which is larger
+	  if( slide1 > slide2 ){ var tmp = slide2; slide2 = slide1; slide1 = tmp; }
+	  
+	  var displayElement = parent.getElementsByClassName("rangeValues")[0];
+	      displayElement.innerHTML = slide1 + " - " + slide2;
+	}
+
+	window.onload = function(){
+	  // Initialize Sliders
+	  var sliderSections = document.getElementsByClassName("range-slider");
+	      for( var x = 0; x < sliderSections.length; x++ ){
+	        var sliders = sliderSections[x].getElementsByTagName("input");
+	        for( var y = 0; y < sliders.length; y++ ){
+	          if( sliders[y].type ==="range" ){
+	            sliders[y].oninput = getVals;
+	            // Manually trigger event first time to display values
+	            sliders[y].oninput();
+	          }
+	        }
+	      }
+	}
 </script>
 	<!-- should present movies in different way, maybe like grid -->
 	<!-- this will be users' default home page. account settings/cart/past orders will live in top right -->
@@ -156,8 +183,36 @@ function checkform ( form ) {
 		<table id="list">
 			<tr>
 				<th><a href="javascript:sortMovies('title');">Title</a></th>
-				<th><a href="javascript:sortMovies('genre');">Genre</a></th>
-				<th><a href="javascript:sortMovies('release_year');">Release year</a></th>
+				<th><a href="javascript:sortMovies('genre');">Genre</a>
+					<select name="genre_list" form="filter_genre">
+					  <option value="Adventure">Adventure</option>
+					  <option value="Drama">Drama</option>
+					  <option value="Horror">Horror</option>
+					  <option value="Comedy">Comedy</option>
+					  <option value="Science Fiction">Science Fiction</option>
+					  <option value="Fantasy">Fantasy</option>
+					  <option value="Westerns">Westerns</option>
+					  <option value="Western">Western</option>
+					  <option value="Crime">Crime</option>
+					  <option value="Action">Action</option>
+					  <option value="Music">Music</option>
+					  <option value="War">War</option>
+					  <option value="Romance">Romance</option>
+					  <option value="Mystery">Mystery</option>
+					  <option value="War">Short</option>
+					</select>
+					<form name="filterGenre" method="get" action="../movies/filter" id="filter_genre">
+						<input type="submit" name="filter_genre" id="genre_filter">
+					</form>
+				</th>
+				<th><a href="javascript:sortMovies('release_year');">Release year</a>
+					<section class="range-slider">
+						<span class="rangeValues"></span>
+						<input value="5" min="0" max="15" step="0.5" type="range" id="lowyear">
+						<input value="10" min="0" max="15" step="0.5" type="range" id="highyear">
+					</section>
+					<a href="javascript:filterYears();">Filter by year</a>
+				</th>
 				<th><a href="javascript:sortMovies('length');">Length</a></th>
 				<th><a href="javascript:sortMovies('actor');">Actor</a></th>
 				<th><a href="javascript:sortMovies('actress');">Actress</a></th>
@@ -171,8 +226,7 @@ function checkform ( form ) {
 			String narrow = (String)request.getSession().getAttribute("narrow");
 			if (narrow == null) {
 				movies = MovieDB.viewMovies((String)request.getSession().getAttribute("sort_value"), 0);
-			}
-			else if (narrow.equals("search")) {
+			} else if (narrow.equals("search")) {
 				movies = MovieDB.viewMoviesSearch((String)request.getSession().getAttribute("search_value"), 0);
 			} else if (narrow.equals("filter")) {
 				movies = MovieDB.viewMoviesFilter((String)request.getSession().getAttribute("filter_value"), 0);
@@ -195,7 +249,6 @@ function checkform ( form ) {
 				<td width="9%"><a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a>
 				</td>
 			</tr>
-
 			<script>
 				function viewAMovie(product_id) {
 					<%if (((Customer)request.getSession().getAttribute("customer")).getUsername().equals("admin")) {%>
@@ -209,6 +262,14 @@ function checkform ( form ) {
 				function sortMovies(string) {
 					document.getElementById("sort_movie").value = string;
 					document.sortMovies.submit();
+				}
+				function filterYears() {
+					console.log("help");
+					var lowyear = document.getElementById("lowyear").value;
+					var highyear = document.getElementById("highyear").value;
+					document.getElementById("filter_years").value = lowyear + highyear;
+					console.log(document.getElementById("filter_years"));
+					document.filterYears.submit();
 				}
 			</script>
 
@@ -224,6 +285,9 @@ function checkform ( form ) {
 	</form>
 	<form name="sortMovies" method="get" action="../movies/sort">
 		<input type="hidden" name="sort_value" id="sort_movie">
+	</form>
+	<form name="filterYears" method="get" action="../movies/filter_years">
+		<input type="hidden" name="filter_years" id="filter_years">
 	</form>
 	<%
 		if (movies.size() == 20) {

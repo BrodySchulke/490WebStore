@@ -92,7 +92,6 @@ public class customerController extends HttpServlet {
 		String email = request.getParameter("email");
 		String first_name = request.getParameter("first_name");
 		String last_name = request.getParameter("last_name");
-		
 		int flag = 0;
 		flag = CustomerDB.checkUserAvail(username, email);
 		if(flag > 0){

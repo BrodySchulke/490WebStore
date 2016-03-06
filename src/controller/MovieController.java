@@ -18,7 +18,8 @@ import db.MovieDB;
 @WebServlet(
 		name = "MovieServlet",
 		description = "A servlet for handling movies",
-		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify", "/movies/sort", "/movies/search" }
+		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify", "/movies/sort", "/movies/search",
+				"/movies/filter", "/movies/filter_years"}
 		)
 public class MovieController extends HttpServlet {
 	private static final long serialVersionUID = 1L;   
@@ -38,15 +39,21 @@ public class MovieController extends HttpServlet {
 		System.out.println(requestURI);
 		String url = "";
 		String sort_value = (String)request.getParameter("sort_value");
-
 		String search_value = (String)request.getParameter("search_value");
+		String filter_value = (String)request.getParameter("genre_list");
+		Enumeration<String> parameterNames = request.getParameterNames();
+	    while (parameterNames.hasMoreElements()) {
+	    	String paramName = parameterNames.nextElement();
+	    	System.out.println(paramName);
+	    }
 		if (sort_value == null) {
 			sort_value = (String)request.getSession().getAttribute("sort_value");
 		}
 		if (search_value == null) {
 			search_value = (String)request.getSession().getAttribute("search_value");
-			System.out.println("search value was null");
-			System.out.println(search_value);
+		}
+		if (filter_value == null) {
+			filter_value = (String)request.getSession().getAttribute("filter_value");
 		}
 		if (requestURI.endsWith("show_next")) {
 			url = "../movies/listMovies.jsp";
@@ -64,12 +71,17 @@ public class MovieController extends HttpServlet {
 			updateSessionSortValue(userSession, sort_value);
 			url = "../movies/listMovies.jsp";
 		} else if (requestURI.endsWith("search")) {
-			System.out.println("the actual search_value in movie controller " + search_value);
 			HttpSession userSession = request.getSession();
 			userSession.setAttribute("narrow", "search");
 			updateSessionSearchValue(userSession, search_value);
 			url ="../movies/listMovies.jsp";
+		} else if (requestURI.endsWith("filter")) {
+			HttpSession userSession = request.getSession();
+			userSession.setAttribute("narrow", "filter");
+			updateSessionFilterValue(userSession, filter_value);
+			url ="../movies/listMovies.jsp";
 		}
+		
 		else {
 			url = "../movies/moviesError.jsp";
 		}
@@ -82,6 +94,9 @@ public class MovieController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
 		String url = "";
+		String body = request.getReader().lines()
+			    .reduce("", (accumulator, actual) -> accumulator + actual);
+		System.out.println(body);
 		if (requestURI.endsWith("modify")) {
 			MovieDB.updateMovie(request.getParameter("product_id"), request.getParameter("price"), request.getParameter("inventory"));
 		}
@@ -100,5 +115,12 @@ public class MovieController extends HttpServlet {
 			MovieDB.setOffset(0);
 		}
 		userSession.setAttribute("search_value", search_value);
+	}
+	
+	private void updateSessionFilterValue(HttpSession userSession, String filter_value) {
+		if (!filter_value.equals(userSession.getAttribute("filter_value"))) {
+			MovieDB.setOffset(0);
+		}
+		userSession.setAttribute("filter_value", filter_value);
 	}
 }

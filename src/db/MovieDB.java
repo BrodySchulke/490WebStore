@@ -112,7 +112,6 @@ public class MovieDB {
 	//add value to form button for submission. if negative, go back 20, else forward 20
 	public static ArrayList<Movie> viewMovies(String sort_value, int stepValue) {
 		String query = null;
-		System.out.println("movie db " + sort_value);
 		if (sort_value.equals("")) {
 			sort_value = "product_id";
 			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
@@ -175,15 +174,12 @@ public class MovieDB {
 	public static ArrayList<Movie> viewMoviesSearch(String search_value, int stepValue) {
 		String query = null;
 		StringBuilder queryBuilder = new StringBuilder();
-		System.out.println("movie db " + search_value);
 		String[] searcher = search_value.split(" ");
-		System.out.println(search_value);
 		for (String s : searcher) {
 			System.out.println(s);
 			queryBuilder.append(".*").append(s).append(".*");
 		}
 		query = "select * from movies where title ~ " + "'" + queryBuilder.toString() + "'" + " or genre ~ " + "'" + queryBuilder.toString() + "'" + " or actor ~ " + "'" + queryBuilder.toString() + "'" + " or actress ~ " + "'" + queryBuilder.toString() + "'" + " or director ~ " + "'" + queryBuilder.toString() + "'" + " limit 20";
-		System.out.println(query);
 		offset += stepValue;
 		if (offset < 0) {
 			offset = 0;
@@ -228,19 +224,18 @@ public class MovieDB {
 	}
 	
 	
-	
-	//TODO
-	//add value to form button for submission. if negative, go back 20, else forward 20
-	public static ArrayList<Movie> viewMoviesFilter(String sort_value, int stepValue) {
+	public static ArrayList<Movie> viewMoviesFilter(String filter_value, int stepValue) {
 		String query = null;
-		if (sort_value == null) {
-			sort_value = "product_id";
-			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
-		} else if (sort_value.equals("rating")){
-			query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id where m.inventory > 0 group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
-		} else {
-			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
-		}
+		System.out.println(filter_value);
+//		if (filter_value == null) {
+//			sort_value = "product_id";
+//			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
+//		} else if (sort_value.equals("rating")){
+//			query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id where m.inventory > 0 group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
+//		} else {
+//			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
+//		}
+		query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id where m.genre = " + "'" + filter_value + "'" + " group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
 		offset += stepValue;
 		if (offset < 0) {
 			offset = 0;
@@ -251,10 +246,6 @@ public class MovieDB {
 			connection = getConnection();
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-//			PreparedStatement percent = connection.prepareStatement("update movies set release_year = 2015 where product_id = 1");
-//			PreparedStatement percent2 = connection.prepareStatement("update movies set release_year = 2016 where product_id = 2");
-//			percent.executeUpdate();
-//			percent2.executeUpdate();
 			while (rs.next()) {
 				movie = new Movie();
 				movie.setActor(rs.getString("actor"));

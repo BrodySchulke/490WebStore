@@ -6,8 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <script type="text/javascript" src="../js/cart.js"></script>
-<title>Your Cart</title>
 <link rel="stylesheet" type="text/css" href="../css/cart.css">
+<title>Your Cart</title>
 </head>
 <body>
 	<!-- should present movies in different way, maybe like grid -->
