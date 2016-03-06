@@ -58,7 +58,8 @@ public class MovieController extends HttpServlet {
 		String requestURI = request.getRequestURI();
 		String url = "";
 		if (requestURI.endsWith("modify")) {
-			System.out.println("cowabunga!");
+			System.out.println(request.getParameter(("product_id")));
+//			MovieDB.updateMovie(request.getParameter(("product_id"))
 		}
 		response.sendRedirect("/listMovies.jsp");
 	}

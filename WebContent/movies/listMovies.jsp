@@ -174,12 +174,13 @@ display: inline;
 
 			<script>
 				function viewAMovie(product_id) {
-					document.getElementById("product_id").value = product_id;
 					<%if (((Customer)request.getSession().getAttribute("customer")).getUsername().equals("admin")) {%>
+						document.getElementById("modify_product_id").value = product_id;
 						document.modifyMovie.submit();
 					<% } else {%>
-					
-					document.viewMovie.submit();
+						document.getElementById("product_id").value = product_id;
+						document.viewMovie.submit();
+						document.viewMovie.submit();
 					<% } %>
 				}
 			</script>
@@ -192,7 +193,7 @@ display: inline;
 		<input type="hidden" name="movie_product_id" id="product_id">
 	</form>
 	<form name="modifyMovie" method="get" action="modifyMovie.jsp">
-		<input type="hidden" name="movie_product_id" id="product_id">
+		<input type="hidden" name="movie_product_id" id="modify_product_id">
 	</form>
 	<%
 		if (movies.size() == 20) {
