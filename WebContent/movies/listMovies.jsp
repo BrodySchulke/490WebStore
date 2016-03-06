@@ -143,20 +143,19 @@ display: inline;
 		<form id="movies" name="movies" method="post">
 		<table id="list">
 			<tr>
-				<th>Title</th>
-				<th>Genre</th>
-				<th>Release year</th>
-				<th>Length</th>
-				<th>Actor</th>
-				<th>Actress</th>
-				<th>Director</th>
-				<th>Price</th>
-				<th>Rating</th>
-				
+				<th><a href="javascript:sortMovies('title');">Title</a></th>
+				<th><a href="javascript:sortMovies('genre');">Genre</a></th>
+				<th><a href="javascript:sortMovies('release_year');">Release year</a></th>
+				<th><a href="javascript:sortMovies('length');">Length</a></th>
+				<th><a href="javascript:sortMovies('actor');">Actor</a></th>
+				<th><a href="javascript:sortMovies('actress');">Actress</a></th>
+				<th><a href="javascript:sortMovies('director');">Director</a></th>
+				<th><a href="javascript:sortMovies('price');">Price</a></th>
+				<th><a href="javascript:sortMovies('rating');">Rating</a></th>
 				<th>View</th>
 			</tr>
 			<%
-				ArrayList<Movie> movies = MovieDB.viewMovies(0);
+				ArrayList<Movie> movies = MovieDB.viewMovies((String)request.getSession().getAttribute("sort_value"), 0);
 				for (Movie m : movies) {
 			%>
 			<tr>
@@ -182,8 +181,11 @@ display: inline;
 					<% } else {%>
 						document.getElementById("product_id").value = product_id;
 						document.viewMovie.submit();
-						document.viewMovie.submit();
 					<% } %>
+				}
+				function sortMovies(string) {
+					document.getElementById("sort_movie").value = string;
+					document.sortMovies.submit();
 				}
 			</script>
 
@@ -196,6 +198,9 @@ display: inline;
 	</form>
 	<form name="modifyMovie" method="get" action="modifyMovie.jsp">
 		<input type="hidden" name="movie_product_id" id="modify_product_id">
+	</form>
+	<form name="sortMovies" method="get" action="../movies/sort">
+		<input type="hidden" name="sort_value" id="sort_movie">
 	</form>
 	<%
 		if (movies.size() == 20) {

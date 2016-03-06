@@ -110,8 +110,17 @@ public class MovieDB {
 	}
 	
 	//add value to form button for submission. if negative, go back 20, else forward 20
-	public static ArrayList<Movie> viewMovies(int stepValue) {
-		String query = "select * from movies order by product_id offset " + offset + " limit " + numberOfRecords;
+	public static ArrayList<Movie> viewMovies(String sort_value, int stepValue) {
+		String query = null;
+		System.out.println("movie db " + sort_value);
+		if (sort_value == null) {
+			sort_value = "product_id";
+			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
+		} else if (sort_value.equals("rating")){
+			query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
+		} else {
+			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
+		}
 		offset += stepValue;
 		if (offset < 0) {
 			offset = 0;
@@ -366,6 +375,10 @@ public class MovieDB {
 				sqle.printStackTrace();
 			}
 		}
+	}
+	
+	public static void setOffset(int value) {
+		offset = value;
 	}
 }		
 

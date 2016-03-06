@@ -18,7 +18,7 @@ import db.MovieDB;
 @WebServlet(
 		name = "MovieServlet",
 		description = "A servlet for handling movies",
-		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify" }
+		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify", "/movies/sort"}
 		)
 public class MovieController extends HttpServlet {
 	private static final long serialVersionUID = 1L;   
@@ -36,16 +36,25 @@ public class MovieController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
 		String url = "";
+		String sort_value = (String)request.getParameter("sort_value");
+		System.out.println("controller " + sort_value);
 		if (requestURI.endsWith("show_next")) {
 			url = "../movies/listMovies.jsp";
-			MovieDB.viewMovies(20);
-		} else if (requestURI.endsWith("show_previous")){
+			MovieDB.setOffset(MovieDB.getOffset() + 20);
+		} else if (requestURI.endsWith("show_previous")) {
 			url = "../movies/listMovies.jsp";
-			MovieDB.viewMovies(-20);
-		} else if (requestURI.endsWith("show_details")){
-			url = "../movies/movieDetail.jsp";
-			MovieDB.showAMovie(Integer.parseInt(request.getParameter("movie_view")));
-		} else {
+			MovieDB.setOffset(MovieDB.getOffset() -20);
+//		}
+//		else if (requestURI.endsWith("show_details")) {
+//			url = "../movies/movieDetail.jsp";
+//			MovieDB.showAMovie(Integer.parseInt(request.getParameter("movie_view")));
+		} else if (requestURI.endsWith("sort")) {
+			HttpSession userSession = request.getSession();
+			updateSessionSortValue(userSession, sort_value);
+			userSession.setAttribute("sort_value", sort_value);
+			url = "../movies/listMovies.jsp";
+		}
+		else {
 			url = "../movies/moviesError.jsp";
 		}
 		response.sendRedirect(url);
@@ -61,5 +70,12 @@ public class MovieController extends HttpServlet {
 			MovieDB.updateMovie(request.getParameter("product_id"), request.getParameter("price"), request.getParameter("inventory"));
 		}
 		response.sendRedirect("../movies/listMovies.jsp");
+	}
+	
+	private void updateSessionSortValue(HttpSession userSession, String sort_value) {
+		if (sort_value != userSession.getAttribute("sort_value")) {
+			MovieDB.setOffset(0);
+		}
+		userSession.setAttribute("sort_value", sort_value);
 	}
 }
