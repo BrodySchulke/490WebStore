@@ -18,7 +18,7 @@ else { response.sendRedirect("../home/loginForm.html"); }
 <p>Weekly Difference Sales: <%=TransactionDB.getWeeklyDifferenceAggregate() %></p>
 <p>Top Ten Best Sellers Weekly: <%=OrderDB.getWeeklyBestSellersByIndividuals() %></p>
 <p>Top Ten Highest Rated Movies for The Past Two Weeks: <%=RatingDB.getMostFavoriteMoviesBiWeekly() %></p>
-<p>Average Number of Closed Transactions Per Day for The Past Two Years: <%=TransactionDB.getAverageOfClosedTransactionsPerDayLastYear() %>
+<p>Average Number of Closed Transactions Per Day for The Past Year: <%=TransactionDB.getAverageOfClosedTransactionsPerDayLastYear() %>
 <p>Create a Movie: </p>
 		<form action="../movies/create" method="post">
 			<fieldset>
