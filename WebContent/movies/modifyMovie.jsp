@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="../js/close.js"></script>
 <title>The Three Stooges' Exquisite Exclusive Movie View</title>
 <html>
 <head><title>Modify Movie Information Form</title>
@@ -43,8 +42,5 @@
 			</fieldset>
 			<div><span class="star">*</span><label>Mandatory Information</label></div><br/>
 		</form>
-		<script>
-		
-		</script>
 	</body>
 </html>

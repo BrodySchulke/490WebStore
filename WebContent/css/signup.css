@@ -17,6 +17,11 @@ body {
 #signup-form {
     width: auto;
 }
+
+#warning {
+color: red;
+}
+
 label {
     color: #fff;
     display: block;
