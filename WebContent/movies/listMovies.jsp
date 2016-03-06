@@ -8,47 +8,38 @@
 <script type="text/javascript" src="../js/close.js"></script>
 <title>List of Movies</title>
 <style>
-@import url(http://fonts.googleapis.com/css?family=Oswald);
-
-body {
-	font-family: 'Oswald', 'Futura', sans-serif;
-	color: #fff;
-	background-color: #000;
-	margin: 0 auto;
-}
-
-.box {
-	float: left;
-	text-align: center;
-	width: 20%;
-	height: 20%;
-}
-
-button {
-	margin-right: 5%;
-	margin-left: 5%;
-	margin-top: 5%;
-	margin-bottom: 5%;
-	float: right;
-	width: 40%;
-	display: inline;
-	overflow: hidden;
-}
-
-h2, button {
-	color: #fff;
-}
-
-#content {
-	display: block;
-}
-
-div {
-	border-radius: 5px;
-	margin: auto;
-}
-
-#header {
+	body {
+				font-family: Arial, Verdana, sans-serif;
+				color: #111111;}
+	table {
+				width: 800px;
+				margin: auto;
+				border-collapse: collapse;
+				}
+	th, td {
+				padding: 12px 10px;}
+	th{
+		
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-size: 90%;
+		border-bottom: 2px solid #111111;
+		border-top: 1px solid #999;
+		text-align: left;
+	}
+	
+	tr:nth-child(even){
+		background-color: #efefef;
+	}
+	
+	tr:hover {
+		background-color: #c3e6e5;
+	}
+	
+	tr:last-child{
+		border-bottom: 2px solid #111111;
+	}
+	#header {
 	z-index: 1;
 	position: fixed;
 	background-color: #000;
@@ -58,42 +49,35 @@ div {
 	right: 0;
 	top: 0;
 }
-
 #content {
 	margin-top: 100px;
 }
-
 #footer {
 	background-color: #fff;
 	height: 100px;
 	clear: both;
 	width: 100%;
 }
-
 #header-e1 {
     float: left;
     width:33%;
     height: 100px;
 }
-
 #header-e2 {
     float: left;
     width:33%;
     height: 100px;
 }
-
 #header-e3 {
     float: left;
     width:33%;
     height: 100px;
 }
-
 h7 {
 	color: #fff;
 	text-align: center;
 	margin-bottom: 20px;
 }
-
 #search {
 width: 80%;
 display: block;
@@ -101,7 +85,6 @@ padding-right: 10%;
 padding-left: 10%;
 color: #fff;
 }
-
 #user-img {
 width: 50%;
 height: 50px;
@@ -109,11 +92,9 @@ display: block;
 margin-left: 0;
 float: left;
 }
-
 #user-img:hover {
 height: 75px;
 }
-
 #cart-img {
 width: 50%;
 height: 50px;
@@ -121,17 +102,14 @@ display: block;
 margin-right: 0;
 float: right;
 }
-
 #cart-img:hover {
 height: 75px;
 }
-
 .small {
 width: 25px;
 height: 25px;
 display: inline;
 }
-
 </style>
 </head>
 <body>
@@ -163,40 +141,46 @@ display: inline;
 	</div>
 	<div id="content">
 		<form id="movies" name="movies" method="post">
+		<table id="list">
+			<tr>
+				<th>Title</th>
+				<th>Genre</th>
+				<th>Release year</th>
+				<th>Length</th>
+				<th>Actor</th>
+				<th>Actress</th>
+				<th>Director</th>
+				<th>Price</th>
+				<th>Rating</th>
+				<th>View</th>
+			</tr>
 			<%
 				ArrayList<Movie> movies = MovieDB.viewMovies(0);
 				for (Movie m : movies) {
 			%>
-			<div class="box">
-				<p>
-					<img src="../images/movie-clapperboard.svg"/>
-					<br/>
-					<%=RatingDB.getRating(m)%>
-					<img class="small" src="../images/Outlined-star-45623.svg"/>
-					<br />
-					<a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a>
-					<br/>
-					Year: <%=m.getRelease_year()%>
-					<br />
-					<%=m.getLength()%> minutes
-					<br />
-					Title: <%=m.getTitle()%>
-					<br />
-					Genre: <%=m.getGenre()%>
-					<br />
-					Actor: <%=m.getActor()%>
-					<br />
-					Actress: <%=m.getActress()%>
-					<br />
-					Director: <%=m.getDirector()%>
-					<br />
-					$<%=m.getPrice()%>
-				</p>
-			</div>
+			<tr>
+				<td width="10%"><%=m.getTitle()%></td>
+				<td width="10%"><%=m.getGenre()%></td>
+				<td width="10%"><%=m.getRelease_year()%></td>
+				<td width="10%"><%=m.getLength()%> minutes</td>
+				<td width="10%"><%=m.getActor()%></td>
+				<td width="10%"><%=m.getActress()%></td>
+				<td width="10%"><%=m.getDirector()%></td>
+				<td width="10%"><%=m.getPrice()%></td>
+				<td width="10%"><%=RatingDB.getRating(m)%></td>
+				<td width="10%"><a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a>
+				</td>
+			</tr>
+
 			<script>
 				function viewAMovie(product_id) {
 					document.getElementById("product_id").value = product_id;
+					<%if (((Customer)request.getSession().getAttribute("customer")).getUsername().equals("admin")) {%>
+						document.modifyMovie.submit();
+					<% } else {%>
+					
 					document.viewMovie.submit();
+					<% } %>
 				}
 			</script>
 
@@ -204,8 +188,10 @@ display: inline;
 				}
 			%>
 		</form>
-	</div>
 	<form name="viewMovie" method="get" action="showMovie.jsp">
+		<input type="hidden" name="movie_product_id" id="product_id">
+	</form>
+	<form name="modifyMovie" method="get" action="modifyMovie.jsp">
 		<input type="hidden" name="movie_product_id" id="product_id">
 	</form>
 	<%
@@ -229,6 +215,8 @@ display: inline;
 		<button type="submit">Previous</button>
 	</form>
 	<% } %>
+</div>
+	
 <div id="footer"></div>
 </body>
 </html>

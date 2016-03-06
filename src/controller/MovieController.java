@@ -18,7 +18,7 @@ import db.MovieDB;
 @WebServlet(
 		name = "MovieServlet",
 		description = "A servlet for handling movies",
-		urlPatterns = { "/movies/show_next", "/movies/show_previous" }
+		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify" }
 		)
 public class MovieController extends HttpServlet {
 	private static final long serialVersionUID = 1L;   
@@ -45,7 +45,7 @@ public class MovieController extends HttpServlet {
 		} else if (requestURI.endsWith("show_details")){
 			url = "../movies/movieDetail.jsp";
 			MovieDB.showAMovie(Integer.parseInt(request.getParameter("movie_view")));
-		}  else {
+		} else {
 			url = "../movies/moviesError.jsp";
 		}
 		response.sendRedirect(url);
@@ -57,6 +57,9 @@ public class MovieController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
 		String url = "";
+		if (requestURI.endsWith("modify")) {
+			System.out.println("cowabunga!");
+		}
 		response.sendRedirect("/listMovies.jsp");
 	}
 }
