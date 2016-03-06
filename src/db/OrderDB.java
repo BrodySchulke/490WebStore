@@ -253,15 +253,15 @@ public class OrderDB {
 		
 	}
 	
-	/*public static String getMonthlyAggregateSales() {
-		String query = "select orders.price from orders inner join movies on (orders.product_id = movies.product_id) where orders.order_date is not null and orders.order_date >  CURRENT_DATE - INTERVAL '1 months';";
-		double aggregator = 0;
+	public static List<String> getWeeklyBestSellersByIndividuals() {
+		String query = "select m.title, avg(o.quantity) as average from movies m left join orders o on m.product_id = o.product_id  where o.order_date is not null and o.order_date >= (now() - interval '1 weeks') group by m.product_id order by average desc limit 10";
+		List<String> topTenMostPurchased = new ArrayList<>();
 		try {
 			connection = getConnection();
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				aggregator += rs.getDouble("price");
+				topTenMostPurchased.add("Movie: " + rs.getString("title") + " Average Purchased: " + rs.getDouble("average"));
 			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -279,19 +279,7 @@ public class OrderDB {
 				sqle.printStackTrace();
 			}
 		}
-		return "Month: " + new SimpleDateFormat("MMM").format(Calendar.getInstance().getTime()) + ", Total: " + String.format("%.2f", aggregator);
-	}*/
-	
-	public static List<String> getWeeklyBestSellersByCategory() {
-		return null;
-	}
-	
-	public static List<String> getWeeklyBestSellersByIndividuals() {
-		return null;
-	}
-	
-	public static List<String> getMostFavoriteMoviesBiWeekly() {
-		return null;
+		return topTenMostPurchased;
 	}
 	
 }
