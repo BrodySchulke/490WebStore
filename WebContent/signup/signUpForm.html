@@ -4,25 +4,72 @@
 <title>Three Stooges Exclusive Browsing Sign Up</title>
 <link rel="stylesheet" href="../css/signup.css" />
 <script type="text/javascript" src="../js/signup.js"></script>
+<style>
+#warning {
+color: red;
+}
+</style>
 </head>
 <body>
+<script language="JavaScript" type="text/javascript">
+function checkform ( form ) {
+	var reValidEmail = new RegExp('.+@.+[.].+');
+	if (reValidEmail.test(form.email.value) == false) {
+		document.getElementById("warning").innerHTML = "That isn't an email";
+	    form.email.focus();
+	    return false;
+	}
+	document.getElementById("warning").innerHTML = "";
+	if (form.email.value.length < 4) {
+		document.getElementById("warning").innerHTML = "Please type your email of at least 4 characters.";
+	    form.email.focus();
+	    return false;
+	  }
+   if (form.username.value.length < 4) {
+	   document.getElementById("warning").innerHTML = "Please type your username of at least 4 characters.";
+	   form.username.focus();
+	   return false;
+   }
+   if (form.passwd.value.length < 4) {
+	   document.getElementById("warning").innerHTML = "Please type a password of at least 4 characters.";
+	   form.passwd.focus();
+	   return false;
+   }
+   if (form.passwd.value != form.repasswd.value) {
+	   document.getElementById("warning").innerHTML = "Your passwords don't match.";
+	   form.repasswd.focus();
+	   return false;
+   }
+   if (form.first_name.value.length < 4) {
+	   document.getElementById("warning").innerHTML = "Please type your first name of at least 4 characters.";
+	   form.first_name.focus();
+	   return false;
+   }
+   if (form.last_name.value.length < 4) {
+	   document.getElementById("warning").innerHTML = "Please type your last name of at least 4 characters.";
+	   form.last_name.focus();
+	   return false;
+   }
+  return true;
+}
+</script>
 <h2>THE THREE STOOGES EXCLUSIVE BROWSING SIGNUP</h2>
 <div id="signup-page">
-    <form action="customer/register" method="post" id=signup-form>
+    <form action="customer/register" method="post" onsubmit="return checkform(this);" id=signup-form>
           <label>Username: </label>
-          <input type="text" name="username" id="username" required="required" />
+          <input type="text" name="username" id="username" required />
           <label>Password: </label> 
-          <input type="password" name="passwd" id="passwd" required="required" /> 
+          <input type="password" name="passwd" id="passwd" required/> 
           <label>Confirm Password: </label> 
-          <input type="password" name="repasswd" id="repasswd" required="required" /> 
+          <input type="password" name="repasswd" id="repasswd" required /> 
           <label>Email: </label> 
-          <input type="text"name="email" id="email" /> 
+          <input type="text" name="email" id="email" required /> 
           <label>First Name: </label> 
-          <input type="text" name="first_name" id="first_name" /> 
+          <input type="text" name="first_name" id="first_name" required /> 
           <label>Last Name: </label> 
-          <input type="text" name="last_name" id="last_name" />
+          <input type="text" name="last_name" id="last_name" required/>
           <div id="warning" class="feedback"></div>
-          <input type="submit" value="Sign Up" id="submit" />
+          <input type="submit" value="Sign Up" id="submit"/>
     </form>
 </div>
 </body>

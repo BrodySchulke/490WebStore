@@ -13,16 +13,31 @@
 		<h2>THREE STOOGES</h2>
 		<h4>EXCLUSIVE ANTIQUE FILM BOUTIQUE</h4>
 		<div id="login-form-wrapper">
-			<form method="post" name="login-form" id="login-form"
-				action="customer/redirect">
+			<form method="post" name="login-form" id="login-form" onsubmit="return checkform(this);" action="customer/redirect">
 				<label for="username">USERNAME: </label> 
 				<input type="text" id="login-username" name="username" required placeholder="username" />
 				<label for="password">PASSWORD: </label> 
 				<input type="password" id="login-password" name="password" required />
+				<div id="warning" class="feedback"></div>
 				<input type="submit" id="login-submit" value="Login"/>
 				<a href="../signup/signUpForm.html" id="sign-up-from-login-link">Create Account</a> 
 			</form>
 		</div>
 	</div>
+	<script>
+	function checkform ( form ) {
+	   if (form.username.value.length < 4) {
+		   document.getElementById("warning").innerHTML = "Please type your username of at least 4 characters.";
+		   form.username.focus();
+		   return false;
+	   }
+	   if (form.passwd.value.length < 4) {
+		   document.getElementById("warning").innerHTML = "Please type a password of at least 4 characters.";
+		   form.passwd.focus();
+		   return false;
+	   }
+	  return true;
+	}
+	</script>
 </body>
 </html>
