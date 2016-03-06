@@ -1,0 +1,131 @@
+    @import url(http://fonts.googleapis.com/css?family=Oswald);
+body {
+    font-family: 'Oswald', 'Futura', sans-serif;
+    color: #fff;
+    background-color: #000;
+    margin: 0 auto;
+}
+.box {
+    text-align: center;
+}
+button {
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#search {
+width: 80%;
+display: block;
+padding-right: 10%;
+padding-left: 10%;
+color: #fff;
+}
+h2 {
+    color: #fff;
+}
+#content {
+    display: block;
+}
+    .star {
+    width: 25px;
+    cursor: pointer;
+    }
+    
+    @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+    @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+    @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+    .largestar {
+    width: 25px;
+    cursor: pointer;
+    -webkit-animation:spin 1s linear infinite;
+    -moz-animation:spin 1s linear infinite;
+    animation:spin 1s linear infinite;
+    }
+    
+    #content {
+    margin-top: 100px;
+    text-align: center;
+}
+#footer {
+    background-color: #fff;
+    height: 100px;
+    clear: both;
+    width: 100%;
+}
+#header {
+    z-index: 1;
+    position: fixed;
+    background-color: #000;
+    height: 100px;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+#header-e1 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+#header-e2 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+#header-e3 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+#user-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-left: 0;
+float: left;
+}
+#user-img:hover {
+height: 75px;
+}
+#cart-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-right: 0;
+float: right;
+}
+#cart-img:hover {
+height: 75px;
+}
+.small {
+width: 25px;
+height: 25px;
+display: inline;
+}
+#container > div {
+    width: 25px;
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    }
+#container:after {
+    content: "";
+    width: 100%;
+    display: inline-block;
+    }
+#clapper {
+	width: 75px;
+	height: 75px;
+}
+
+#list-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-left: 0;
+float: left;
+}
+
+#list-img:hover {
+height: 75px;
+}
