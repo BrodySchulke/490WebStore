@@ -471,6 +471,60 @@ public class MovieDB {
 			}
 		}
 	}
+
+public static boolean createMovie(String product_id, String price, String inventory, String title, String genre, String year, String length, String actor, String actress, String director) {
+	if (price == null || inventory == null || title == null || genre == null || year == null || length == null || actor == null || actress == null || director == null) {
+		return false;
+	}
+	String check = "select * from movies where title = " + "'" + title + "'" + " and release_year = " + Integer.parseInt(year); 
+	String query = "insert into movies(release_year, length, title, genre, actor, actress, director, inventory, price) "+ 
+			"values(?,?,?,?,?,?,?,?,?)";
+	try {
+		connection = getConnection();
+		Statement stmt2 = connection.createStatement();
+		ResultSet rs = stmt2.executeQuery(check);
+		if (rs.next()) {
+			return false;
+		}
+		try {
+			if (stmt2 != null) {
+				stmt2.close();
+			}
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+		connection = getConnection();
+		PreparedStatement stmt = connection.prepareStatement(query);
+		stmt.setInt(1, Integer.parseInt(year));
+		stmt.setInt(2, Integer.parseInt(length));
+		stmt.setString(3, title);
+		stmt.setString(4, genre);
+		stmt.setString(5, actor);
+		stmt.setString(6, actress);
+		stmt.setString(7, director);
+		stmt.setInt(8, Integer.parseInt(inventory));
+		stmt.setBigDecimal(9, new BigDecimal(price));
+		stmt.executeUpdate();
+	}catch(Exception e){
+		e.printStackTrace();
+		return false;
+	}finally{
+		try {
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
+	return true;
+}
 	
 	public static void updateMovie(String product_id, String price, String inventory) {
 		String query = "update movies set price = ?, inventory = ? where product_id = ?";

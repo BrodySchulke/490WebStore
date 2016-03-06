@@ -428,5 +428,37 @@ public class TransactionDB {
 			}
 		}
 	}
+	
+	public static String getAverageOfClosedTransactionsPerDayLastYear() {
+		String query = "select count(*) from transactions where status = false and close_date > CURRENT_DATE - INTERVAL '1 years'";
+		String result = "";
+		double count = 0;
+		double avg = 0;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				count = rs.getInt("count");
+				result = String.format("%.5f", avg);
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return result;
+	}
 
 }

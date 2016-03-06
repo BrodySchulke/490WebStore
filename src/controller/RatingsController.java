@@ -85,7 +85,7 @@ public class RatingsController extends HttpServlet {
 		} else if (requestURI.endsWith("star5")) {
 			updateRatings(5, request);
 		} else {
-			response.sendRedirect("../registerError.jsp");
+			response.sendRedirect("../general-error.html");
 		}
 	}
 	

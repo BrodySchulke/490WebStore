@@ -18,7 +18,7 @@ import db.MovieDB;
 @WebServlet(
 		name = "MovieServlet",
 		description = "A servlet for handling movies",
-		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify", "/movies/sort", "/movies/search" }
+		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify", "/movies/sort", "/movies/search", "/movies/create" }
 		)
 public class MovieController extends HttpServlet {
 	private static final long serialVersionUID = 1L;   
@@ -83,7 +83,23 @@ public class MovieController extends HttpServlet {
 		String requestURI = request.getRequestURI();
 		String url = "";
 		if (requestURI.endsWith("modify")) {
-			MovieDB.updateMovie(request.getParameter("product_id"), request.getParameter("price"), request.getParameter("inventory"));
+			MovieDB.updateMovie(request.getParameter("product_id"),
+					request.getParameter("price"),
+					request.getParameter("inventory"));
+		} else if (requestURI.endsWith("create")) {
+			if (!MovieDB.createMovie(request.getParameter("product_id"),
+					request.getParameter("price"),
+					request.getParameter("inventory"),
+					request.getParameter("title"),
+					request.getParameter("genre"),
+					request.getParameter("year"),
+					request.getParameter("length"),
+					request.getParameter("actor"),
+					request.getParameter("actress"),
+					request.getParameter("director"))) {
+				response.sendRedirect("../movies/createMovieError.jsp");
+				return;
+			}
 		}
 		response.sendRedirect("../movies/listMovies.jsp");
 	}
