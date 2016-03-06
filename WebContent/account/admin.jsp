@@ -13,6 +13,6 @@
 <p>Weekly Difference Sales: <%=TransactionDB.getWeeklyDifferenceAggregate() %></p>
 <p><%=OrderDB.getWeeklyBestSellersByIndividuals() %></p>
 <p><%=OrderDB.getWeeklyBestSellersByCategory() %></p>
-<p><%=RatingDB.getMostFavoriteMoviesBiWeekly() %></p>
+<p>Top Ten Highest Rated Movies for The Past Two Weeks: <%=RatingDB.getMostFavoriteMoviesBiWeekly() %></p>
 </body>
 </html>
