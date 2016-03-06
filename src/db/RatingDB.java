@@ -131,6 +131,31 @@ public class RatingDB {
 	}
 	
 	public static List<String> getMostFavoriteMoviesBiWeekly() {
-		return null;
+		List<String> topTenMostFavorited = new ArrayList<>();
+		String query = "select m.title, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id where r.time_stamp >= (now() - interval '2 weeks') group by m.product_id order by average desc limit 10";
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				topTenMostFavorited.add("Movie: " + rs.getString("title") + " Average Rating: " + rs.getDouble("average"));
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return topTenMostFavorited;
 	}
 }
