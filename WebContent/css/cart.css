@@ -1,0 +1,107 @@
+
+@import url(http://fonts.googleapis.com/css?family=Oswald);
+
+body {
+	font-family: 'Oswald', 'Futura', sans-serif;
+	color: #fff;
+	background-color: #000;
+	margin: 0 auto;
+}
+
+.box {
+	float: left;
+	text-align: center;
+	width: 20%;
+	height: 20%;
+}
+
+button {
+	
+}
+
+#list-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-left: 0;
+float: left;
+}
+
+#list-img:hover {
+height: 75px;
+}
+
+#user-img {
+width: 50%;
+height: 50px;
+display: block;
+margin-right: 0;
+float: right;
+}
+#user-img:hover {
+height: 75px;
+}
+
+.cart-icon:hover {
+width: 35px;
+}
+
+h2 {
+	color: #fff;
+}
+
+#content {
+	display: block;
+}
+
+div {
+	border-radius: 5px;
+	margin: auto;
+}
+
+#header {
+	z-index: 1;
+	position: fixed;
+	background-color: #000;
+	height: 100px;
+	width: 100%;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+
+#content {
+	margin-top: 100px;
+}
+
+#footer {
+	background-color: #fff;
+	height: 100px;
+	clear: both;
+	width: 100%;
+	margin-top: 100%;
+}
+
+#header-e1 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+
+#header-e2 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+
+#header-e3 {
+    float: left;
+    width:33%;
+    height: 100px;
+}
+
+h7 {
+	color: #fff;
+	text-align: center;
+	margin-bottom: 20px;
+}

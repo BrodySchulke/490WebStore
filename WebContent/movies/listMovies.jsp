@@ -13,7 +13,7 @@
 				font-family: Arial, Verdana, sans-serif;
 				color: #111111;}
 	table {
-				width: 800px;
+				width: 100%;
 				margin: auto;
 				border-collapse: collapse;
 				}
@@ -152,6 +152,7 @@ function checkform ( form ) {
 		</div>
 	</div>
 	<div id="content">
+	<div id="filter-ui"><h6>FILTER SHIT HERE</h6></div>
 		<table id="list">
 			<tr>
 				<th><a href="javascript:sortMovies('title');">Title</a></th>
@@ -172,7 +173,6 @@ function checkform ( form ) {
 				movies = MovieDB.viewMovies((String)request.getSession().getAttribute("sort_value"), 0);
 			}
 			else if (narrow.equals("search")) {
-				System.out.println("shit");
 				movies = MovieDB.viewMoviesSearch((String)request.getSession().getAttribute("search_value"), 0);
 			} else if (narrow.equals("filter")) {
 				movies = MovieDB.viewMoviesFilter((String)request.getSession().getAttribute("filter_value"), 0);
