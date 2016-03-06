@@ -20,7 +20,7 @@
 	th, td {
 				padding: 12px 10px;}
 	th{
-		
+
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		font-size: 90%;
@@ -56,7 +56,6 @@
 #footer {
 	background-color: #fff;
 	height: 100px;
-	clear: both;
 	width: 100%;
 }
 #header-e1 {
@@ -152,7 +151,6 @@ function checkform ( form ) {
 		</div>
 	</div>
 	<div id="content">
-		<form id="movies" name="movies" method="post">
 		<table id="list">
 			<tr>
 				<th><a href="javascript:sortMovies('title');">Title</a></th>
@@ -190,7 +188,7 @@ function checkform ( form ) {
 					<%if (((Customer)request.getSession().getAttribute("customer")).getUsername().equals("admin")) {%>
 						document.getElementById("modify_product_id").value = product_id;
 						document.modifyMovie.submit();
-					<% } else {%>
+					<% } else { %>
 						document.getElementById("product_id").value = product_id;
 						document.viewMovie.submit();
 					<% } %>
@@ -204,7 +202,7 @@ function checkform ( form ) {
 			<%
 				}
 			%>
-		</form>
+	</table>
 	<form name="viewMovie" method="get" action="showMovie.jsp">
 		<input type="hidden" name="movie_product_id" id="product_id">
 	</form>
@@ -237,6 +235,7 @@ function checkform ( form ) {
 	<% } %>
 </div>
 	
-<div id="footer"></div>
+<div id="footer">
+</div>
 </body>
 </html>

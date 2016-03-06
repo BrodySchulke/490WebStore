@@ -37,6 +37,7 @@ public class MovieController extends HttpServlet {
 		String requestURI = request.getRequestURI();
 		String url = "";
 		String sort_value = (String)request.getParameter("sort_value");
+		//if request does not have a sort value
 		if (sort_value == null) {
 			sort_value = (String)request.getSession().getAttribute("sort_value");
 		}
@@ -52,8 +53,8 @@ public class MovieController extends HttpServlet {
 //			MovieDB.showAMovie(Integer.parseInt(request.getParameter("movie_view")));
 		} else if (requestURI.endsWith("sort")) {
 			HttpSession userSession = request.getSession();
+			userSession.setAttribute("narrow", "sort");
 			updateSessionSortValue(userSession, sort_value);
-			userSession.setAttribute("sort_value", sort_value);
 			url = "../movies/listMovies.jsp";
 		} else if (requestURI.endsWith("search")) {
 			url ="../movies/listMovies.jsp";

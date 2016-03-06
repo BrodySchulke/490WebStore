@@ -112,7 +112,6 @@ public class MovieDB {
 	//add value to form button for submission. if negative, go back 20, else forward 20
 	public static ArrayList<Movie> viewMovies(String sort_value, int stepValue) {
 		String query = null;
-		System.out.println("movie db " + sort_value);
 		if (sort_value == null) {
 			sort_value = "product_id";
 			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
