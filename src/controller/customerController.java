@@ -115,7 +115,11 @@ public class customerController extends HttpServlet {
 	
 	private static void makeCustomerSession(HttpServletRequest request, Customer customer) {
 		HttpSession userSession = request.getSession();
-//		System.out.println(userSession.getId());
+		userSession.setAttribute("narrow","");
+		userSession.setAttribute("search_value", "");
+		userSession.setAttribute("filter_value", "");
+		userSession.setAttribute("sort_value", "");
+		//		System.out.println(userSession.getId());
 		Transaction transaction = TransactionDB.initializeCart(customer);
 		Map<Movie, Order> cart = new HashMap<>();
 		OrderDB.getOrdersAssociatedWithCustomer(cart, transaction);

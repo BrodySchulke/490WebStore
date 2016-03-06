@@ -35,10 +35,18 @@ public class MovieController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
+		System.out.println(requestURI);
 		String url = "";
 		String sort_value = (String)request.getParameter("sort_value");
+		String search_value = (String)request.getParameter("search_value");
+		System.out.println(search_value);
 		if (sort_value == null) {
 			sort_value = (String)request.getSession().getAttribute("sort_value");
+		}
+		if (search_value == null) {
+			search_value = (String)request.getSession().getAttribute("search_value");
+			System.out.println("search value was null");
+			System.out.println(search_value);
 		}
 		if (requestURI.endsWith("show_next")) {
 			url = "../movies/listMovies.jsp";
@@ -52,10 +60,14 @@ public class MovieController extends HttpServlet {
 //			MovieDB.showAMovie(Integer.parseInt(request.getParameter("movie_view")));
 		} else if (requestURI.endsWith("sort")) {
 			HttpSession userSession = request.getSession();
+			userSession.setAttribute("narrow", "sort");
 			updateSessionSortValue(userSession, sort_value);
-			userSession.setAttribute("sort_value", sort_value);
 			url = "../movies/listMovies.jsp";
 		} else if (requestURI.endsWith("search")) {
+			System.out.println("the actual search_value in movie controller " + search_value);
+			HttpSession userSession = request.getSession();
+			userSession.setAttribute("narrow", "search");
+			updateSessionSearchValue(userSession, search_value);
 			url ="../movies/listMovies.jsp";
 		}
 		else {
@@ -81,5 +93,12 @@ public class MovieController extends HttpServlet {
 			MovieDB.setOffset(0);
 		}
 		userSession.setAttribute("sort_value", sort_value);
+	}
+	
+	private void updateSessionSearchValue(HttpSession userSession, String search_value) {
+		if (!search_value.equals(userSession.getAttribute("search_value"))) {
+			MovieDB.setOffset(0);
+		}
+		userSession.setAttribute("search_value", search_value);
 	}
 }
