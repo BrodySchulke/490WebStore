@@ -121,6 +121,7 @@ function checkform ( form ) {
 	    form.search.focus();
 		return false;
 	}
+	return true;
 }
 </script>
 	<!-- should present movies in different way, maybe like grid -->
@@ -139,8 +140,8 @@ function checkform ( form ) {
 		</div>
 		<div id="header-e2">
 			<h7>THREE STOOGES EXCLUSIVE ANTIQUE FILM BOUTIQUE</h7>
-			<form action="movies/search" method="get" onsubmit="return checkform(this);" id=signup-form>
-				<input type="text" name="search" id="search" placeholder="search our exclusive boutique..." />
+			<form action="../movies/search" method="get" onsubmit="return checkform(this);" id="search-form">
+				<input type="text" name="search_value" id="search" placeholder="search our exclusive boutique..." />
 				<input type="submit" value="submit" id="submit"/>
 			</form>
 		</div>
@@ -165,7 +166,19 @@ function checkform ( form ) {
 				<th>View</th>
 			</tr>
 			<%
-				ArrayList<Movie> movies = MovieDB.viewMovies((String)request.getSession().getAttribute("sort_value"), 0);
+			ArrayList<Movie> movies = new ArrayList<>();
+			String narrow = (String)request.getSession().getAttribute("narrow");
+			if (narrow == null) {
+				movies = MovieDB.viewMovies((String)request.getSession().getAttribute("sort_value"), 0);
+			}
+			else if (narrow.equals("search")) {
+				System.out.println("shit");
+				movies = MovieDB.viewMoviesSearch((String)request.getSession().getAttribute("search_value"), 0);
+			} else if (narrow.equals("filter")) {
+				movies = MovieDB.viewMoviesFilter((String)request.getSession().getAttribute("filter_value"), 0);
+			} else {
+				movies = MovieDB.viewMovies((String)request.getSession().getAttribute("sort_value"), 0);
+			}
 				for (Movie m : movies) {
 			%>
 			<tr>

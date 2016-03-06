@@ -112,6 +112,127 @@ public class MovieDB {
 	//add value to form button for submission. if negative, go back 20, else forward 20
 	public static ArrayList<Movie> viewMovies(String sort_value, int stepValue) {
 		String query = null;
+		System.out.println("movie db " + sort_value);
+		if (sort_value.equals("")) {
+			sort_value = "product_id";
+			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
+		} else if (sort_value.equals("rating")){
+			query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
+		} else {
+			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
+		}
+		offset += stepValue;
+		if (offset < 0) {
+			offset = 0;
+		}
+		ArrayList<Movie> movieList = new ArrayList<>();
+		Movie movie = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+//			PreparedStatement percent = connection.prepareStatement("update movies set release_year = 2015 where product_id = 1");
+//			PreparedStatement percent2 = connection.prepareStatement("update movies set release_year = 2016 where product_id = 2");
+//			percent.executeUpdate();
+//			percent2.executeUpdate();
+			while (rs.next()) {
+				movie = new Movie();
+				movie.setActor(rs.getString("actor"));
+				movie.setActress(rs.getString("actress"));
+				movie.setDirector(rs.getString("director"));
+				movie.setGenre(rs.getString("genre"));
+				movie.setInventory(rs.getInt("inventory"));
+				movie.setLength(rs.getInt("length"));
+				movie.setPrice(rs.getDouble("price"));
+				movie.setProduct_id(rs.getInt("product_id"));
+				movie.setRelease_year(rs.getInt("release_year"));
+				movie.setTitle(rs.getString("title"));
+				movieList.add(movie);
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return movieList;
+	}
+	
+	
+	
+	
+	//add value to form button for submission. if negative, go back 20, else forward 20
+	public static ArrayList<Movie> viewMoviesSearch(String search_value, int stepValue) {
+		String query = null;
+		StringBuilder queryBuilder = new StringBuilder();
+		System.out.println("movie db " + search_value);
+		String[] searcher = search_value.split(" ");
+		System.out.println(search_value);
+		for (String s : searcher) {
+			System.out.println(s);
+			queryBuilder.append(".*").append(s).append(".*");
+		}
+		query = "select * from movies where title ~ " + "'" + queryBuilder.toString() + "'" + "or genre ~ " + "'" + queryBuilder.toString() + "'" + "limit 20";
+		System.out.println(query);
+		offset += stepValue;
+		if (offset < 0) {
+			offset = 0;
+		}
+		ArrayList<Movie> movieList = new ArrayList<>();
+		Movie movie = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				movie = new Movie();
+				movie.setActor(rs.getString("actor"));
+				movie.setActress(rs.getString("actress"));
+				movie.setDirector(rs.getString("director"));
+				movie.setGenre(rs.getString("genre"));
+				movie.setInventory(rs.getInt("inventory"));
+				movie.setLength(rs.getInt("length"));
+				movie.setPrice(rs.getDouble("price"));
+				movie.setProduct_id(rs.getInt("product_id"));
+				movie.setRelease_year(rs.getInt("release_year"));
+				movie.setTitle(rs.getString("title"));
+				movieList.add(movie);
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return movieList;
+	}
+	
+	
+	
+	//TODO
+	//add value to form button for submission. if negative, go back 20, else forward 20
+	public static ArrayList<Movie> viewMoviesFilter(String sort_value, int stepValue) {
+		String query = null;
 		if (sort_value == null) {
 			sort_value = "product_id";
 			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
@@ -166,6 +287,7 @@ public class MovieDB {
 		}
 		return movieList;
 	}
+	
 	
 	public static Movie showAMovie(int movieId){
 		String query = "select * from movies where product_id = " + movieId;
