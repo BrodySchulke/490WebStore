@@ -152,6 +152,7 @@ display: inline;
 				<th>Director</th>
 				<th>Price</th>
 				<th>Rating</th>
+				
 				<th>View</th>
 			</tr>
 			<%
@@ -159,16 +160,17 @@ display: inline;
 				for (Movie m : movies) {
 			%>
 			<tr>
-				<td width="10%"><%=m.getTitle()%></td>
-				<td width="10%"><%=m.getGenre()%></td>
-				<td width="10%"><%=m.getRelease_year()%></td>
-				<td width="10%"><%=m.getLength()%> minutes</td>
-				<td width="10%"><%=m.getActor()%></td>
-				<td width="10%"><%=m.getActress()%></td>
-				<td width="10%"><%=m.getDirector()%></td>
-				<td width="10%"><%=m.getPrice()%></td>
-				<td width="10%"><%=RatingDB.getRating(m)%></td>
-				<td width="10%"><a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a>
+				<td width="9%"><%=m.getTitle()%></td>
+				<td width="9%"><%=m.getGenre()%></td>
+				<td width="9%"><%=m.getRelease_year()%></td>
+				<td width="9%"><%=m.getLength()%> minutes</td>
+				<td width="9%"><%=m.getActor()%></td>
+				<td width="9%"><%=m.getActress()%></td>
+				<td width="9%"><%=m.getDirector()%></td>
+				<td width="9%"><%=m.getPrice()%></td>
+				<td width="9%"><%=RatingDB.getRating(m)%></td>
+				<%if (((Customer)request.getSession().getAttribute("customer")).getUsername().equals("admin")) {%><td width="9%"><%=m.getInventory()%></td><% } %>				
+				<td width="9%"><a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a>
 				</td>
 			</tr>
 
