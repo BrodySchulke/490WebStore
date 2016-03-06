@@ -30,7 +30,7 @@ import model.Transaction;
 @WebServlet(
 		name = "CustomerServlet",
 		description = "A servlet for handling customers",
-		urlPatterns = { "/signup/customer/*", "/home/customer/*" }
+		urlPatterns = { "/signup/customer/*", "/home/customer/*", "/*/validuser/*" }
 		)
 //@WebServlet("/customerController")
 public class customerController extends HttpServlet {
@@ -48,7 +48,6 @@ public class customerController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
