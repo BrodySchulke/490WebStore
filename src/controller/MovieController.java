@@ -37,7 +37,9 @@ public class MovieController extends HttpServlet {
 		String requestURI = request.getRequestURI();
 		String url = "";
 		String sort_value = (String)request.getParameter("sort_value");
-		System.out.println("controller " + sort_value);
+		if (sort_value == null) {
+			sort_value = (String)request.getSession().getAttribute("sort_value");
+		}
 		if (requestURI.endsWith("show_next")) {
 			url = "../movies/listMovies.jsp";
 			MovieDB.setOffset(MovieDB.getOffset() + 20);
@@ -75,7 +77,7 @@ public class MovieController extends HttpServlet {
 	}
 	
 	private void updateSessionSortValue(HttpSession userSession, String sort_value) {
-		if (sort_value != userSession.getAttribute("sort_value")) {
+		if (!sort_value.equals(userSession.getAttribute("sort_value"))) {
 			MovieDB.setOffset(0);
 		}
 		userSession.setAttribute("sort_value", sort_value);
