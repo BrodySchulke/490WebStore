@@ -57,6 +57,7 @@
 	background-color: #fff;
 	height: 100px;
 	width: 100%;
+	color: black;
 }
 #header-e1 {
     float: left;
@@ -246,9 +247,6 @@ function checkform ( form ) {
 		<button type="submit">Previous</button>
 	</form>
 	<% } %>
-</div>
-	
-<div id="footer">
 </div>
 </body>
 </html>
