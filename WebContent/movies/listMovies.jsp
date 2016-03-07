@@ -226,26 +226,14 @@ function getVals(){
 					<a href="javascript:filterPrice();">Filter by price</a>
 				</th>
 				<th><a href="javascript:sortMovies('rating');">Rating</a>
-					<select name="filter" form="filter_rating">
-					  <option value="Adventure">1</option>
-					  <option value="Drama">2</option>
-					  <option value="Horror">3</option>
-					  <option value="Comedy">4</option>
-					  <option value="Science Fiction">Science Fiction</option>
-					  <option value="Fantasy">Fantasy</option>
-					  <option value="Westerns">Westerns</option>
-					  <option value="Western">Western</option>
-					  <option value="Crime">Crime</option>
-					  <option value="Action">Action</option>
-					  <option value="Music">Music</option>
-					  <option value="War">War</option>
-					  <option value="Romance">Romance</option>
-					  <option value="Mystery">Mystery</option>
-					  <option value="War">Short</option>
+					<select name="rating_select" id="rating_select">
+					  <option value="1">1</option>
+					  <option value="2">2</option>
+					  <option value="3">3</option>
+					  <option value="4">4</option>
+					  <option value="5">5</option>
 					</select>
-					<form name="filterGenre" method="get" action="../movies/filter_genre" id="filter_genre">
-						<input type="submit" name="filter_genre" id="genre_filter">
-					</form>
+					<a href="javascript:filterRatings();">Filter by rating</a>
 				</th>
 				<th>View</th>
 			</tr>
@@ -303,6 +291,11 @@ function getVals(){
 					document.getElementById("filter_price").value = lowprice + " " + highprice;
 					document.getElementById("priceform").submit();
 				}
+				function filterRatings() {
+					var rating = document.getElementById("rating_select").value;
+					document.getElementById("filter_rating").value = rating;
+					document.getElementById("ratingform").submit();
+				}
 			</script>
 
 			<%
@@ -323,6 +316,9 @@ function getVals(){
 	</form>
 	<form name="filter" method="get" action="../movies/filter_price" id="priceform">
 		<input type="hidden" name="filter" id="filter_price">
+	</form>
+	<form name="filter" method="get" action="../movies/filter_rating" id="ratingform">
+		<input type="hidden" name="filter" id="filter_rating">
 	</form>
 	<%
 		if (movies.size() == 20) {

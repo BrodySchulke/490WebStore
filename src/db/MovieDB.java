@@ -130,10 +130,6 @@ public class MovieDB {
 			connection = getConnection();
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-//			PreparedStatement percent = connection.prepareStatement("update movies set release_year = 2015 where product_id = 1");
-//			PreparedStatement percent2 = connection.prepareStatement("update movies set release_year = 2016 where product_id = 2");
-//			percent.executeUpdate();
-//			percent2.executeUpdate();
 			while (rs.next()) {
 				movie = new Movie();
 				movie.setActor(rs.getString("actor"));
@@ -236,11 +232,14 @@ public class MovieDB {
 		} else if (filter_list[0].equals("price")) {
 			String [] arr = filter_list[1].split(" ");
 			double mydouble = Double.parseDouble(arr[0]);
-			System.out.println(mydouble);
 			PGmoney minPrice = new PGmoney(Double.parseDouble(arr[0]));
 			PGmoney maxPrice = new PGmoney(Double.parseDouble(arr[1]));
-			System.out.println(minPrice);
 			query = "select m.* from movies m where m.price >= " + "'" + minPrice + "'" + " and m.price <= " + "'" + maxPrice + "'" + " order by price desc offset " + offset + " limit " + numberOfRecords; 
+		}	
+		else {
+			double upperBound = Double.parseDouble(filter_list[1]) + 0.5;
+			double lowerBound = Double.parseDouble(filter_list[1]) - 0.5;
+			query = "select * from averages where average <= " + upperBound + " and average >= " + lowerBound + " order by average desc offset " + offset + " limit " + numberOfRecords;
 		}
 		offset += stepValue;
 		if (offset < 0) {
