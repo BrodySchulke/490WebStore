@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +21,7 @@ import db.MovieDB;
 		name = "MovieServlet",
 		description = "A servlet for handling movies",
 		urlPatterns = { "/movies/show_next", "/movies/show_previous", "/movies/modify", "/movies/sort", "/movies/search",
-				"/movies/filter", "/movies/filter_years"}
+				"/movies/filter_genre", "/movies/filter_years", "/movies/filter_price"}
 		)
 public class MovieController extends HttpServlet {
 	private static final long serialVersionUID = 1L;   
@@ -40,11 +42,12 @@ public class MovieController extends HttpServlet {
 		String url = "";
 		String sort_value = (String)request.getParameter("sort_value");
 		String search_value = (String)request.getParameter("search_value");
-		String filter_value = (String)request.getParameter("genre_list");
+		String filter_value = (String)request.getParameter("filter");
 		Enumeration<String> parameterNames = request.getParameterNames();
 	    while (parameterNames.hasMoreElements()) {
 	    	String paramName = parameterNames.nextElement();
 	    	System.out.println(paramName);
+	    	System.out.println((String)request.getParameter(paramName));
 	    }
 		if (sort_value == null) {
 			sort_value = (String)request.getSession().getAttribute("sort_value");
@@ -52,19 +55,12 @@ public class MovieController extends HttpServlet {
 		if (search_value == null) {
 			search_value = (String)request.getSession().getAttribute("search_value");
 		}
-		if (filter_value == null) {
-			filter_value = (String)request.getSession().getAttribute("filter_value");
-		}
 		if (requestURI.endsWith("show_next")) {
 			url = "../movies/listMovies.jsp";
 			MovieDB.setOffset(MovieDB.getOffset() + 20);
 		} else if (requestURI.endsWith("show_previous")) {
 			url = "../movies/listMovies.jsp";
 			MovieDB.setOffset(MovieDB.getOffset() -20);
-//		}
-//		else if (requestURI.endsWith("show_details")) {
-//			url = "../movies/movieDetail.jsp";
-//			MovieDB.showAMovie(Integer.parseInt(request.getParameter("movie_view")));
 		} else if (requestURI.endsWith("sort")) {
 			HttpSession userSession = request.getSession();
 			userSession.setAttribute("narrow", "sort");
@@ -75,13 +71,26 @@ public class MovieController extends HttpServlet {
 			userSession.setAttribute("narrow", "search");
 			updateSessionSearchValue(userSession, search_value);
 			url ="../movies/listMovies.jsp";
-		} else if (requestURI.endsWith("filter")) {
+		} 
+		
+		else if (requestURI.endsWith("filter_genre")) {
 			HttpSession userSession = request.getSession();
 			userSession.setAttribute("narrow", "filter");
-			updateSessionFilterValue(userSession, filter_value);
+			updateSessionFilter(userSession, "genre", filter_value);
+			url ="../movies/listMovies.jsp";
+		} 
+		else if (requestURI.endsWith("filter_years")) {
+			HttpSession userSession = request.getSession();
+			userSession.setAttribute("narrow", "filter");
+			updateSessionFilter(userSession, "years", filter_value);
 			url ="../movies/listMovies.jsp";
 		}
-		
+		else if (requestURI.endsWith("filter_price")){
+			HttpSession userSession = request.getSession();
+			userSession.setAttribute("narrow", "filter");
+			updateSessionFilter(userSession, "price", filter_value);
+			url ="../movies/listMovies.jsp";
+		}
 		else {
 			url = "../movies/moviesError.jsp";
 		}
@@ -117,10 +126,13 @@ public class MovieController extends HttpServlet {
 		userSession.setAttribute("search_value", search_value);
 	}
 	
-	private void updateSessionFilterValue(HttpSession userSession, String filter_value) {
-		if (!filter_value.equals(userSession.getAttribute("filter_value"))) {
-			MovieDB.setOffset(0);
-		}
-		userSession.setAttribute("filter_value", filter_value);
+	private void updateSessionFilter(HttpSession userSession, String filterOn, String filter_value) {
+		String[] filterMap = new String[2];
+		filterMap[0] = filterOn;
+		filterMap[1] = filter_value;
+		userSession.setAttribute("filter_value", filterMap);
+		MovieDB.setOffset(0);
 	}
+	
+	
 }

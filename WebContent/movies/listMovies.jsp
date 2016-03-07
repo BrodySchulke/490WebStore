@@ -184,7 +184,7 @@ function getVals(){
 			<tr>
 				<th><a href="javascript:sortMovies('title');">Title</a></th>
 				<th><a href="javascript:sortMovies('genre');">Genre</a>
-					<select name="genre_list" form="filter_genre">
+					<select name="filter" form="filter_genre">
 					  <option value="Adventure">Adventure</option>
 					  <option value="Drama">Drama</option>
 					  <option value="Horror">Horror</option>
@@ -201,15 +201,15 @@ function getVals(){
 					  <option value="Mystery">Mystery</option>
 					  <option value="War">Short</option>
 					</select>
-					<form name="filterGenre" method="get" action="../movies/filter" id="filter_genre">
+					<form name="filterGenre" method="get" action="../movies/filter_genre" id="filter_genre">
 						<input type="submit" name="filter_genre" id="genre_filter">
 					</form>
 				</th>
 				<th><a href="javascript:sortMovies('release_year');">Release year</a>
 					<section class="range-slider">
 						<span class="rangeValues"></span>
-						<input value="5" min="0" max="15" step="0.5" type="range" id="lowyear">
-						<input value="10" min="0" max="15" step="0.5" type="range" id="highyear">
+						<input value="1920" min="1920" max="2016" step="1" type="range" id="lowyear">
+						<input value="2016" min="1920" max="2016" step="1" type="range" id="highyear">
 					</section>
 					<a href="javascript:filterYears();">Filter by year</a>
 				</th>
@@ -217,8 +217,36 @@ function getVals(){
 				<th><a href="javascript:sortMovies('actor');">Actor</a></th>
 				<th><a href="javascript:sortMovies('actress');">Actress</a></th>
 				<th><a href="javascript:sortMovies('director');">Director</a></th>
-				<th><a href="javascript:sortMovies('price');">Price</a></th>
-				<th><a href="javascript:sortMovies('rating');">Rating</a></th>
+				<th><a href="javascript:sortMovies('price');">Price</a>
+					<section class="range-slider">
+						<span class="rangeValues"></span>
+						<input value="4.99" min="4.99" max="19.99" step="1" type="range" id="lowprice">
+						<input value="19.99" min="4.99" max="19.99" step="1" type="range" id="highprice">
+					</section>
+					<a href="javascript:filterPrice();">Filter by price</a>
+				</th>
+				<th><a href="javascript:sortMovies('rating');">Rating</a>
+					<select name="filter" form="filter_rating">
+					  <option value="Adventure">1</option>
+					  <option value="Drama">2</option>
+					  <option value="Horror">3</option>
+					  <option value="Comedy">4</option>
+					  <option value="Science Fiction">Science Fiction</option>
+					  <option value="Fantasy">Fantasy</option>
+					  <option value="Westerns">Westerns</option>
+					  <option value="Western">Western</option>
+					  <option value="Crime">Crime</option>
+					  <option value="Action">Action</option>
+					  <option value="Music">Music</option>
+					  <option value="War">War</option>
+					  <option value="Romance">Romance</option>
+					  <option value="Mystery">Mystery</option>
+					  <option value="War">Short</option>
+					</select>
+					<form name="filterGenre" method="get" action="../movies/filter_genre" id="filter_genre">
+						<input type="submit" name="filter_genre" id="genre_filter">
+					</form>
+				</th>
 				<th>View</th>
 			</tr>
 			<%
@@ -229,7 +257,7 @@ function getVals(){
 			} else if (narrow.equals("search")) {
 				movies = MovieDB.viewMoviesSearch((String)request.getSession().getAttribute("search_value"), 0);
 			} else if (narrow.equals("filter")) {
-				movies = MovieDB.viewMoviesFilter((String)request.getSession().getAttribute("filter_value"), 0);
+				movies = MovieDB.viewMoviesFilter((String[])request.getSession().getAttribute("filter_value"), 0);
 			} else {
 				movies = MovieDB.viewMovies((String)request.getSession().getAttribute("sort_value"), 0);
 			}
@@ -264,12 +292,16 @@ function getVals(){
 					document.sortMovies.submit();
 				}
 				function filterYears() {
-					console.log("help");
 					var lowyear = document.getElementById("lowyear").value;
 					var highyear = document.getElementById("highyear").value;
-					document.getElementById("filter_years").value = lowyear + highyear;
-					console.log(document.getElementById("filter_years"));
-					document.filterYears.submit();
+					document.getElementById("filter_years").value = lowyear + " " + highyear;
+					document.getElementById("yearform").submit();
+				}
+				function filterPrice() {
+					var lowprice = document.getElementById("lowprice").value;
+					var highprice = document.getElementById("highprice").value;
+					document.getElementById("filter_price").value = lowprice + " " + highprice;
+					document.getElementById("priceform").submit();
 				}
 			</script>
 
@@ -286,8 +318,11 @@ function getVals(){
 	<form name="sortMovies" method="get" action="../movies/sort">
 		<input type="hidden" name="sort_value" id="sort_movie">
 	</form>
-	<form name="filterYears" method="get" action="../movies/filter_years">
-		<input type="hidden" name="filter_years" id="filter_years">
+	<form name="filter" method="get" action="../movies/filter_years" id="yearform">
+		<input type="hidden" name="filter" id="filter_years">
+	</form>
+	<form name="filter" method="get" action="../movies/filter_price" id="priceform">
+		<input type="hidden" name="filter" id="filter_price">
 	</form>
 	<%
 		if (movies.size() == 20) {

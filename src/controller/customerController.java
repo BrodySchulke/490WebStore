@@ -116,7 +116,7 @@ public class customerController extends HttpServlet {
 		HttpSession userSession = request.getSession();
 		userSession.setAttribute("narrow","");
 		userSession.setAttribute("search_value", "");
-		userSession.setAttribute("filter_value", "");
+		userSession.setAttribute("filter_value", new String[2]);
 		userSession.setAttribute("sort_value", "");
 		//		System.out.println(userSession.getId());
 		Transaction transaction = TransactionDB.initializeCart(customer);

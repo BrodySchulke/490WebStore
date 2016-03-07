@@ -224,18 +224,24 @@ public class MovieDB {
 	}
 	
 	
-	public static ArrayList<Movie> viewMoviesFilter(String filter_value, int stepValue) {
+	public static ArrayList<Movie> viewMoviesFilter(String[] filter_list, int stepValue) {
 		String query = null;
-		System.out.println(filter_value);
-//		if (filter_value == null) {
-//			sort_value = "product_id";
-//			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
-//		} else if (sort_value.equals("rating")){
-//			query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id where m.inventory > 0 group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
-//		} else {
-//			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
-//		}
-		query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id where m.genre = " + "'" + filter_value + "'" + " group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
+		if (filter_list[0].equals("genre")) {
+			query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id where m.genre = " + "'" + filter_list[1] + "'" + " group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
+		} else if (filter_list[0].equals("years")) {
+			String [] arr = filter_list[1].split(" ");
+			int minYear = Integer.parseInt(arr[0]);
+			int maxYear = Integer.parseInt(arr[1]);
+			query = "select m.* from movies m where m.release_year >= " + minYear + " and m.release_year <= " + maxYear + " order by release_year desc offset " + offset + " limit " + numberOfRecords;
+		} else if (filter_list[0].equals("price")) {
+			String [] arr = filter_list[1].split(" ");
+			double mydouble = Double.parseDouble(arr[0]);
+			System.out.println(mydouble);
+			PGmoney minPrice = new PGmoney(Double.parseDouble(arr[0]));
+			PGmoney maxPrice = new PGmoney(Double.parseDouble(arr[1]));
+			System.out.println(minPrice);
+			query = "select m.* from movies m where m.price >= " + "'" + minPrice + "'" + " and m.price <= " + "'" + maxPrice + "'" + " order by price desc offset " + offset + " limit " + numberOfRecords; 
+		}
 		offset += stepValue;
 		if (offset < 0) {
 			offset = 0;
@@ -492,5 +498,6 @@ public class MovieDB {
 	public static void setOffset(int value) {
 		offset = value;
 	}
+	
 }		
 
