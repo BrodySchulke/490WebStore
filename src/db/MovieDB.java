@@ -412,7 +412,6 @@ public class MovieDB {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try{
-			
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
 			stmt = conn.prepareStatement("select * from movies where product_id = ? or title = ?");
@@ -471,6 +470,36 @@ public class MovieDB {
 public static boolean createMovie(String product_id, String price, String inventory, String title, String genre, String year, String length, String actor, String actress, String director) {
 	if (price == null || inventory == null || title == null || genre == null || year == null || length == null || actor == null || actress == null || director == null) {
 		return false;
+	}
+	boolean correctGenre = false;
+	String distinct = "select distinct genre from movies where genre is not null";
+	try {
+	    connection = getConnection();
+	    Statement stmt3 = connection.createStatement();
+	    ResultSet rs3 = stmt3.executeQuery(distinct);
+	    while (rs3.next()) {
+	        if (rs3.getString("genre").equals(genre)) {
+	            correctGenre = true;
+	            break;
+	        }
+	    }
+	    try {
+	        if (stmt3 != null) {
+	            stmt3.close();
+	        }
+	        if (connection != null) {
+	            connection.close();
+	        }
+	    } catch (SQLException sqle) {
+	        sqle.printStackTrace();
+	    }
+	} catch (SQLException sqle) {
+	    sqle.printStackTrace();
+	} catch (ClassNotFoundException cnfe) {
+	    cnfe.printStackTrace();
+	}
+	if (correctGenre == false) {
+	    return false;
 	}
 	String check = "select * from movies where title = " + "'" + title + "'" + " and release_year = " + Integer.parseInt(year); 
 	String query = "insert into movies(release_year, length, title, genre, actor, actress, director, inventory, price) "+ 

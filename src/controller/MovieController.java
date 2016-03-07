@@ -107,9 +107,12 @@ public class MovieController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
 		String url = "";
-		String body = request.getReader().lines()
-			    .reduce("", (accumulator, actual) -> accumulator + actual);
-		System.out.println(body);
+		Enumeration<String> parameterNames = request.getParameterNames();
+	    while (parameterNames.hasMoreElements()) {
+	    	String paramName = parameterNames.nextElement();
+	    	System.out.println(paramName);
+	    	System.out.println((String)request.getParameter(paramName));
+	    }
 		if (requestURI.endsWith("modify")) {
 			MovieDB.updateMovie(request.getParameter("product_id"),
 					request.getParameter("price"),
