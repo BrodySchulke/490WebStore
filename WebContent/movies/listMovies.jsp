@@ -29,6 +29,7 @@
 		border-bottom: 2px solid #111111;
 		border-top: 1px solid #999;
 		text-align: left;
+		background-color: #fff;
 	}
 	
 	tr {

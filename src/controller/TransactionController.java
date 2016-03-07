@@ -87,6 +87,9 @@ public class TransactionController extends HttpServlet {
 		HttpSession userSession = request.getSession();
 		Map<Movie, Order> cart = (Map<Movie, Order>)userSession.getAttribute("cart");
 		boolean purchaseStatus = true;
+		if (cart.entrySet().size() <= 0) {
+			purchaseStatus = false;
+		}
 		for (Map.Entry e : cart.entrySet()) {	
 			Movie m = (Movie)e.getKey();
 			Order o = (Order)cart.get(e.getKey());

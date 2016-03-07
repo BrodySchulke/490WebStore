@@ -73,23 +73,22 @@ public class RatingsController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
-//		System.out.println(requestURI);
 		if (requestURI.endsWith("star1")) {
-			updateRatings(1, request);
+			updateRatings(1, request, response);
 		} else if (requestURI.endsWith("star2")) {
-			updateRatings(2, request);
+			updateRatings(2, request, response);
 		} else if (requestURI.endsWith("star3")) {
-			updateRatings(3, request);
+			updateRatings(3, request, response);
 		} else if (requestURI.endsWith("star4")) {
-			updateRatings(4, request);
+			updateRatings(4, request, response);
 		} else if (requestURI.endsWith("star5")) {
-			updateRatings(5, request);
+			updateRatings(5, request, response);
 		} else {
 			response.sendRedirect("../general-error.html");
 		}
 	}
 	
-	private void updateRatings(int rating, HttpServletRequest request) throws IOException {
+	private void updateRatings(int rating, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession userSession = request.getSession();
 		String body = request.getReader().lines()
 			    .reduce("", (accumulator, actual) -> accumulator + actual);
@@ -101,7 +100,12 @@ public class RatingsController extends HttpServlet {
 	    }
 	    Movie m = new Movie().createMovie(mapper);
 	    Customer c = (Customer)userSession.getAttribute("customer");
-	    RatingDB.updateRating(rating, m, c);
+	    
+	    if (RatingDB.updateRating(rating, m, c)) {
+	    	response.getWriter().write("rating successful!");
+	    } else {
+	    	response.getWriter().write("rating unsuccessful! you must have already rated this movie!");
+	    }
 	}
 	
 }
