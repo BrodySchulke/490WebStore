@@ -67,7 +67,7 @@ public class OrderController extends HttpServlet {
 //			response.sendRedirect("../cart/cart.jsp");
 		}
 		else {
-			response.sendRedirect("../registerError.jsp");
+			response.sendRedirect("../orders/orderError.jsp");
 		}
 	}
 	

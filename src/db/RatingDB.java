@@ -99,7 +99,8 @@ public class RatingDB {
 	}
 	
 	public static int getRating(Movie m) {
-		String query = "select rating from ratings where product_id = " + m.getProduct_id();
+		String query ="select * from averages where product_id = " + m.getProduct_id();
+		//String query = "select rating from ratings where product_id = " + m.getProduct_id();
 		int rating = 0;
 		try {
 			connection = getConnection();
@@ -107,10 +108,11 @@ public class RatingDB {
 			ResultSet rs = stmt.executeQuery(query);
 			int totalRating = 0, count = 0;
 			while (rs.next()) {
-				totalRating += rs.getInt("rating");
-				count++;
+				//totalRating += rs.getInt("rating");
+				//count++;
+				rating = (int)rs.getDouble("average");
 			}
-			rating = totalRating / count;
+			//rating = totalRating / count;
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		} catch (ClassNotFoundException cnfe) {

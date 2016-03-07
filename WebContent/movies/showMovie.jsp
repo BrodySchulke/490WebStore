@@ -67,7 +67,6 @@
 	<button id="add_to_cart">Add To Cart</button>
 </div>
 </div>
-<div id="footer"></div>
 <script>
 
 var orderButton = document.getElementById("add_to_cart");

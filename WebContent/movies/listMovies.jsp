@@ -11,8 +11,11 @@
 @import url(http://fonts.googleapis.com/css?family=Oswald);
 	body {
 				font-family: Arial, Verdana, sans-serif;
-				color: #111111;}
+				background-color: #000;
+				}
 	table {
+				color: #fff;
+				background-color: #000;
 				width: 100%;
 				margin: auto;
 				border-collapse: collapse;
@@ -20,7 +23,6 @@
 	th, td {
 				padding: 12px 10px;}
 	th{
-
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		font-size: 90%;
@@ -29,8 +31,8 @@
 		text-align: left;
 	}
 	
-	tr:nth-child(even){
-		background-color: #efefef;
+	tr {
+	background-color: #000;
 	}
 	
 	tr:hover {
@@ -57,6 +59,7 @@
 	background-color: #fff;
 	height: 100px;
 	width: 100%;
+	color: black;
 }
 #header-e1 {
     float: left;
@@ -341,9 +344,6 @@ function getVals(){
 		<button type="submit">Previous</button>
 	</form>
 	<% } %>
-</div>
-	
-<div id="footer">
 </div>
 </body>
 </html>
