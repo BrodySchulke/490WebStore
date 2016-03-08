@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Admin Analytics</title>
 </head>
 <body>
 <%
@@ -16,13 +16,14 @@ else { response.sendRedirect("../home/loginForm.html"); }
 <p>Weekly Aggregate Sales: <%=TransactionDB.getWeeklyAggregateSales() %></p>
 <p>Monthly Difference Sales: <%=TransactionDB.getMonthlyDifferenceAggregate() %></p>
 <p>Weekly Difference Sales: <%=TransactionDB.getWeeklyDifferenceAggregate() %></p>
-<p>Monthly Aggregate Profit: $<%=TransactionDB.getMonthlyAggregateProfit() %></p>
-<p>Weekly Aggregate Profit: $<%=TransactionDB.getWeeklyAggregateProfit() %></p>
+<p>Monthly Aggregate Profit: <%=TransactionDB.getMonthlyAggregateProfit() %></p>
+<p>Weekly Aggregate Profit: <%=TransactionDB.getWeeklyAggregateProfit() %></p>
 <p>Monthly Difference Profit: <%=TransactionDB.getMonthlyDifferenceProfit() %></p>
 <p>Weekly Difference Profit: <%=TransactionDB.getWeeklyDifferenceProfit() %></p>
 <p>Top Ten Best Sellers Weekly: <%=OrderDB.getWeeklyBestSellersByIndividuals() %></p>
 <p>Top Five Best Sellers By Category: <%=OrderDB.getWeeklyBestSellersByCategory() %></p>
 <p>Top Ten Highest Rated Movies for The Past Two Weeks: <%=RatingDB.getMostFavoriteMoviesBiWeekly() %></p>
+<p>List of Customers that Purchase a Category Two Times or More in The Past Month: <%=OrderDB.getCustomersPurchasingCategoryMoreThanTwoTimesAMonth() %>
 <p>Average Number of Closed Transactions Per Day for The Past Year: <%=TransactionDB.getAverageOfClosedTransactionsPerDayLastYear() %>
 <p>Create a Movie: </p>
 		<form action="../movies/create" method="post">

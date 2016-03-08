@@ -57,7 +57,7 @@ public class TransactionDB {
 			}
 		}
 		Calendar cal = Calendar.getInstance();
-		return "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " Total: " + String.format("%.2f", (money.val - 300));
+		return "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " Total: $" + String.format("%.2f", (money.val - 300));
 	}
 	
 	public static String getMonthlyAggregateSales() {
@@ -117,7 +117,7 @@ public class TransactionDB {
 			}
 		}
 		Calendar cal = Calendar.getInstance();
-		return "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " Day: " + cal.get(Calendar.DAY_OF_MONTH) + " Total: " + String.format("%.2f", (money.val - 75));
+		return "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " Day: " + cal.get(Calendar.DAY_OF_MONTH) + " Total: $" + String.format("%.2f", (money.val - 75));
 	}
 	
 	public static String getWeeklyAggregateSales() {
@@ -340,7 +340,7 @@ public class TransactionDB {
 		}
 		Calendar cal = Calendar.getInstance();
 		StringBuilder sb = new StringBuilder();
-		sb.append("Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " Day: " + cal.get(Calendar.DAY_OF_MONTH) + " compared to " + "Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH - 1]);
+		sb.append("Year: " + cal.get(Calendar.YEAR) + " Month: " + new DateFormatSymbols().getMonths()[Calendar.MONTH] + " Day: " + cal.get(Calendar.DAY_OF_MONTH));
 		cal.add(Calendar.DATE, -7);
 		sb.append(" Day: " + cal.get(Calendar.DAY_OF_MONTH) + " Total: $" + String.format("%.2f", difference - 75));
 		return sb.toString();
