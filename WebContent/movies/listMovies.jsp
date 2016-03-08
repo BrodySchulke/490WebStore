@@ -30,6 +30,7 @@
 		border-top: 1px solid #999;
 		text-align: left;
 		background-color: #fff;
+		color: black;
 	}
 	
 	tr {
