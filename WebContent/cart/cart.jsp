@@ -34,10 +34,8 @@
 	<div id="content">	
 	<p>Your cart</p>
 		<%
-			System.out.println("here again");
 			HttpSession sesh = request.getSession();
 			Map<Movie, Order> cart = (Map<Movie, Order>)sesh.getAttribute("cart");
-			System.out.println("cart" + cart);
 			Transaction t = (Transaction)sesh.getAttribute("transaction");
 			for (Map.Entry e : cart.entrySet()) {	
 				Movie m = (Movie)e.getKey();

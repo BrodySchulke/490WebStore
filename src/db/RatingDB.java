@@ -98,21 +98,16 @@ public class RatingDB {
 		return ratings;
 	}
 	
-	public static int getRating(Movie m) {
+	public static String getMovieRating(Movie m) {
 		String query ="select * from averages where product_id = " + m.getProduct_id();
-		//String query = "select rating from ratings where product_id = " + m.getProduct_id();
-		int rating = 0;
+		double rating = 0;
 		try {
 			connection = getConnection();
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			int totalRating = 0, count = 0;
 			while (rs.next()) {
-				//totalRating += rs.getInt("rating");
-				//count++;
-				rating = (int)rs.getDouble("average");
+				rating = rs.getDouble("average");
 			}
-			//rating = totalRating / count;
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		} catch (ClassNotFoundException cnfe) {
@@ -129,7 +124,7 @@ public class RatingDB {
 				sqle.printStackTrace();
 			}
 		}
-		return rating;
+		return String.format("%.2f", rating);
 	}
 	
 	public static List<String> getMostFavoriteMoviesBiWeekly() {

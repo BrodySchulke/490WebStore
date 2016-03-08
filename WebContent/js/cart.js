@@ -29,7 +29,7 @@ window.onload = function() {
 	                	 location.href='../movies/listMovies.jsp';
 	                 } else {
 	                 	alert(response);
-	                 	location.href='../movies/listMovies.jsp';
+	                 	location.href='../cart/cart.jsp';
 	                 }
 	             };
 	         };

@@ -35,7 +35,7 @@
 				<div><span class="star">*</span><label> Inventory : </label>
 					<input type="number" name="inventory" min=0 max=500 value="<%=m.getInventory()%>"/></div>
 				<div><span class="star">*</span><label> Rating : </label>
-					<span class="emph"><%=RatingDB.getRating(m) %></span></div>
+					<span class="emph"><%=RatingDB.getMovieRating(m) %></span></div>
 				<div id="warning" class="feedback"></div>
 				<input type="hidden" name="product_id" value=<%=m.getProduct_id() %>>
 				<input type="submit" value="Update Movie" id="submit"/>

@@ -39,20 +39,20 @@
 				for (Order o : orders) {
 					Movie m = MovieDB.getMovie(o);
 				%>
-				<p>Movie:</p>
-				<li>Title: <%=m.getTitle() %></li>
-				<li>Director: <%=m.getDirector() %></li>
-				<li>Release Year: <%=m.getRelease_year() %></li>
-				<li>Genre: <%=m.getGenre() %>
-				<li>Price: $<%=m.getPrice() %>
-				<li>Quantity Ordered: <%=o.getQuantity() %>
-				<li>Quantity Price: $<%=o.getPrice() %>
-				<li>Date Ordered: <%=o.getOrder_date() %>
-				<%
+					<p>Movie:</p>
+					<li>Title: <%=m.getTitle() %></li>
+					<li>Director: <%=m.getDirector() %></li>
+					<li>Release Year: <%=m.getRelease_year() %></li>
+					<li>Genre: <%=m.getGenre() %>
+					<li>Price: $<%=m.getPrice() %>
+					<li>Quantity Ordered: <%=o.getQuantity() %>
+					<li>Quantity Price: $<%=o.getPrice() %>
+					<li>Date Ordered: <%=o.getOrder_date() %>
+					<%
 				}
 				%>
 				</ul>
-				<p>Total Price: <%=t.getTotal_price() %></p>
+				<p>Total Price: $<%=t.getTotal_price() %></p>
 				</div>
 			<% 
 			} 
@@ -64,20 +64,20 @@
 		HttpSession sesh2 = request.getSession();
 			for (Rating r : RatingDB.getRatings((Customer)sesh.getAttribute("customer"))) { %>
 			<div class="twentypercent">
-			<% List<Movie> movies = MovieDB.getMovies(r);
-			for (Movie m : movies) { %>
-			<ul>
-				<p>Movie:</p>
-				<li>Title: <%=m.getTitle() %></li>
-				<li>Director: <%=m.getDirector() %></li>
-				<li>Release Year: <%=m.getRelease_year() %></li>
-				<li>Genre: <%=m.getGenre() %>
-				<li>Price: $<%=m.getPrice() %>
-				<li>Rating: <%=r.getRating() %>
-				<li>Date: <%=r.getTime_stamp() %>
-				</ul>
-				</div>
-			<% } %>
+				<% List<Movie> movies = MovieDB.getMovies(r);
+				for (Movie m : movies) { %>
+				<ul>
+					<p>Movie:</p>
+					<li>Title: <%=m.getTitle() %></li>
+					<li>Director: <%=m.getDirector() %></li>
+					<li>Release Year: <%=m.getRelease_year() %></li>
+					<li>Genre: <%=m.getGenre() %>
+					<li>Price: $<%=m.getPrice() %>
+					<li>Rating: <%=r.getRating() %>
+					<li>Date: <%=r.getTime_stamp() %>
+					</ul>
+					</div>
+				<% } %>
 			<% } %>
 			</div>
 	</div>
