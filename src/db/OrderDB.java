@@ -271,7 +271,8 @@ public class OrderDB {
 					stmt2 = conn.createStatement();
 					ResultSet rs2 = stmt2.executeQuery(query2);
 					while (rs2.next()) {
-						customersTwice.add(rs2.getString("title"));
+						customersTwice.add(rs2.getString("username"));
+						customersTwice.add(" " + genre);
 					}
 				} catch (SQLException sqle) {
 					sqle.printStackTrace();
