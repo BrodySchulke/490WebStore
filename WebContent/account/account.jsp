@@ -39,16 +39,16 @@
 				for (Order o : orders) {
 					Movie m = MovieDB.getMovie(o);
 				%>
-				<p>Movie:</p>
-				<li>Title: <%=m.getTitle() %></li>
-				<li>Director: <%=m.getDirector() %></li>
-				<li>Release Year: <%=m.getRelease_year() %></li>
-				<li>Genre: <%=m.getGenre() %>
-				<li>Price: $<%=m.getPrice() %>
-				<li>Quantity Ordered: <%=o.getQuantity() %>
-				<li>Quantity Price: $<%=o.getPrice() %>
-				<li>Date Ordered: <%=o.getOrder_date() %>
-				<%
+					<p>Movie:</p>
+					<li>Title: <%=m.getTitle() %></li>
+					<li>Director: <%=m.getDirector() %></li>
+					<li>Release Year: <%=m.getRelease_year() %></li>
+					<li>Genre: <%=m.getGenre() %>
+					<li>Price: $<%=m.getPrice() %>
+					<li>Quantity Ordered: <%=o.getQuantity() %>
+					<li>Quantity Price: $<%=o.getPrice() %>
+					<li>Date Ordered: <%=o.getOrder_date() %>
+					<%
 				}
 				%>
 				</ul>

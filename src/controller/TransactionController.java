@@ -76,9 +76,6 @@ public class TransactionController extends HttpServlet {
 		
 		if (requestURI.endsWith("purchase")) {
 			updateCartInventoryCounts(request, response);
-				//purchase successful
-		} else {
-			
 		}
 	}
 	
@@ -95,7 +92,7 @@ public class TransactionController extends HttpServlet {
 			Order o = (Order)cart.get(e.getKey());
 			if (o.getQuantity() > m.getInventory()) {
 				purchaseStatus = false;
-				response.getWriter().append(m.getTitle() + " only " + m.getInventory() + " in stock");
+				response.getWriter().append("\n" + m.getTitle() + " only " + m.getInventory() + " in stock");
 			}
 		}
 		if (purchaseStatus) {
