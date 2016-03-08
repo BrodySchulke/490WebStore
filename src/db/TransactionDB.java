@@ -38,7 +38,12 @@ public class TransactionDB {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs.next()) {
-				money = new PGmoney(rs.getString("sum"));
+				String mon = rs.getString("sum");
+				if (mon != null) {
+					money = new PGmoney(rs.getString("sum"));
+				} else {
+					money = new PGmoney(0);
+				}
 			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -68,7 +73,12 @@ public class TransactionDB {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs.next()) {
-				money = new PGmoney(rs.getString("sum"));
+				String mon = rs.getString("sum");
+				if (mon != null) {
+					money = new PGmoney(rs.getString("sum"));
+				} else {
+					money = new PGmoney(0);
+				}
 			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -98,7 +108,12 @@ public class TransactionDB {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs.next()) {
-				money = new PGmoney(rs.getString("sum"));
+				String mon = rs.getString("sum");
+				if (mon != null) {
+					money = new PGmoney(rs.getString("sum"));
+				} else {
+					money = new PGmoney(0);
+				}
 			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -128,7 +143,12 @@ public class TransactionDB {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs.next()) {
-				money = new PGmoney(rs.getString("sum"));
+				String mon = rs.getString("sum");
+				if (mon != null) {
+					money = new PGmoney(rs.getString("sum"));
+				} else {
+					money = new PGmoney(0);
+				}
 			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();

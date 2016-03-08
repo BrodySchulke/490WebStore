@@ -116,7 +116,7 @@ public class MovieDB {
 			sort_value = "product_id";
 			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
 		} else if (sort_value.equals("rating")){
-			query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
+			query = "select m.*, avg(r.rating) as average from movies m left join ratings r on m.product_id = r.product_id where r.rating is not null group by m.product_id order by average desc offset " + offset + " limit " + numberOfRecords;
 		} else {
 			query = "select * from movies where inventory > 0 order by " + sort_value + " offset " + offset + " limit " + numberOfRecords;
 		}
