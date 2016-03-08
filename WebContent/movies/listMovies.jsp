@@ -73,7 +73,6 @@ function getVals(){
 		</div>
 	</div>
 	<div id="content">
-	<div id="filter-ui"><h6>FILTER SHIT HERE</h6></div>
 		<table id="list">
 			<tr>
 				<th><a href="javascript:sortMovies('title');">Title</a></th>

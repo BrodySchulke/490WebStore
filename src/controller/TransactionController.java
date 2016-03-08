@@ -104,7 +104,6 @@ public class TransactionController extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private void purchaseSyncDB(HttpServletRequest request) {
 		HttpSession userSession = request.getSession();
-//		System.out.println(request.getSession().getId());
 	    Map<Movie, Order> grabOrdersToWriteBack = (Map<Movie, Order>)userSession.getAttribute("cart");
 	    OrderDB.clearUserOrders((Transaction)userSession.getAttribute("transaction"));
 	    grabOrdersToWriteBack.entrySet().forEach(entry -> {

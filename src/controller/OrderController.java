@@ -57,7 +57,6 @@ public class OrderController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String requestURI = request.getRequestURI();
-		System.out.println(requestURI);
 		if (requestURI.endsWith("cart") || requestURI.endsWith("addto")) {
 			updateSession(request);
 		} else if (requestURI.endsWith("sync")) {
@@ -76,8 +75,6 @@ public class OrderController extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private void syncDatabase(HttpServletRequest request) {
 		HttpSession userSession = request.getSession();
-		System.out.println("SYNCING DB");
-//		System.out.println(request.getSession().getId());
 	    Map<Movie, Order> grabOrdersToWriteBack = (Map<Movie, Order>)userSession.getAttribute("cart");
 	    OrderDB.clearUserOrders((Transaction)userSession.getAttribute("transaction"));
 	    grabOrdersToWriteBack.entrySet().forEach(entry -> {
@@ -129,11 +126,6 @@ public class OrderController extends HttpServlet {
 	    	t.setTotal_price(t.getTotal_price() + m.getPrice());
 	    	grabOrder.put(m, o);
 	    }
-//	    Enumeration<String> e = userSession.getAttributeNames();
-//	    while (e.hasMoreElements()) {
-//	    	String elem = (String)e.nextElement();
-//	    	System.out.println(elem + ":" + userSession.getAttribute(elem));
-//	    }
 	}
 	
 	
@@ -152,7 +144,6 @@ public class OrderController extends HttpServlet {
 	    Order o = null;
 	    Transaction t = (Transaction)userSession.getAttribute("transaction");
 	    Map<Movie, Order> grabOrder = (Map<Movie, Order>)userSession.getAttribute("cart");
-//	    System.out.println("old cart " + grabOrder);
 	    //in the case of removal, this method should always return true
 	    if (orderExistsOnThisMovie(m, userSession)) {
 	    	o = grabOrder.get(m);
@@ -162,11 +153,9 @@ public class OrderController extends HttpServlet {
 		    	t.setTotal_price(t.getTotal_price() - m.getPrice());	
 		    } else {
          		t.setTotal_price(t.getTotal_price() - m.getPrice());
-	    		System.out.println("remove from transaction session");
 	    		grabOrder.remove(m);
 	    	}
 	    }
-//	    System.out.println("new cart " + grabOrder);
 	}
 	
 	

@@ -58,7 +58,6 @@ public class customerController extends HttpServlet {
 		// TODO Auto-generated method stub
 		String requestURI = request.getRequestURI();
 		String url = "";
-		//System.out.println(requestURI);
 		if(requestURI.endsWith("redirect")){
 			url = loginOrSignup(request);
 		} else if (requestURI.endsWith("register")) {
@@ -118,51 +117,13 @@ public class customerController extends HttpServlet {
 		userSession.setAttribute("search_value", "");
 		userSession.setAttribute("filter_value", new String[2]);
 		userSession.setAttribute("sort_value", "");
-		//		System.out.println(userSession.getId());
 		Transaction transaction = TransactionDB.initializeCart(customer);
 		Map<Movie, Order> cart = new HashMap<>();
 		OrderDB.getOrdersAssociatedWithCustomer(cart, transaction);
 		userSession.setAttribute("customer", customer);
 		userSession.setAttribute("transaction", transaction);
 		userSession.setAttribute("cart", cart);
-//		Enumeration e = userSession.getAttributeNames();
-//		while (e.hasMoreElements()) {
-//			String elem = (String)e.nextElement();
-//			System.out.println(elem + ":" + userSession.getAttribute(elem));
-//		}
-/*		ArrayList<Order> cartExistsAndIsOpen = TransactionDB.checkForOpenCart(customer);
-		if (cartExistsAndIsOpen != null) {
-			userSession.setAttribute("OrderList", cartExistsAndIsOpen);
-		} else {
-			userSession.setAttribute("OrderList", new ArrayList<Order>());
-		}*/
+
 	}
 	
-//	
-//	private String modifyCustomer(HttpServletRequest request){
-//		String url = "";
-//		String Customername = request.getParameter("Customername");
-//		Customer Customer = new Customer();
-//		Customer.setCustomername(Customername);
-//		Customer.setPasswd(request.getParameter("passwd"));
-//		Customer.setName(request.getParameter("name"));
-//		Customer.setEmail(request.getParameter("email"));
-//		int flag = 0;
-//		flag = CustomerDB.modifyCustomer(Customer);
-//		if(flag > 0){
-//			url = "/listCustomers.jsp";
-//		}
-//		return url;
-//	}
-//	
-//	private String deleteCustomer(HttpServletRequest request){
-//		String url = "";
-//		String Customername = request.getParameter("Customername");
-//		int flag = 0;
-//		flag = CustomerDB.deleteCustomer(Customername);
-//		if(flag > 0){
-//			url = "/listCustomers.jsp";
-//		}
-//		return url;
-//	}
 }

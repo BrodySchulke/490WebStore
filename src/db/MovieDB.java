@@ -172,7 +172,6 @@ public class MovieDB {
 		StringBuilder queryBuilder = new StringBuilder();
 		String[] searcher = search_value.split(" ");
 		for (String s : searcher) {
-			System.out.println(s);
 			queryBuilder.append(".*").append(s).append(".*");
 		}
 		query = "select * from movies where title ~ " + "'" + queryBuilder.toString() + "'" + " or genre ~ " + "'" + queryBuilder.toString() + "'" + " or actor ~ " + "'" + queryBuilder.toString() + "'" + " or actress ~ " + "'" + queryBuilder.toString() + "'" + " or director ~ " + "'" + queryBuilder.toString() + "'" + " limit 20";
