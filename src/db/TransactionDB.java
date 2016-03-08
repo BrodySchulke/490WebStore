@@ -632,6 +632,7 @@ public class TransactionDB {
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs.next()) {
 				count = rs.getInt("count");
+				avg = count / 365.0;
 				result = String.format("%.5f", avg);
 			}
 		} catch (SQLException sqle) {
