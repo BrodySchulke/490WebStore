@@ -251,7 +251,62 @@ public class OrderDB {
 				sqle.printStackTrace();
 			}
 		}
-		
+	}
+	
+	public static List<String> getCustomersPurchasingCategoryMoreThanTwoTimesAMonth() {
+		String query = "select distinct genre from movies";
+		List<String> customersTwice = new ArrayList<>();
+		Connection conn = null;
+		Statement stmt2 = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			String genre = null;
+			while (rs.next()) {
+				genre = rs.getString("genre");
+				String query2 = "select tab.username from ( select username, count(username) as num from customerssOrders where genre = " + "'" + genre + "'" + "group by username) as tab where num > 1";
+				try {
+					conn = getConnection();
+					stmt2 = conn.createStatement();
+					ResultSet rs2 = stmt2.executeQuery(query2);
+					while (rs2.next()) {
+						customersTwice.add(rs2.getString("title"));
+					}
+				} catch (SQLException sqle) {
+					sqle.printStackTrace();
+				} catch (ClassNotFoundException cnfe) {
+					cnfe.printStackTrace();
+				} finally {
+					try {
+						if (stmt2 != null) {
+							stmt2.close();
+						}
+						if (conn != null) {
+							conn.close();
+						}
+					} catch (SQLException sqle) {
+						sqle.printStackTrace();
+					}
+				}
+			}
+		} catch (SQLException sqle) {
+			
+		} catch (ClassNotFoundException cnfe) {
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return customersTwice;
 	}
 	
 	public static List<String> getWeeklyBestSellersByCategory() {
