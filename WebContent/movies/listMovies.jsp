@@ -7,117 +7,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <link rel="stylesheet" type="text/css" href="../css/listmovies.css">
 <title>List of Movies</title>
-<style>
-@import url(http://fonts.googleapis.com/css?family=Oswald);
-	body {
-				font-family: Arial, Verdana, sans-serif;
-				background-color: #000;
-				}
-	table {
-				color: #fff;
-				background-color: #000;
-				width: 100%;
-				margin: auto;
-				border-collapse: collapse;
-				}
-	th, td {
-				padding: 12px 10px;}
-	th{
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		font-size: 90%;
-		border-bottom: 2px solid #111111;
-		border-top: 1px solid #999;
-		text-align: left;
-		background-color: #fff;
-		color: black;
-	}
-	
-	tr {
-	background-color: #000;
-	}
-	
-	tr:hover {
-		background-color: #c3e6e5;
-	}
-	
-	tr:last-child{
-		border-bottom: 2px solid #111111;
-	}
-	#header {
-	z-index: 1;
-	position: fixed;
-	background-color: #000;
-	height: 100px;
-	width: 100%;
-	left: 0;
-	right: 0;
-	top: 0;
-}
-#content {
-	margin-top: 100px;
-}
-#footer {
-	background-color: #fff;
-	height: 100px;
-	width: 100%;
-	color: black;
-}
-#header-e1 {
-    float: left;
-    width:33%;
-    height: 100px;
-}
-#header-e2 {
-    float: left;
-    width:33%;
-    height: 100px;
-}
-#header-e3 {
-    float: left;
-    width:33%;
-    height: 100px;
-}
-h7 {
-	color: #fff;
-	text-align: center;
-	margin-bottom: 20px;
-}
-#search {
-width: 80%;
-display: block;
-padding-right: 10%;
-padding-left: 10%;
-color: #000;
-font-family: 'Oswald', 'Futura', sans-serif;
-}
-#user-img {
-width: 50%;
-height: 50px;
-display: block;
-margin-left: 0;
-float: left;
-}
-#user-img:hover {
-height: 75px;
-}
-#cart-img {
-width: 50%;
-height: 50px;
-display: block;
-margin-right: 0;
-float: right;
-}
-#cart-img:hover {
-height: 75px;
-}
-.small {
-width: 25px;
-height: 25px;
-display: inline;
-}
-
-</style>
 </head>
 <body>
 <script language="JavaScript" type="text/javascript">
@@ -264,8 +153,8 @@ function getVals(){
 				<td width="9%"><%=m.getActor()%></td>
 				<td width="9%"><%=m.getActress()%></td>
 				<td width="9%"><%=m.getDirector()%></td>
-				<td width="9%"><%=m.getPrice()%></td>
-				<td width="9%"><%=RatingDB.getRating(m)%></td>
+				<td width="9%">$<%=m.getPrice()%></td>
+				<td width="9%"><%=RatingDB.getMovieRating(m)%></td>
 				<%if (((Customer)request.getSession().getAttribute("customer")).getUsername().equals("admin")) {%><td width="9%"><%=m.getInventory()%></td><% } %>				
 				<td width="9%"><a href="javascript:viewAMovie(<%=m.getProduct_id()%>);">view</a>
 				</td>

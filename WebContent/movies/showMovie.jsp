@@ -38,7 +38,7 @@
 <div class="box">
 	<img src="../images/movie-clapperboard.svg" id="clapper"/>
 	<br/>
-	<%=RatingDB.getRating(m)%>
+	<%=RatingDB.getMovieRating(m)%>
 	<img class="small" src="../images/Outlined-star-45623.svg"/>
 	<br />
 	Year: <%=m.getRelease_year()%>
@@ -75,6 +75,7 @@ orderButton.onclick = function() {
     xhttp.open("POST", "../orders/cart", true);
     var mystring = "<%=m.toString()%>";
     xhttp.send(mystring);
+    alert("Movie added to cart!");
 }
 window.onbeforeunload = function(event) {
     var xhttp = new XMLHttpRequest();
