@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -251,6 +252,65 @@ public class OrderDB {
 			}
 		}
 		
+	}
+	
+	public static List<String> getWeeklyBestSellersByCategory() {
+		String query = "select distinct genre from movies";
+		List<String> topFiveMostPurchasedByCategory = new ArrayList<>();
+		Connection conn = null;
+		Statement stmt2 = null;
+		try {
+			connection = getConnection();
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			String genre = null;
+			while (rs.next()) {
+				genre = rs.getString("genre");
+				String query2 = "select m.title, m.genre, avg(o.quantity) as average from movies m left join orders o on m.product_id = o.product_id where o.order_date is not null and o.order_date >= (now() - interval '1 weeks') and genre = " + "'" + genre + "'" + "group by m.product_id order by average desc limit 5";
+				try {
+					conn = getConnection();
+					stmt2 = conn.createStatement();
+					ResultSet rs2 = stmt2.executeQuery(query2);
+					if (rs2.next()) {
+						topFiveMostPurchasedByCategory.add(genre + ": " + rs2.getString("title"));
+					}
+					while (rs2.next()) {
+						topFiveMostPurchasedByCategory.add(rs2.getString("title"));
+					}
+				} catch (SQLException sqle) {
+					sqle.printStackTrace();
+				} catch (ClassNotFoundException cnfe) {
+					cnfe.printStackTrace();
+				} finally {
+					try {
+						if (stmt2 != null) {
+							stmt2.close();
+						}
+						if (conn != null) {
+							conn.close();
+						}
+					} catch (SQLException sqle) {
+						sqle.printStackTrace();
+					}
+				}
+			}
+		} catch (SQLException sqle) {
+			
+		} catch (ClassNotFoundException cnfe) {
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
+			}
+		}
+		return topFiveMostPurchasedByCategory;
 	}
 	
 	public static List<String> getWeeklyBestSellersByIndividuals() {
