@@ -45,8 +45,6 @@ public class MovieController extends HttpServlet {
 		Enumeration<String> parameterNames = request.getParameterNames();
 	    while (parameterNames.hasMoreElements()) {
 	    	String paramName = parameterNames.nextElement();
-	    	System.out.println(paramName);
-	    	System.out.println((String)request.getParameter(paramName));
 	    }
 		if (sort_value == null) {
 			sort_value = (String)request.getSession().getAttribute("sort_value");
@@ -110,8 +108,6 @@ public class MovieController extends HttpServlet {
 		Enumeration<String> parameterNames = request.getParameterNames();
 	    while (parameterNames.hasMoreElements()) {
 	    	String paramName = parameterNames.nextElement();
-	    	System.out.println(paramName);
-	    	System.out.println((String)request.getParameter(paramName));
 	    }
 		if (requestURI.endsWith("modify")) {
 			MovieDB.updateMovie(request.getParameter("product_id"),
