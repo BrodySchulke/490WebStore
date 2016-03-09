@@ -30,7 +30,7 @@ import model.Transaction;
 @WebServlet(
 		name = "CustomerServlet",
 		description = "A servlet for handling customers",
-		urlPatterns = { "/signup/customer/*", "/home/customer/*", "/*/validuser/*" }
+		urlPatterns = { "/signup/customer/*", "/home/customer/*", "/customers/logout" }
 		)
 //@WebServlet("/customerController")
 public class customerController extends HttpServlet {
@@ -62,10 +62,12 @@ public class customerController extends HttpServlet {
 			url = loginOrSignup(request);
 		} else if (requestURI.endsWith("register")) {
 			url = registerCustomer(request);
+		} else if (requestURI.endsWith("logout")) {
+			clearCustomerSession(request);
+			url = "../home/loginForm.html";
 		} else {
 			url = "../../customers/registerError.jsp";
 		}
-
 		response.sendRedirect(url);
 	}
 	
@@ -124,6 +126,22 @@ public class customerController extends HttpServlet {
 		userSession.setAttribute("transaction", transaction);
 		userSession.setAttribute("cart", cart);
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static void clearCustomerSession(HttpServletRequest request) {
+		HttpSession userSession = request.getSession();
+		Map<Movie, Order> grabOrdersToWriteBack = (Map<Movie, Order>)userSession.getAttribute("cart");
+	    OrderDB.clearUserOrders((Transaction)userSession.getAttribute("transaction"));
+	    grabOrdersToWriteBack.entrySet().forEach(entry -> {
+	    	OrderDB.writeBackUserOrders(grabOrdersToWriteBack.get(entry.getKey()));
+	    });
+	    Transaction t = (Transaction)userSession.getAttribute("transaction");
+	    TransactionDB.writeTransactionToDB(t);
+		if (userSession != null) {
+			userSession.invalidate();
+		}
+		System.out.println("session cleared");
 	}
 	
 }

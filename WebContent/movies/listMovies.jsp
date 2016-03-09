@@ -7,6 +7,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <link rel="stylesheet" type="text/css" href="../css/listmovies.css">
 <title>List of Movies</title>
+<% if (request.getSession().getAttribute("customer") == null) {
+	response.sendRedirect("../home/loginForm.html");
+	return;
+}
+%>
 </head>
 <body>
 <script language="JavaScript" type="text/javascript">
@@ -59,6 +64,7 @@ function getVals(){
 			</a>
 		<% } %>
 		</div>
+		<a href="javascript:logOut()">Log out</a>
 		<div id="header-e2">
 			<h7>THREE STOOGES EXCLUSIVE ANTIQUE FILM BOUTIQUE</h7>
 			<form action="../movies/search" method="get" onsubmit="return checkform(this);" id="search-form">
@@ -189,6 +195,10 @@ function getVals(){
 					document.getElementById("filter_rating").value = rating;
 					document.getElementById("ratingform").submit();
 				}
+				function logOut() {
+					console.log("logout func");
+					document.getElementById("logoutForm").submit();
+				}
 			</script>
 
 			<%
@@ -212,6 +222,8 @@ function getVals(){
 	</form>
 	<form name="filter" method="get" action="../movies/filter_rating" id="ratingform">
 		<input type="hidden" name="filter" id="filter_rating">
+	</form>
+		<form name="logout" method="post" action="../customers/logout" id="logoutForm">
 	</form>
 	<%
 		if (movies.size() == 20) {
