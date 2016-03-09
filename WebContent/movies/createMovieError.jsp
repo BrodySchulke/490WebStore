@@ -5,6 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Admin Error</title>
+<% if (request.getSession().getAttribute("customer") == null) {
+	response.sendRedirect("../home/loginForm.html");
+	return;
+}
+%>
 </head>
 <body>
 <p>Either that movie exists or you left a field blank. Nothing inserted. try modifying the movie if you want to change inventory or price.</p>

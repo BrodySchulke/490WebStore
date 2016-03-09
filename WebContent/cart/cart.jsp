@@ -8,6 +8,11 @@
 <script type="text/javascript" src="../js/cart.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/cart.css">
 <title>Your Cart</title>
+<% if (request.getSession().getAttribute("customer") == null) {
+	response.sendRedirect("../home/loginForm.html");
+	return;
+}
+%>
 </head>
 <body>
 	<!-- should present movies in different way, maybe like grid -->

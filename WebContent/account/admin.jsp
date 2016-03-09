@@ -5,6 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Admin Analytics</title>
+<% if (request.getSession().getAttribute("customer") == null) {
+	response.sendRedirect("../home/loginForm.html");
+	return;
+}
+%>
 </head>
 <body>
 <%

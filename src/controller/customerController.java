@@ -141,7 +141,6 @@ public class customerController extends HttpServlet {
 		if (userSession != null) {
 			userSession.invalidate();
 		}
-		System.out.println("session cleared");
 	}
 	
 }

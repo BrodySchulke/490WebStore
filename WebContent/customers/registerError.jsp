@@ -5,6 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Register Error</title>
+<% if (request.getSession().getAttribute("customer") == null) {
+	response.sendRedirect("../home/loginForm.html");
+	return;
+}
+%>
 </head>
 <body>
 <p>That username is taken, please try again.</p>

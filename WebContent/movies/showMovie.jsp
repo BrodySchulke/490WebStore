@@ -7,6 +7,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>The Three Stooges' Exquisite Exclusive Movie View</title>
 <link rel="stylesheet" href="../css/showmovie.css" />
+<% if (request.getSession().getAttribute("customer") == null) {
+	response.sendRedirect("../home/loginForm.html");
+	return;
+}
+%>
 </head>
 <body>
     <div id="header">

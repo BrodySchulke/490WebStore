@@ -8,6 +8,11 @@
 <script type="text/javascript" src="../js/close.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/account.css">
 <title>List of Movies</title>
+<% if (request.getSession().getAttribute("customer") == null) {
+	response.sendRedirect("../home/loginForm.html");
+	return;
+}
+%>
 </head>
 <body>
 	<!-- should present movies in different way, maybe like grid -->

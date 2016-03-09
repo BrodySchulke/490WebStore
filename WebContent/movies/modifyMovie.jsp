@@ -8,6 +8,11 @@
 <title>The Three Stooges' Exquisite Exclusive Movie View</title>
 <html>
 <head><title>Modify Movie Information Form</title>
+<% if (request.getSession().getAttribute("customer") == null) {
+	response.sendRedirect("../home/loginForm.html");
+	return;
+}
+%>
 </head>
 	<body>
 	<%
