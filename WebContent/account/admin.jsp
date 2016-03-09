@@ -14,8 +14,11 @@
 <body>
 <%
 Customer user = (Customer)request.getSession().getAttribute("customer");
-if (user.getUsername().equals("admin")) {	 }
-else { response.sendRedirect("../home/loginForm.html"); }
+if (user.getUsername().equals("admin")) {
+}
+else {
+	response.sendRedirect("../movies/listMovies.jsp"); 
+return;}
 %>
 <p>Monthly Aggregate Sales: <%=TransactionDB.getMonthlyAggregateSales() %></p>
 <p>Weekly Aggregate Sales: <%=TransactionDB.getWeeklyAggregateSales() %></p>
